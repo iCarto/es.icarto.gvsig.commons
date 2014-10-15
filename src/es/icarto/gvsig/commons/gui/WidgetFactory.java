@@ -39,7 +39,7 @@ public class WidgetFactory {
      * Adds an OkCancelPanel 'docked south' of the panel param, and returns the
      * OkCancelPanel added
      */
-    public static OkCancelPanel acceptCancelPanel(JPanel panel,
+    public static OkCancelPanel okCancelPanel(JPanel panel,
 	    ActionListener ok, ActionListener cancel) {
 	OkCancelPanel okCancelPanel = new OkCancelPanel(ok, cancel);
 	// TODO Al usar dock el componente se sale del flujo normal, e ignora
