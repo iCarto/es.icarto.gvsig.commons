@@ -1,16 +1,25 @@
 package es.icarto.gvsig.commons.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.JTextComponent;
+
+import com.jeta.forms.gui.beans.factories.ComboBoxBeanFactory;
+import com.jeta.forms.gui.common.FormException;
 
 public class WidgetFactory {
+
+    private static final Color DISABLED_TEXT_COLOR = new Color(189, 190, 176);
 
     private WidgetFactory() {
 	throw new AssertionError("Only static methods");
@@ -35,12 +44,25 @@ public class WidgetFactory {
 	return label;
     }
 
+    public static JComboBox combobox() {
+	JComboBox combo = null;
+	try {
+	    Component bean = new ComboBoxBeanFactory().instantiateBean();
+	    combo = (JComboBox) bean;
+	    combo.setBorder(null);
+	} catch (FormException e) {
+	    e.printStackTrace();
+	}
+
+	return combo;
+    }
+
     /**
      * Adds an OkCancelPanel 'docked south' of the panel param, and returns the
      * OkCancelPanel added
      */
-    public static OkCancelPanel okCancelPanel(JPanel panel,
-	    ActionListener ok, ActionListener cancel) {
+    public static OkCancelPanel okCancelPanel(JPanel panel, ActionListener ok,
+	    ActionListener cancel) {
 	OkCancelPanel okCancelPanel = new OkCancelPanel(ok, cancel);
 	// TODO Al usar dock el componente se sale del flujo normal, e ignora
 	// los insets especificados. En lugar de poner 10 directamente,
@@ -48,5 +70,12 @@ public class WidgetFactory {
 	// botón de cancelar queda más a la derecha que el resto de componentes
 	panel.add(okCancelPanel, "gapright 10, gapleft 10, dock south");
 	return okCancelPanel;
+    }
+
+    public static void disableComponent(JComponent c) {
+	if (c instanceof JTextComponent) {
+	    ((JTextComponent) c).setDisabledTextColor(DISABLED_TEXT_COLOR);
+	}
+	c.setEnabled(false);
     }
 }
