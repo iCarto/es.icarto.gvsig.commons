@@ -75,14 +75,22 @@ public abstract class AbstractIWindow extends JPanel implements IWindow {
 
 	    // If the window are so big, and slides under andami, touch the code
 	    // before here, not the following lines
-	    windowInfo.setWidth(width);
-	    if (windowInfo.isModal()) {
-		// andami adds 30 for modal windows. If modal look at
-		// NewSkin.addJDialog, if not FrameWindowSupport.
-		windowInfo.setHeight(heigth - 30);
-	    } else {
-		windowInfo.setHeight(heigth);
+
+	    // if the vertical scrollbar is displayed more width is need
+	    width += 5;
+	    if (heigth == maxHeight) {
+		width += 15;
 	    }
+
+	    // andami adds 30 for modal windows. If modal look at
+	    // NewSkin.addJDialog, if not FrameWindowSupport.
+	    if (windowInfo.isModal()) {
+		heigth -= 30;
+	    }
+
+	    windowInfo.setWidth(width);
+	    windowInfo.setHeight(heigth);
+
 	}
 	return windowInfo;
     }
