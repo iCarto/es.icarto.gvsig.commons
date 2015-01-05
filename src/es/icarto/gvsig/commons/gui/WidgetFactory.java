@@ -19,7 +19,9 @@ import com.jeta.forms.gui.common.FormException;
 
 public class WidgetFactory {
 
-    private static final Color DISABLED_TEXT_COLOR = new Color(189, 190, 176);
+    private static final Color DISABLED_TEXT_COLOR = new Color(0, 0, 0);
+    private static final Color DISABLED_BACKGROUND_COLOR = new Color(240, 240,
+	    240);
 
     private WidgetFactory() {
 	throw new AssertionError("Only static methods");
@@ -77,5 +79,8 @@ public class WidgetFactory {
 	    ((JTextComponent) c).setDisabledTextColor(DISABLED_TEXT_COLOR);
 	}
 	c.setEnabled(false);
+	if (c instanceof JTextComponent) {
+	    ((JTextComponent) c).setBackground(DISABLED_BACKGROUND_COLOR);
+	}
     }
 }
