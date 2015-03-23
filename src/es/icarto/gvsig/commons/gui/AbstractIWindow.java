@@ -39,6 +39,10 @@ public abstract class AbstractIWindow extends JPanel implements IWindow {
 	}
     }
 
+    public void closeDialog() {
+	PluginServices.getMDIManager().closeWindow(this);
+    }
+
     @Override
     public Object getWindowProfile() {
 	return WindowInfo.DIALOG_PROFILE;
@@ -96,7 +100,7 @@ public abstract class AbstractIWindow extends JPanel implements IWindow {
     }
 
     protected void setWindowTitle(String title) {
-	this.title = title;
+	this.title = PluginServices.getText(this, title);
     }
 
     protected void setWindowInfoProperties(int properties) {
