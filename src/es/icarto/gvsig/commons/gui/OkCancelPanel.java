@@ -90,4 +90,8 @@ public class OkCancelPanel extends JPanel {
     public void setCancelButtonEnabled(boolean b) {
 	btnCancel.setEnabled(b);
     }
+
+    public JButton getOkButton() {
+	return btnOk;
+    }
 }
