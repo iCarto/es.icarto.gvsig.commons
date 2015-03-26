@@ -10,6 +10,7 @@ import net.miginfocom.swing.MigLayout;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiFrame.MDIFrame;
 import com.iver.andami.ui.mdiManager.IWindow;
+import com.iver.andami.ui.mdiManager.IWindowListener;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 
 @SuppressWarnings("serial")
@@ -17,11 +18,14 @@ import com.iver.andami.ui.mdiManager.WindowInfo;
  * A gvSIG IWindow that autocalculates its size
  * 
  */
-public abstract class AbstractIWindow extends JPanel implements IWindow {
+public abstract class AbstractIWindow extends JPanel implements IWindow,
+	IWindowListener {
 
     private WindowInfo windowInfo;
     private String title = "";
     private int windowInfoProperties = WindowInfo.MODALDIALOG;
+    private IWindowActivated windowActivated;
+    private IWindowClosed windowClosed;
 
     public AbstractIWindow() {
 	super(new MigLayout("insets 10"));
@@ -105,6 +109,35 @@ public abstract class AbstractIWindow extends JPanel implements IWindow {
 
     protected void setWindowInfoProperties(int properties) {
 	this.windowInfoProperties = properties;
+    }
+
+    public void setWindowActivated(IWindowActivated windowActivated) {
+	this.windowActivated = windowActivated;
+    }
+
+    @Override
+    public void windowActivated() {
+	if (windowActivated != null) {
+	    windowActivated.windowActivated(this);
+	}
+    }
+
+    public void setWindowClosed(IWindowClosed windowClosed) {
+	this.windowClosed = windowClosed;
+    }
+
+    @Override
+    public void windowClosed() {
+	if (windowClosed != null) {
+	    // windowClosed it's called before the window is effectively removed
+	    // from andami. So we set it as not visible to avoid the user see
+	    // it;
+	    this.setVisible(false);
+	    windowClosed.windowClosed(this);
+
+	    // workaround. Andami seems to called twice this method
+	    windowClosed = null;
+	}
     }
 
 }
