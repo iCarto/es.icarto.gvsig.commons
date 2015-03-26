@@ -11,5 +11,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/libExceptions"/>
 	<classpathentry kind="src" path="/libGDBMS"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libProjection"/>
+	<classpathentry kind="src" path="/appgvSIG"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libIverUtiles"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
