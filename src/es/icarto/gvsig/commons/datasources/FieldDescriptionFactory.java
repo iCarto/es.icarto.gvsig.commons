@@ -26,9 +26,10 @@ public class FieldDescriptionFactory {
 	this.decimalCount = defaultDecimalCount;
     }
 
-    public void addInteger(String name) {
+    public FieldDescription addInteger(String name) {
 	FieldDescription fd = getInteger(name);
 	fields.add(fd);
+	return fd;
     }
 
     public FieldDescription getInteger(String name) {
@@ -40,9 +41,10 @@ public class FieldDescriptionFactory {
 	return fd;
     }
 
-    public void addDouble(String name) {
+    public FieldDescription addDouble(String name) {
 	FieldDescription fd = getDouble(name);
 	fields.add(fd);
+	return fd;
     }
 
     public FieldDescription getDouble(String name) {
@@ -54,9 +56,10 @@ public class FieldDescriptionFactory {
 	return fd;
     }
 
-    public void addString(String name) {
+    public FieldDescription addString(String name) {
 	FieldDescription fd = getString(name);
 	fields.add(fd);
+	return fd;
     }
 
     public FieldDescription getString(String name) {
@@ -68,9 +71,10 @@ public class FieldDescriptionFactory {
 	return fd;
     }
 
-    public void addDate(String name) {
+    public FieldDescription addDate(String name) {
 	FieldDescription fd = getDate(name);
 	fields.add(fd);
+	return fd;
     }
 
     public FieldDescription getDate(String name) {
@@ -80,9 +84,10 @@ public class FieldDescriptionFactory {
 	return fd;
     }
 
-    public void addBoolean(String name) {
+    public FieldDescription addBoolean(String name) {
 	FieldDescription fd = getBoolean(name);
 	fields.add(fd);
+	return fd;
     }
 
     public FieldDescription getBoolean(String name) {

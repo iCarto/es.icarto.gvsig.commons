@@ -60,7 +60,7 @@ public class SHPFactory {
 	writer.initialize(lyrDef);
 	writer.preProcess();
 
-	for (int i = 0; i < features.length; i++) {
+	for (int i = 0; (features != null) && (i < features.length); i++) {
 	    DefaultRowEdited row = new DefaultRowEdited(features[i],
 		    IRowEdited.STATUS_ADDED, i);
 	    writer.process(row);
