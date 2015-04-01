@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.net.URL;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
+
+import net.miginfocom.swing.MigLayout;
 
 public class ChainedComboPanelTest {
 
@@ -32,10 +35,10 @@ public class ChainedComboPanelTest {
 	DefaultMutableTreeNode top = new DefaultMutableTreeNode(
 		"The Java Series");
 	createNodes(top);
+	JPanel pane = new JPanel(new MigLayout("insets 10"));
+	ChainedComboPanel dialog = new ChainedComboPanel(pane, top);
 
-	ChainedComboPanel dialog = new ChainedComboPanel(top);
-
-	f.getContentPane().add(dialog, BorderLayout.CENTER);
+	f.getContentPane().add(pane, BorderLayout.CENTER);
 	f.pack();
 	f.setVisible(true);
     }
