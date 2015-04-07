@@ -28,11 +28,11 @@ public class ChainedComboPanel extends JPanel implements ItemListener {
 
     private final List<JComboBox> l = new ArrayList<JComboBox>();
 
-    private final JPanel parent;
+    private final JPanel parentComp;
 
-    public ChainedComboPanel(JPanel parent, DefaultMutableTreeNode top) {
+    public ChainedComboPanel(JPanel parentComp, DefaultMutableTreeNode top) {
 	super(new MigLayout());
-	this.parent = parent;
+	this.parentComp = parentComp;
 	DefaultMutableTreeNode node = top;
 	List<String> labels = (List<String>) top.getUserObject();
 
@@ -43,8 +43,8 @@ public class ChainedComboPanel extends JPanel implements ItemListener {
 	    c.setPrototypeDisplayValue(prototypeDisplayValue);
 	    l.add(c);
 	    c.addItemListener(this);
-	    parent.add(new JLabel(labels.remove(0)));
-	    parent.add(c, "wrap, growx");
+	    parentComp.add(new JLabel(labels.remove(0)));
+	    parentComp.add(c, "wrap, growx");
 	    node = (DefaultMutableTreeNode) node.getFirstChild();
 	    childCount = node.getChildCount();
 	}

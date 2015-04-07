@@ -1,5 +1,6 @@
 package es.icarto.gvsig.commons.gui;
 
+import java.awt.Component;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -53,6 +54,8 @@ public class ChooseLayerPanel<T extends FLayer> extends JPanel {
 
     private final Class<T> clasz;
 
+    private final JPanel parentComp;
+
     private static final String prototypeDisplayValue = "XXXXXXXXXXXXXXXXXXXX";
 
     /**
@@ -66,9 +69,11 @@ public class ChooseLayerPanel<T extends FLayer> extends JPanel {
      *            label a placeholder should be used in the combo itself
      *            (PLACEHOLDER), or even with no label at all (NONE)
      */
-    public ChooseLayerPanel(String text, Orientation orientation, Class<T> clasz) {
+    public ChooseLayerPanel(JPanel parentComp, String text,
+	    Orientation orientation, Class<T> clasz) {
 
 	this.clasz = clasz;
+	this.parentComp = parentComp;
 
 	JLabel label = null;
 	if ((text == null) || text.isEmpty()) {
@@ -82,8 +87,8 @@ public class ChooseLayerPanel<T extends FLayer> extends JPanel {
 
 	switch (orientation) {
 	case HORIZONTAL:
-	    this.add(label);
-	    this.add(layerCombo);
+	    parentComp.add(label);
+	    parentComp.add(layerCombo, "wrap");
 	    break;
 
 	default:
@@ -133,21 +138,20 @@ public class ChooseLayerPanel<T extends FLayer> extends JPanel {
     /**
      * Returns a list with the layers used to fill the combo
      */
-    public List<T> populateFrom(View view) {
+    public List<T> populateFrom(View view, LayerFilter filter) {
 	TOCLayerManager toc = new TOCLayerManager(view.getMapControl());
 	List<T> allLayers = toc.getAllLayers(clasz);
+
 	for (T t : allLayers) {
-	    layerCombo.addItem(new LayerItem(t));
+	    if ((filter == null) || (filter.accept(t))) {
+		layerCombo.addItem(new LayerItem(t));
+	    }
 	}
 	return allLayers;
     }
 
     public List<T> populateFromActiveView() {
-	View view = getView();
-	if (view != null) {
-	    return populateFrom(view);
-	}
-	return null;
+	return populateFromActiveView(null);
     }
 
     private View getView() {
@@ -156,5 +160,17 @@ public class ChooseLayerPanel<T extends FLayer> extends JPanel {
 	    return (View) iWindow;
 	}
 	return null;
+    }
+
+    public List<T> populateFromActiveView(LayerFilter filter) {
+	View view = getView();
+	if (view != null) {
+	    return populateFrom(view, filter);
+	}
+	return null;
+    }
+
+    public Component getDefaultFocusComponent() {
+	return layerCombo;
     }
 }
