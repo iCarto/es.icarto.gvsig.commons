@@ -67,7 +67,19 @@ public class SelectFileWidget extends JPanel {
 		    File selectedFile = ((SaveFileDialog) fileChooser)
 			    .showDialog();
 		    if (selectedFile != null) {
-			field.setText(selectedFile.getAbsolutePath());
+			String absolutePath = selectedFile.getAbsolutePath();
+			if (fileChooser.getFileFilter() instanceof FileNameExtensionFilter) {
+			    FileNameExtensionFilter filter = (FileNameExtensionFilter) fileChooser
+				    .getFileFilter();
+			    if (filter.getExtensions().length == 1) {
+				String ext = filter.getExtensions()[0]
+					.toLowerCase();
+				if (!absolutePath.toLowerCase().endsWith(ext)) {
+				    absolutePath += "." + ext;
+				}
+			    }
+			}
+			field.setText(absolutePath);
 		    }
 		} else {
 		    if (fileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
@@ -95,7 +107,7 @@ public class SelectFileWidget extends JPanel {
     }
 
     /**
-     * 
+     *
      * @param description
      *            : Appears in the select file type combo
      * @param extensions
