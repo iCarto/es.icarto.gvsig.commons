@@ -1,6 +1,7 @@
 package es.icarto.gvsig.commons.gui;
 
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -11,7 +12,7 @@ import com.iver.andami.PluginServices;
 @SuppressWarnings("serial")
 /**
  * A panel with two buttons: Ok and Cancel
- * 
+ *
  */
 public class OkCancelPanel extends JPanel {
 
@@ -19,12 +20,14 @@ public class OkCancelPanel extends JPanel {
     public static String OK_ACTION_COMMAND = "AcceptCancelPanel.OK";
     private JButton btnOk = null;
     private JButton btnCancel = null;
+    private final JPanel btPanel;
 
-    public OkCancelPanel(ActionListener okAction,
-	    ActionListener cancelAction) {
+    public OkCancelPanel(ActionListener okAction, ActionListener cancelAction) {
 	super(new FlowLayout(FlowLayout.TRAILING));
+	btPanel = new JPanel(new GridLayout(1, 0, 5, 5));
 	addOkButton(okAction);
 	addCancelButton(cancelAction);
+	add(btPanel);
     }
 
     public OkCancelPanel() {
@@ -38,7 +41,7 @@ public class OkCancelPanel extends JPanel {
 	if (okAction != null) {
 	    btnOk.addActionListener(okAction);
 	}
-	add(btnOk);
+	btPanel.add(btnOk);
     }
 
     private void addCancelButton(ActionListener cancelAction) {
@@ -48,7 +51,7 @@ public class OkCancelPanel extends JPanel {
 	if (cancelAction != null) {
 	    btnCancel.addActionListener(cancelAction);
 	}
-	add(btnCancel);
+	btPanel.add(btnCancel);
     }
 
     public void addCancelButtonActionListener(ActionListener l) {
