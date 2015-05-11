@@ -3,6 +3,8 @@ package es.icarto.gvsig.commons.gui;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +24,8 @@ import net.miginfocom.swing.MigLayout;
  */
 @Deprecated
 @SuppressWarnings("serial")
-public class ChainedComboPanel extends JPanel implements ItemListener {
+public class ChainedComboPanel extends JPanel implements ItemListener,
+	PropertyChangeListener {
 
     private static final String prototypeDisplayValue = "XXXXXXXXXXXXXXXXXXXX";
 
@@ -43,6 +46,7 @@ public class ChainedComboPanel extends JPanel implements ItemListener {
 	    c.setPrototypeDisplayValue(prototypeDisplayValue);
 	    l.add(c);
 	    c.addItemListener(this);
+	    c.addPropertyChangeListener("model", this);
 	    parentComp.add(new JLabel(labels.remove(0)));
 	    parentComp.add(c, "wrap, growx");
 	    node = (DefaultMutableTreeNode) node.getFirstChild();
@@ -53,16 +57,20 @@ public class ChainedComboPanel extends JPanel implements ItemListener {
     @Override
     public void itemStateChanged(ItemEvent event) {
 	if (event.getStateChange() == ItemEvent.SELECTED) {
-	    Object combo = event.getSource();
-	    int indexOf = l.indexOf(combo);
-	    if (indexOf < l.size() - 1) {
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) event
-			.getItem();
-		JComboBox nextCombo = l.get(indexOf + 1);
-		Object[] values = Collections.list(node.children()).toArray();
-		ComboBoxModel aModel = new DefaultComboBoxModel(values);
-		nextCombo.setModel(aModel);
-	    }
+	    JComboBox combo = (JComboBox) event.getSource();
+	    updateNextCombo(combo);
+	}
+    }
+
+    private void updateNextCombo(JComboBox combo) {
+	int indexOf = l.indexOf(combo);
+	if (indexOf < l.size() - 1) {
+	    DefaultMutableTreeNode node = (DefaultMutableTreeNode) combo
+		    .getSelectedItem();
+	    JComboBox nextCombo = l.get(indexOf + 1);
+	    Object[] values = Collections.list(node.children()).toArray();
+	    ComboBoxModel aModel = new DefaultComboBoxModel(values);
+	    nextCombo.setModel(aModel);
 	}
     }
 
@@ -85,6 +93,12 @@ public class ChainedComboPanel extends JPanel implements ItemListener {
 
     public Component getDefaultFocusComponent() {
 	return l.get(0);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+	JComboBox combo = (JComboBox) evt.getSource();
+	updateNextCombo(combo);
     }
 
 }
