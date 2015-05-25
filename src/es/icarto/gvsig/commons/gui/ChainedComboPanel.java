@@ -25,9 +25,9 @@ import net.miginfocom.swing.MigLayout;
 @Deprecated
 @SuppressWarnings("serial")
 public class ChainedComboPanel extends JPanel implements ItemListener,
-	PropertyChangeListener {
+PropertyChangeListener {
 
-    private static final String prototypeDisplayValue = "XXXXXXXXXXXXXXXXXXXX";
+    private static final String prototypeDisplayValue = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 
     private final List<JComboBox> l = new ArrayList<JComboBox>();
 
