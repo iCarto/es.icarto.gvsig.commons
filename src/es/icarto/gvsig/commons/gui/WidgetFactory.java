@@ -70,7 +70,7 @@ public class WidgetFactory {
 	// los insets especificados. En lugar de poner 10 directamente,
 	// deberíamos extraer el valor de los insets. Si no usamos el gap, el
 	// botón de cancelar queda más a la derecha que el resto de componentes
-	panel.add(okCancelPanel, "gapright 10, gapleft 10, dock south");
+	panel.add(okCancelPanel, "gapright 10, dock south");
 	return okCancelPanel;
     }
 

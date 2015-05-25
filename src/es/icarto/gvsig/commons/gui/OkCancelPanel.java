@@ -23,7 +23,7 @@ public class OkCancelPanel extends JPanel {
     private final JPanel btPanel;
 
     public OkCancelPanel(ActionListener okAction, ActionListener cancelAction) {
-	super(new FlowLayout(FlowLayout.TRAILING));
+	super(new FlowLayout(FlowLayout.TRAILING, 0, 0));
 	btPanel = new JPanel(new GridLayout(1, 0, 5, 5));
 	addOkButton(okAction);
 	addCancelButton(cancelAction);
