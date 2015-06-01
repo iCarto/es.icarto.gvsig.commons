@@ -148,4 +148,12 @@ public class SelectFileWidget extends JPanel {
 	return field.getText().trim();
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+	super.setEnabled(enabled);
+	label.setEnabled(enabled);
+	bt.setEnabled(enabled);
+	field.setEnabled(enabled);
+    }
+
 }
