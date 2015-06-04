@@ -62,7 +62,7 @@ public class ChooseLayerPanel<T extends FLayer> extends JPanel {
      * @text the text to use for the label. If null or empty Orientation.NONE
      *       will be assumed. The text will be automatically i18n through
      *       PluginServices
-     * 
+     *
      * @param orientation
      *            if the label of the combo should be in the left of the combo
      *            (HORIZONTAL), over the combo (VERTICAL) or instead of use a
@@ -88,7 +88,7 @@ public class ChooseLayerPanel<T extends FLayer> extends JPanel {
 	switch (orientation) {
 	case HORIZONTAL:
 	    parentComp.add(label);
-	    parentComp.add(layerCombo, "wrap");
+	    parentComp.add(layerCombo, "wrap, growx");
 	    break;
 
 	default:
@@ -118,9 +118,9 @@ public class ChooseLayerPanel<T extends FLayer> extends JPanel {
      * Adds an empty first item in the combo and preselects it [preselect] is
      * true Take care with the order in which preselectFirstActive and this
      * method is used
-     * 
+     *
      * Should be called before populateFrom
-     * 
+     *
      * @param preselect
      */
     public void addEmptyFirst(boolean preselect) {
