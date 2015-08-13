@@ -9,8 +9,8 @@ import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 /**
- * The api of this class will change in the future. Comment that you are going
- * to use
+ * The api of this class will change in the future. If you are going to use it
+ * explain your use case first
  */
 @Deprecated
 public class TOCLayerManager {
@@ -79,6 +79,16 @@ public class TOCLayerManager {
 	List<T> layers = new ArrayList<T>();
 	layers.addAll(getInnerLayers(mapControl.getMapContext().getLayers(),
 		clasz));
+	return layers;
+    }
+
+    public List<FLyrVect> getJoinedLayers() {
+	List<FLyrVect> layers = getAllLayers(FLyrVect.class);
+	for (FLyrVect l : layers) {
+	    if (l.isJoined()) {
+		layers.remove(l);
+	    }
+	}
 	return layers;
     }
 
