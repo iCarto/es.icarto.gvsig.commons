@@ -19,9 +19,19 @@ import com.jeta.forms.gui.common.FormException;
 
 public class WidgetFactory {
 
-    private static final Color DISABLED_TEXT_COLOR = new Color(0, 0, 0);
+    private static final Color ENABLED_DISABLED_TEXT_COLOR = Color.BLACK;
+    private static final Color ENABLED_BACKGROUND_COLOR = Color.WHITE;
+    private static final Color ENABLED_FOREGROUND_COLOR = Color.BLACK;
+
+    private static final Color DISABLED_DISABLED_TEXT_COLOR = new Color(189,
+	    190, 176);
     private static final Color DISABLED_BACKGROUND_COLOR = new Color(240, 240,
 	    240);
+    private static final Color DISABLED_FOREGROUND_COLOR = new Color(102, 102,
+	    102);
+
+    // private static final Font DISABLED_FONT = new Font("Arial", Font.PLAIN,
+    // 11);
 
     private WidgetFactory() {
 	throw new AssertionError("Only static methods");
@@ -74,13 +84,33 @@ public class WidgetFactory {
 	return okCancelPanel;
     }
 
-    public static void disableComponent(JComponent c) {
-	if (c instanceof JTextComponent) {
-	    ((JTextComponent) c).setDisabledTextColor(DISABLED_TEXT_COLOR);
+    public static void enableComponent(JComponent c, boolean enable) {
+	if (enable) {
+	    enableComponent(c);
+	} else {
+	    disableComponent(c);
 	}
+    }
+
+    public static void disableComponent(JComponent c) {
 	c.setEnabled(false);
 	if (c instanceof JTextComponent) {
-	    ((JTextComponent) c).setBackground(DISABLED_BACKGROUND_COLOR);
+	    JTextComponent tc = (JTextComponent) c;
+	    tc.setEditable(false);
+	    tc.setBackground(DISABLED_BACKGROUND_COLOR);
+	    tc.setDisabledTextColor(ENABLED_DISABLED_TEXT_COLOR);
+	    tc.setForeground(DISABLED_FOREGROUND_COLOR);
+	}
+    }
+
+    public static void enableComponent(JComponent c) {
+	c.setEnabled(true);
+	if (c instanceof JTextComponent) {
+	    JTextComponent tc = (JTextComponent) c;
+	    tc.setEditable(true);
+	    tc.setBackground(ENABLED_BACKGROUND_COLOR);
+	    tc.setDisabledTextColor(ENABLED_DISABLED_TEXT_COLOR);
+	    tc.setForeground(ENABLED_FOREGROUND_COLOR);
 	}
     }
 }
