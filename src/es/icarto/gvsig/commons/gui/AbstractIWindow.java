@@ -1,5 +1,6 @@
 package es.icarto.gvsig.commons.gui;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
 
@@ -16,7 +17,7 @@ import com.iver.andami.ui.mdiManager.WindowInfo;
 @SuppressWarnings("serial")
 /**
  * A gvSIG IWindow that autocalculates its size
- * 
+ *
  */
 public abstract class AbstractIWindow extends JPanel implements IWindow,
 	IWindowListener {
@@ -55,52 +56,56 @@ public abstract class AbstractIWindow extends JPanel implements IWindow,
     @Override
     public WindowInfo getWindowInfo() {
 	if (windowInfo == null) {
-	    windowInfo = new WindowInfo(windowInfoProperties);
-
-	    windowInfo.setTitle(title);
-	    Dimension dim = getPreferredSize();
-	    // To calculate the maximum size of a form we take the size of the
-	    // main frame minus a "magic number" for the menus, toolbar, state
-	    // bar
-	    // Take into account that in edition mode there is less available
-	    // space
-	    MDIFrame a = (MDIFrame) PluginServices.getMainFrame();
-	    final int MENU_TOOL_STATE_BAR = 205;
-	    int maxHeight = a.getHeight() - MENU_TOOL_STATE_BAR;
-	    int maxWidth = a.getWidth() - 15;
-
-	    int width, heigth = 0;
-	    if (dim.getHeight() > maxHeight) {
-		heigth = maxHeight;
-	    } else {
-		heigth = new Double(dim.getHeight()).intValue();
-	    }
-	    if (dim.getWidth() > maxWidth) {
-		width = maxWidth;
-	    } else {
-		width = new Double(dim.getWidth()).intValue();
-	    }
-
-	    // If the window are so big, and slides under andami, touch the code
-	    // before here, not the following lines
-
-	    // if the vertical scrollbar is displayed more width is need
-	    width += 5;
-	    if (heigth == maxHeight) {
-		width += 15;
-	    }
-
-	    // andami adds 30 for modal windows. If modal look at
-	    // NewSkin.addJDialog, if not FrameWindowSupport.
-	    if (windowInfo.isModal()) {
-		heigth -= 30;
-	    }
-
-	    windowInfo.setWidth(width);
-	    windowInfo.setHeight(heigth);
-
+	    MDIFrame mainFrame = (MDIFrame) PluginServices.getMainFrame();
+	    windowInfo = getWindowInfo(mainFrame);
 	}
 	return windowInfo;
+    }
+
+    protected WindowInfo getWindowInfo(Component frame) {
+	WindowInfo wInfo = new WindowInfo(windowInfoProperties);
+
+	wInfo.setTitle(title);
+	Dimension dim = getPreferredSize();
+	// To calculate the maximum size of a form we take the size of the
+	// main frame minus a "magic number" for the menus, toolbar, state
+	// bar
+	// Take into account that in edition mode there is less available
+	// space
+	final int MENU_TOOL_STATE_BAR = 205;
+	int maxHeight = frame.getHeight() - MENU_TOOL_STATE_BAR;
+	int maxWidth = frame.getWidth() - 15;
+
+	int width, heigth = 0;
+	if (dim.getHeight() > maxHeight) {
+	    heigth = maxHeight;
+	} else {
+	    heigth = new Double(dim.getHeight()).intValue();
+	}
+	if (dim.getWidth() > maxWidth) {
+	    width = maxWidth;
+	} else {
+	    width = new Double(dim.getWidth()).intValue();
+	}
+
+	// If the window are so big, and slides under andami, touch the code
+	// before here, not the following lines
+
+	// if the vertical scrollbar is displayed more width is need
+	width += 5;
+	if (heigth == maxHeight) {
+	    width += 15;
+	}
+
+	// andami adds 30 for modal windows. If modal look at
+	// NewSkin.addJDialog, if not FrameWindowSupport.
+	if (wInfo.isModal()) {
+	    heigth -= 30;
+	}
+
+	wInfo.setWidth(width);
+	wInfo.setHeight(heigth);
+	return wInfo;
     }
 
     protected void setWindowTitle(String title) {
