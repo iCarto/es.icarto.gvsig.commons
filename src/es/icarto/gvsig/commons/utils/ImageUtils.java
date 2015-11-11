@@ -1,8 +1,11 @@
 package es.icarto.gvsig.commons.utils;
 
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,6 +41,49 @@ public class ImageUtils {
 		    (int) scaledSize.getHeight(), Image.SCALE_SMOOTH);
 	    return new ImageIcon(scaled);
 	}
+    }
+
+    public static Image getScaledAsImage(String path, Dimension boundary) {
+	BufferedImage read;
+	try {
+	    URL sourceFile = new URL("file:" + path);
+	    read = ImageIO.read(sourceFile);
+	} catch (MalformedURLException e) {
+	    logger.error(e.getStackTrace(), e);
+	    return null;
+	} catch (IOException e) {
+	    logger.error(e.getStackTrace(), e);
+	    return null;
+	}
+
+	Dimension imgSize = new Dimension(read.getWidth(), read.getHeight());
+	Dimension scaledSize = getScaledDimension(imgSize, boundary);
+	if (scaledSize.equals(imgSize)) {
+	    return read;
+	} else {
+	    Image scaled = read.getScaledInstance((int) scaledSize.getWidth(),
+		    (int) scaledSize.getHeight(), Image.SCALE_SMOOTH);
+	    return scaled;
+	}
+    }
+
+    public static BufferedImage getRenderedImage(Image in) {
+	int w = in.getWidth(null);
+	int h = in.getHeight(null);
+	int type = BufferedImage.TYPE_INT_RGB;
+	BufferedImage out = new BufferedImage(w, h, type);
+	Graphics2D g2 = out.createGraphics();
+	g2.drawImage(in, 0, 0, null);
+	g2.dispose();
+	return out;
+    }
+
+    public static ByteArrayInputStream toInputStream(BufferedImage image)
+	    throws IOException {
+	ByteArrayOutputStream os = new ByteArrayOutputStream();
+	ImageIO.write(image, "png", os);
+	os.flush();
+	return new ByteArrayInputStream(os.toByteArray());
     }
 
     /**
