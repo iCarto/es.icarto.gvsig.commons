@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
@@ -39,10 +40,27 @@ public abstract class AbstractIWindow extends JPanel implements IWindow,
     public void openDialog() {
 	if (getWindowInfo().isModeless()) {
 	    PluginServices.getMDIManager().addCentredWindow(this);
+	    if (getDefaultButton() != null) {
+		getRootPane().setDefaultButton(getDefaultButton());
+	    }
+	    // getRootPane().setFocusTraversalPolicyProvider(true);
+	    setFocusCycleRoot(true);
+	    if (getDefaultFocusComponent() != null) {
+		getDefaultFocusComponent().requestFocusInWindow();
+	    }
 	} else {
-	    PluginServices.getMDIManager().addWindow(this);
+	    // Si la ventana es modal el código se queda bloqueado tras añadir
+	    // la ventana hasta que el usuario la cierra, y antes de que la
+	    // ventana sea añadida el JRootPane no es creado, por lo que con
+	    // ventanas modales no se puede user un default button. A no ser que
+	    // se haga algo un poco distinto
+	    PluginServices.getMDIManager().addCentredWindow(this);
 	}
     }
+
+    protected abstract JButton getDefaultButton();
+
+    protected abstract Component getDefaultFocusComponent();
 
     public void closeDialog() {
 	PluginServices.getMDIManager().closeWindow(this);
