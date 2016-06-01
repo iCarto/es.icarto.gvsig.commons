@@ -19,6 +19,11 @@ public class Field implements Comparable<Field> {
     public Field() {
     }
 
+    public Field(String name) {
+	this.column = name;
+	this.longName = name;
+    }
+
     public Field(String key, String longname, String fk) {
 	this.column = key;
 	this.longName = longname;
