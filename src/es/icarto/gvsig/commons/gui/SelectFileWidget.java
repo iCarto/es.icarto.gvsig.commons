@@ -120,6 +120,10 @@ public class SelectFileWidget extends JPanel {
 	// setAcceptAllFileFilterUsed(false);
     }
 
+    public void addChoosableFilter(FileFilter filter) {
+	fileChooser.addChoosableFileFilter(filter);
+    }
+
     public void setFilter(int mode, FileFilter filter) {
 	fileChooser.setFileSelectionMode(mode);
 	fileChooser.setFileFilter(filter);
