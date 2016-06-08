@@ -21,5 +21,7 @@
 	<classpathentry kind="lib" path="/home/fpuga/.m2/repository/org/gvsig/org.gvsig.projection.api/2.0.17/org.gvsig.projection.api-2.0.17.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.gvsig.fmap.control"/>
 	<classpathentry kind="src" path="/org.gvsig.app.document.table.app.mainplugin"/>
+	<classpathentry kind="src" path="/org.gvsig.fmap.dal.impl"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.gvsig.metadata.lib.basic.api"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

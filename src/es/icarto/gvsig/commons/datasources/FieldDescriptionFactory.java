@@ -1,18 +1,33 @@
 package es.icarto.gvsig.commons.datasources;
 
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.iver.cit.gvsig.fmap.drivers.FieldDescription;
+import org.gvsig.fmap.dal.feature.EditableFeatureAttributeDescriptor;
+import org.gvsig.fmap.dal.feature.FeatureAttributeDescriptor;
+import org.gvsig.fmap.dal.feature.FeatureType;
+import org.gvsig.fmap.dal.feature.impl.DefaultEditableFeatureAttributeDescriptor;
+import org.gvsig.fmap.dal.feature.impl.DefaultEditableFeatureType;
+import org.gvsig.tools.dataTypes.DataTypes;
 
+/**
+ * TODO Probably this class is no longer need in gvSIG 2 as it provides an easy
+ * way to create new Fields:
+ *
+ * <pre>
+ * EditableFeatureType featType = new DefaultEditableFeatureType();
+ * EditableFeatureAttributeDescriptor attDesc = featType.add(fieldName,
+ * 	DataTypes.INT, numericLength);
+ * </pre>
+ *
+ */
 public class FieldDescriptionFactory {
 
     private int stringLength = 100;
     private int numericLength = 20;
     private int decimalCount = 6;
 
-    private final List<FieldDescription> fields = new ArrayList<FieldDescription>();
+    private final List<EditableFeatureAttributeDescriptor> fields = new ArrayList<EditableFeatureAttributeDescriptor>();
 
     public void setDefaultStringLength(int defaultStringLength) {
 	this.stringLength = defaultStringLength;
@@ -26,79 +41,87 @@ public class FieldDescriptionFactory {
 	this.decimalCount = defaultDecimalCount;
     }
 
-    public FieldDescription addInteger(String name) {
-	FieldDescription fd = getInteger(name);
+    public EditableFeatureAttributeDescriptor addInteger(String name) {
+	EditableFeatureAttributeDescriptor fd = getInteger(name);
 	fields.add(fd);
 	return fd;
     }
 
-    public FieldDescription getInteger(String name) {
-	FieldDescription fd = new FieldDescription();
-	fd.setFieldName(name);
-	fd.setFieldLength(numericLength);
-	fd.setFieldDecimalCount(0);
-	fd.setFieldType(Types.INTEGER);
+    public EditableFeatureAttributeDescriptor getInteger(String name) {
+	EditableFeatureAttributeDescriptor fd = new DefaultEditableFeatureAttributeDescriptor();
+	fd.setName(name);
+	fd.setSize(numericLength);
+	fd.setPrecision(0);
+	fd.setDataType(DataTypes.INT);
 	return fd;
     }
 
-    public FieldDescription addDouble(String name) {
-	FieldDescription fd = getDouble(name);
+    public EditableFeatureAttributeDescriptor addDouble(String name) {
+	EditableFeatureAttributeDescriptor fd = getDouble(name);
 	fields.add(fd);
 	return fd;
     }
 
-    public FieldDescription getDouble(String name) {
-	FieldDescription fd = new FieldDescription();
-	fd.setFieldName(name);
-	fd.setFieldLength(numericLength);
-	fd.setFieldDecimalCount(decimalCount);
-	fd.setFieldType(Types.DOUBLE);
+    public EditableFeatureAttributeDescriptor getDouble(String name) {
+	EditableFeatureAttributeDescriptor fd = new DefaultEditableFeatureAttributeDescriptor();
+	fd.setName(name);
+	fd.setSize(numericLength);
+	fd.setPrecision(decimalCount);
+	fd.setDataType(DataTypes.DOUBLE);
 	return fd;
     }
 
-    public FieldDescription addString(String name) {
-	FieldDescription fd = getString(name);
+    public EditableFeatureAttributeDescriptor addString(String name) {
+	EditableFeatureAttributeDescriptor fd = getString(name);
 	fields.add(fd);
 	return fd;
     }
 
-    public FieldDescription getString(String name) {
-	FieldDescription fd = new FieldDescription();
-	fd.setFieldName(name);
-	fd.setFieldLength(stringLength);
-	fd.setFieldDecimalCount(0);
-	fd.setFieldType(Types.VARCHAR);
+    public EditableFeatureAttributeDescriptor getString(String name) {
+	EditableFeatureAttributeDescriptor fd = new DefaultEditableFeatureAttributeDescriptor();
+	fd.setName(name);
+	fd.setSize(stringLength);
+	fd.setPrecision(0);
+	fd.setDataType(DataTypes.STRING);
 	return fd;
     }
 
-    public FieldDescription addDate(String name) {
-	FieldDescription fd = getDate(name);
+    public EditableFeatureAttributeDescriptor addDate(String name) {
+	EditableFeatureAttributeDescriptor fd = getDate(name);
 	fields.add(fd);
 	return fd;
     }
 
-    public FieldDescription getDate(String name) {
-	FieldDescription fd = new FieldDescription();
-	fd.setFieldName(name);
-	fd.setFieldType(Types.DATE);
+    public EditableFeatureAttributeDescriptor getDate(String name) {
+	EditableFeatureAttributeDescriptor fd = new DefaultEditableFeatureAttributeDescriptor();
+	fd.setName(name);
+	fd.setDataType(DataTypes.DATE);
 	return fd;
     }
 
-    public FieldDescription addBoolean(String name) {
-	FieldDescription fd = getBoolean(name);
+    public EditableFeatureAttributeDescriptor addBoolean(String name) {
+	EditableFeatureAttributeDescriptor fd = getBoolean(name);
 	fields.add(fd);
 	return fd;
     }
 
-    public FieldDescription getBoolean(String name) {
-	FieldDescription fd = new FieldDescription();
-	fd.setFieldName(name);
-	fd.setFieldType(Types.BIT);
+    public EditableFeatureAttributeDescriptor getBoolean(String name) {
+	DefaultEditableFeatureAttributeDescriptor fd = new DefaultEditableFeatureAttributeDescriptor();
+	fd.setName(name);
+	fd.setDataType(DataTypes.BOOLEAN);
 	return fd;
     }
 
-    public FieldDescription[] getFields() {
-	return fields.toArray(new FieldDescription[0]);
+    public EditableFeatureAttributeDescriptor[] getFields() {
+	return fields.toArray(new DefaultEditableFeatureAttributeDescriptor[0]);
+    }
+
+    public FeatureType getFeatureType() {
+	DefaultEditableFeatureType fType = new DefaultEditableFeatureType();
+	for (FeatureAttributeDescriptor at : fields) {
+	    fType.addLike(at);
+	}
+	return fType;
     }
 
 }

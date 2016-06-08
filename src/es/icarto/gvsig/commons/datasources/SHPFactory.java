@@ -2,79 +2,110 @@ package es.icarto.gvsig.commons.datasources;
 
 import java.io.File;
 
-import com.hardcode.driverManager.DriverLoadException;
-import com.hardcode.gdbms.driver.exceptions.InitializeWriterException;
-import com.iver.cit.gvsig.exceptions.visitors.ProcessWriterVisitorException;
-import com.iver.cit.gvsig.exceptions.visitors.StartWriterVisitorException;
-import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
-import com.iver.cit.gvsig.fmap.core.IFeature;
-import com.iver.cit.gvsig.fmap.crs.CRSFactory;
-import com.iver.cit.gvsig.fmap.drivers.FieldDescription;
-import com.iver.cit.gvsig.fmap.drivers.SHPLayerDefinition;
-import com.iver.cit.gvsig.fmap.drivers.VectorialFileDriver;
-import com.iver.cit.gvsig.fmap.edition.DefaultRowEdited;
-import com.iver.cit.gvsig.fmap.edition.IRowEdited;
-import com.iver.cit.gvsig.fmap.edition.writers.shp.ShpWriter;
-import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.iver.cit.gvsig.fmap.layers.LayerFactory;
-
-import es.icarto.gvsig.commons.utils.FileNameUtils;
+import org.gvsig.app.ApplicationLocator;
+import org.gvsig.app.ApplicationManager;
+import org.gvsig.fmap.dal.DALLocator;
+import org.gvsig.fmap.dal.DataManager;
+import org.gvsig.fmap.dal.DataStoreParameters;
+import org.gvsig.fmap.dal.exception.InitializeException;
+import org.gvsig.fmap.dal.exception.ProviderNotRegisteredException;
+import org.gvsig.fmap.dal.exception.ValidateDataParametersException;
+import org.gvsig.fmap.dal.feature.EditableFeature;
+import org.gvsig.fmap.dal.feature.EditableFeatureType;
+import org.gvsig.fmap.dal.feature.FeatureStore;
+import org.gvsig.fmap.dal.feature.NewFeatureStoreParameters;
+import org.gvsig.fmap.geom.Geometry;
+import org.gvsig.fmap.geom.GeometryLocator;
+import org.gvsig.fmap.geom.GeometryManager;
+import org.gvsig.fmap.geom.type.GeometryType;
+import org.gvsig.fmap.mapcontext.exceptions.LoadLayerException;
+import org.gvsig.fmap.mapcontext.layers.FLayer;
+import org.gvsig.fmap.mapcontext.layers.vectorial.FLyrVect;
+import org.gvsig.tools.ToolsLocator;
+import org.gvsig.tools.exception.BaseException;
+import org.gvsig.tools.i18n.I18nManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SHPFactory {
 
-    public static void createSHP(File file, FieldDescription[] fieldsDesc,
-	    int geometryType, IFeature[] features) throws DriverLoadException,
-	    InitializeWriterException, StartWriterVisitorException,
-	    ProcessWriterVisitorException, StopWriterVisitorException {
+    private static final Logger logger = LoggerFactory
+	    .getLogger(SHPFactory.class);
 
-	SHPLayerDefinition lyrDef = new SHPLayerDefinition();
-	lyrDef.setFieldsDesc(fieldsDesc);
-	lyrDef.setFile(file);
-	lyrDef.setName(FileNameUtils.removeExtension(file.getName()));
-	lyrDef.setShapeType(geometryType);
-	ShpWriter writer = (ShpWriter) LayerFactory.getWM().getWriter(
-		"Shape Writer");
-	// String charSetName = prefs.get("dbf_encoding", DbaseFile
-	// .getDefaultCharset().toString());
-	// writer.loadDbfEncoding(newFile.getAbsolutePath(),
-	// Charset.forName(charSetName));
-	// writer.setCharset(Charset.forName(charSetName));
+    public static void createSHP(File file, EditableFeatureType fieldsDesc,
+	    int geomType, EditableFeature[] features, String crs)
+	    throws BaseException {
+	// new DefaultLibrariesInitializer().fullInitialize();
+	DataManager manager = DALLocator.getDataManager();
+	GeometryManager geometryManager = GeometryLocator.getGeometryManager();
 
-	// if (writer instanceof ShpWriter) {
-	// String charSetName = prefs.get("dbf_encoding", DbaseFile
-	// .getDefaultCharset().toString());
-	// if (lyrVect.getSource() instanceof VectorialFileAdapter) {
-	// ((ShpWriter) writer).loadDbfEncoding(
-	// ((VectorialFileAdapter) lyrVect.getSource())
-	// .getFile().getAbsolutePath(), Charset
-	// .forName(charSetName));
-	// } else {
-	// Object s = lyrVect.getProperty("DBFFile");
-	// if (s != null && s instanceof String) {
-	// ((ShpWriter) writer).loadDbfEncoding((String) s,
-	// Charset.forName(charSetName));
-	// }
-	// }
-	// }
-	writer.setFile(file);
-	writer.initialize(lyrDef);
-	writer.preProcess();
+	// Create a store
+	NewFeatureStoreParameters destParams = (NewFeatureStoreParameters) manager
+		.createNewStoreParameters("FilesystemExplorer", "Shape");
 
-	for (int i = 0; (features != null) && (i < features.length); i++) {
-	    DefaultRowEdited row = new DefaultRowEdited(features[i],
-		    IRowEdited.STATUS_ADDED, i);
-	    writer.process(row);
+	// EditableFeatureType type = destParams.getDefaultFeatureType();
+	// Geometry.TYPES.POINT
+	GeometryType geometryType = geometryManager.getGeometryType(geomType,
+		Geometry.SUBTYPES.GEOM2D);
+	fieldsDesc.add("geom", org.gvsig.fmap.geom.DataTypes.GEOMETRY)
+		.setGeometryType(geometryType);
+	fieldsDesc.setDefaultGeometryAttributeName("geom");
+
+	destParams.setDynValue("shpfile", file.getAbsoluteFile());
+	destParams.setDynValue("crs", crs);
+	destParams.setDefaultFeatureType(fieldsDesc);
+
+	manager.newStore("FilesystemExplorer", "Shape", destParams, true);
+	FeatureStore store = (FeatureStore) manager.openStore("Shape",
+		destParams);
+
+	store.edit();
+	for (EditableFeature f : features) {
+	    store.insert(f);
 	}
+	store.finishEditing();
 
-	writer.postProcess();
+	store.dispose();
     }
 
     public static FLyrVect getFLyrVectFromSHP(File file, String crs)
-	    throws DriverLoadException {
-	FLyrVect layer = (FLyrVect) LayerFactory.createLayer(
-		FileNameUtils.removeExtension(file.getName()),
-		(VectorialFileDriver) LayerFactory.getDM().getDriver(
-			"gvSIG shp driver"), file, CRSFactory.getCRS(crs));
-	return layer;
+	    throws LoadLayerException {
+	I18nManager i18nManager = ToolsLocator.getI18nManager();
+	ApplicationManager application = ApplicationLocator.getManager();
+	String name = i18nManager.getTranslation(file.getName());
+	FeatureStore fs = getFeatureStore(file, crs);
+	FLayer layer = application.getMapContextManager().createLayer(name, fs);
+	return (FLyrVect) layer;
+    }
+
+    /**
+     * Open the file as a feature store of type shape.
+     *
+     * @param shape
+     *            file to be opened
+     *
+     * @return the feature store
+     */
+    private static FeatureStore getFeatureStore(File shape, String crs) {
+	try {
+
+	    DataStoreParameters parameters;
+	    DataManager manager = DALLocator.getDataManager();
+
+	    parameters = manager.createStoreParameters("Shape");
+	    parameters.setDynValue("shpfile", shape);
+	    parameters.setDynValue("crs", crs);
+	    return (FeatureStore) manager.openStore("Shape", parameters);
+
+	} catch (InitializeException e) {
+	    logger.error(e.getMessageStack());
+	    throw new RuntimeException(e);
+	} catch (ProviderNotRegisteredException e) {
+	    logger.error(e.getMessageStack());
+	    throw new RuntimeException(e);
+	} catch (ValidateDataParametersException e) {
+	    logger.error(e.getMessageStack());
+	    throw new RuntimeException(e);
+	}
     }
 }
