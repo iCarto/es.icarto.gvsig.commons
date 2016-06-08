@@ -8,7 +8,7 @@
 	<property name="extensionsDir" location="../_fwAndami/gvSIG/extensiones" />
 	<property name="mainplugin" value="com.iver.cit.gvsig" />
 	<property name="lib-dir" location="${extensionsDir}/${mainplugin}/lib" />
-	<import file="../binaries/ant/utilities.xml" />
+	<!-- <import file="../binaries/ant/utilities.xml" /> -->
 
 	<target name="generate-without-source" depends="init, create-jar, copy-data-files, move-to-andami">
 	</target>
@@ -41,11 +41,18 @@
 		</copy>
 	</target>
 
+	<!--
 	<target name="move-to-andami">
 		<move todir="${extensionsDir}/${plugin}/">
 			<fileset dir="${dist}" includes="**/**" />
 		</move>
 	</target>
+	-->
+	<target name="move-to-andami">
+				<move todir="/home/fpuga/development/gvsig-desktop2.2.0-2312/org.gvsig.desktop-2.0.100/target/product/gvSIG/extensiones/es.icarto.gvsig.commons">
+					<fileset dir="${dist}" includes="**/**" />
+				</move>
+			</target>
 
 	<target name="clean">
 		<delete dir="${dist}" />
