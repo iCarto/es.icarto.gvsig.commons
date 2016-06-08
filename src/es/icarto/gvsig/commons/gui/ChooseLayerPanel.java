@@ -7,10 +7,10 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.iver.andami.PluginServices;
-import com.iver.andami.ui.mdiManager.IWindow;
-import com.iver.cit.gvsig.fmap.layers.FLayer;
-import com.iver.cit.gvsig.project.documents.view.gui.View;
+import org.gvsig.andami.PluginServices;
+import org.gvsig.andami.ui.mdiManager.IWindow;
+import org.gvsig.app.project.documents.view.gui.IView;
+import org.gvsig.fmap.mapcontext.layers.FLayer;
 
 @SuppressWarnings("serial")
 /**
@@ -138,7 +138,7 @@ public class ChooseLayerPanel<T extends FLayer> extends JPanel {
     /**
      * Returns a list with the layers used to fill the combo
      */
-    public List<T> populateFrom(View view, LayerFilter filter) {
+    public List<T> populateFrom(IView view, LayerFilter filter) {
 	TOCLayerManager toc = new TOCLayerManager(view.getMapControl());
 	List<T> allLayers = toc.getAllLayers(clasz);
 
@@ -154,16 +154,16 @@ public class ChooseLayerPanel<T extends FLayer> extends JPanel {
 	return populateFromActiveView(null);
     }
 
-    private View getView() {
+    private IView getView() {
 	IWindow iWindow = PluginServices.getMDIManager().getActiveWindow();
-	if (iWindow instanceof View) {
-	    return (View) iWindow;
+	if (iWindow instanceof IView) {
+	    return (IView) iWindow;
 	}
 	return null;
     }
 
     public List<T> populateFromActiveView(LayerFilter filter) {
-	View view = getView();
+	IView view = getView();
 	if (view != null) {
 	    return populateFrom(view, filter);
 	}

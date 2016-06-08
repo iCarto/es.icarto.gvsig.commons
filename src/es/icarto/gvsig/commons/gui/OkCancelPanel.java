@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import com.iver.andami.PluginServices;
+import org.gvsig.andami.PluginServices;
 
 @SuppressWarnings("serial")
 /**

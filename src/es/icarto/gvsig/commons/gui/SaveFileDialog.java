@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import com.iver.andami.PluginServices;
+import org.gvsig.andami.PluginServices;
 
 /**
  * <code>SaveFileDialog</code> provides a simple mechanism for the user to
@@ -21,7 +21,7 @@ import com.iver.andami.PluginServices;
  * The following code pops up a file chooser for the user's home directory that
  * sees only .html and .htm (and is equivalent in uppercase). .html is appended
  * to the name of the file. Then a String is writed to disk:
- * 
+ *
  * <pre>
  * SaveFileDialog sfd = new SaveFileDialog(&quot;HTML files&quot;, &quot;html&quot;, &quot;htm&quot;);
  * File f = sfd.showDialog();
@@ -31,9 +31,9 @@ import com.iver.andami.PluginServices;
  *     }
  * }
  * </pre>
- * 
+ *
  * </p>
- * 
+ *
  */
 @SuppressWarnings("serial")
 @Deprecated
@@ -46,7 +46,7 @@ public class SaveFileDialog extends JFileChooser {
     /**
      * if extensions are provided extensions[0] will be the appended to the
      * fileName if it doesn't have jet
-     * 
+     *
      * @param description
      *            A string to be shown in the filter files combobox
      * @param extensions

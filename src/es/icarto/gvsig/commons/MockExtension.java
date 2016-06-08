@@ -1,6 +1,6 @@
 package es.icarto.gvsig.commons;
 
-import com.iver.andami.plugins.Extension;
+import org.gvsig.andami.plugins.Extension;
 
 public class MockExtension extends Extension {
 

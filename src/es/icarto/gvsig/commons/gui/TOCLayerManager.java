@@ -3,10 +3,10 @@ package es.icarto.gvsig.commons.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.iver.cit.gvsig.fmap.MapControl;
-import com.iver.cit.gvsig.fmap.layers.FLayer;
-import com.iver.cit.gvsig.fmap.layers.FLayers;
-import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import org.gvsig.fmap.mapcontext.layers.FLayer;
+import org.gvsig.fmap.mapcontext.layers.FLayers;
+import org.gvsig.fmap.mapcontext.layers.vectorial.FLyrVect;
+import org.gvsig.fmap.mapcontrol.MapControl;
 
 /**
  * The api of this class will change in the future. If you are going to use it
@@ -83,13 +83,14 @@ public class TOCLayerManager {
     }
 
     public List<FLyrVect> getJoinedLayers() {
-	List<FLyrVect> layers = getAllLayers(FLyrVect.class);
-	for (FLyrVect l : layers) {
-	    if (l.isJoined()) {
-		layers.remove(l);
-	    }
-	}
-	return layers;
+	throw new RuntimeException("Not implemented");
+	// List<FLyrVect> layers = getAllLayers(FLyrVect.class);
+	// for (FLyrVect l : layers) {
+	// if (l.isJoined()) {
+	// layers.remove(l);
+	// }
+	// }
+	// return layers;
     }
 
     protected <T extends FLayer> List<T> getInnerLayers(FLayers layerGroup,

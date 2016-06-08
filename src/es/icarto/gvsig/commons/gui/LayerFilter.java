@@ -1,6 +1,6 @@
 package es.icarto.gvsig.commons.gui;
 
-import com.iver.cit.gvsig.fmap.layers.FLayer;
+import org.gvsig.fmap.mapcontext.layers.FLayer;
 
 public interface LayerFilter {
 

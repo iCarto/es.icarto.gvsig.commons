@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.gvsig.fmap.dal.exception.DataException;
+import org.gvsig.fmap.mapcontext.layers.vectorial.FLyrVect;
 
-import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
-import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
+import es.icarto.gvsig.commons.gvsig2.SelectableDataSource;
 
 public class FieldNames {
 
@@ -22,11 +22,12 @@ public class FieldNames {
 	List<Integer> indexes = new ArrayList<Integer>();
 
 	try {
-	    SelectableDataSource sds = layer.getRecordset();
+	    SelectableDataSource sds = new SelectableDataSource(
+		    layer.getFeatureStore());
 	    for (String col : colNames) {
 		indexes.add(sds.getFieldIndexByName(col));
 	    }
-	} catch (ReadDriverException e1) {
+	} catch (DataException e1) {
 	    logger.error(e1.getStackTrace(), e1);
 	}
 

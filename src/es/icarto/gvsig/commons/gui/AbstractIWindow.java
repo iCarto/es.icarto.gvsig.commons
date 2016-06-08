@@ -9,11 +9,11 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.iver.andami.PluginServices;
-import com.iver.andami.ui.mdiFrame.MDIFrame;
-import com.iver.andami.ui.mdiManager.IWindow;
-import com.iver.andami.ui.mdiManager.IWindowListener;
-import com.iver.andami.ui.mdiManager.WindowInfo;
+import org.gvsig.andami.PluginServices;
+import org.gvsig.andami.ui.mdiFrame.MDIFrame;
+import org.gvsig.andami.ui.mdiManager.IWindow;
+import org.gvsig.andami.ui.mdiManager.IWindowListener;
+import org.gvsig.andami.ui.mdiManager.WindowInfo;
 
 @SuppressWarnings("serial")
 /**
@@ -21,7 +21,7 @@ import com.iver.andami.ui.mdiManager.WindowInfo;
  *
  */
 public abstract class AbstractIWindow extends JPanel implements IWindow,
-	IWindowListener {
+IWindowListener {
 
     private WindowInfo windowInfo;
     private String title = "";
@@ -49,9 +49,9 @@ public abstract class AbstractIWindow extends JPanel implements IWindow,
 		getDefaultFocusComponent().requestFocusInWindow();
 	    }
 	} else {
-	    // Si la ventana es modal el código se queda bloqueado tras añadir
+	    // Si la ventana es modal el cï¿½digo se queda bloqueado tras aï¿½adir
 	    // la ventana hasta que el usuario la cierra, y antes de que la
-	    // ventana sea añadida el JRootPane no es creado, por lo que con
+	    // ventana sea aï¿½adida el JRootPane no es creado, por lo que con
 	    // ventanas modales no se puede user un default button. A no ser que
 	    // se haga algo un poco distinto
 	    PluginServices.getMDIManager().addCentredWindow(this);

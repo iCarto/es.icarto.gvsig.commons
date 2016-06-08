@@ -1,20 +1,17 @@
 package es.icarto.gvsig.commons;
 
-import java.net.URL;
-
-import com.iver.andami.PluginServices;
-import com.iver.andami.plugins.Extension;
-import com.iver.andami.ui.mdiManager.IWindow;
-import com.iver.cit.gvsig.project.documents.view.gui.View;
+import org.gvsig.andami.IconThemeHelper;
+import org.gvsig.andami.PluginServices;
+import org.gvsig.andami.plugins.Extension;
+import org.gvsig.andami.ui.mdiManager.IWindow;
+import org.gvsig.app.project.documents.view.gui.IView;
 
 public abstract class AbstractExtension extends Extension {
 
     public final String id = this.getClass().getName();
 
     private void registerIcon(String iconName) {
-	URL iconUrl = this.getClass().getClassLoader()
-		.getResource("images/" + iconName.toLowerCase() + ".png");
-	PluginServices.getIconTheme().registerDefault(iconName, iconUrl);
+	IconThemeHelper.registerIcon("action", iconName, this);
     }
 
     @Override
@@ -30,10 +27,10 @@ public abstract class AbstractExtension extends Extension {
     /**
      * Returns the active window if is a View. Returns null elsewhere
      */
-    protected View getView() {
+    protected IView getView() {
 	IWindow iWindow = PluginServices.getMDIManager().getActiveWindow();
-	if (iWindow instanceof View) {
-	    return (View) iWindow;
+	if (iWindow instanceof IView) {
+	    return (IView) iWindow;
 	}
 	return null;
     }
