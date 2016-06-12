@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class TestProperties {
 
-    public static String driversPath = "../_fwAndami/gvSIG/extensiones/com.iver.cit.gvsig/drivers";
+    public static String driversPath = "/home/fpuga/development/workspace-honduras/_fwAndami/gvSIG/extensiones/com.iver.cit.gvsig/drivers";
 
     public static String server = "localhost";
     public static int port = 5432;
@@ -24,7 +24,7 @@ public class TestProperties {
 	    in.close();
 	    driversPath = p.getProperty("driversPath");
 	} catch (IOException e) {
-	    e.printStackTrace();
+	    System.err.println("test.properties no existe");
 	}
 
     }
