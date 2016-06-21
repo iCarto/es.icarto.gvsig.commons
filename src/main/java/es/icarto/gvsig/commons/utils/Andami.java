@@ -5,6 +5,7 @@ import java.beans.PropertyVetoException;
 
 import javax.swing.text.View;
 
+import org.cresques.cts.IProjection;
 import org.gvsig.andami.PluginServices;
 import org.gvsig.andami.ui.mdiManager.IWindow;
 import org.gvsig.app.ApplicationLocator;
@@ -26,6 +27,7 @@ public class Andami {
     /**
      * If the active window is a View returns it, if not creates a new one, adds
      * it to the project and returns it
+     * @param crs If null the default projection will be used
      */
     public static IView createViewIfNeeded(String viewName, String crs) {
 	IWindow iWindow = PluginServices.getMDIManager().getActiveWindow();
@@ -47,8 +49,15 @@ public class Andami {
 	ViewDocument view = (ViewDocument) viewManager.createDocument();
 
 	view.setName(i18nManager.getTranslation(viewName));
+	
+	IProjection proj;
+	if (crs == null) {
+		proj = projectManager.getCurrentProject().getProjection();
+	} else {
+		proj = CRSFactory.getCRS(crs);		
+	}
 
-	view.getMapContext().setProjection(CRSFactory.getCRS(crs));
+	view.getMapContext().setProjection(proj);
 
 	// Add the view to the current project.
 	projectManager.getCurrentProject().add(view);
