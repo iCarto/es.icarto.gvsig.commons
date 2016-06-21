@@ -15,52 +15,9 @@
 		<version>2.0.100</version>
 	</parent>
 
-
-	<build>
-		<plugins>
-		<!-- 
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>package-main</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<ignoreDirFormatExtensions>true</ignoreDirFormatExtensions>
-							<appendAssemblyId>false</appendAssemblyId>
-							<finalName>${project.artifactId}-${project.version}</finalName>
-							<descriptors>
-								<descriptor>src/main/assembly/package-main.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
- -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<mainClass>org.gvsig.landregistryviewer.main.Main</mainClass>
-							<classpathPrefix>lib</classpathPrefix>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-			
-			
-
-		</plugins>
-	</build>
-
-	
 		<dependencies>
+		
+		
 			
 		  <!-- http://mvnrepository.com/artifact/net.java.abeille/abeille -->
 		  <dependency>
@@ -166,7 +123,7 @@
 
 
 	<properties>
-		<gvsig.package.info.name>NavTable</gvsig.package.info.name>
+		<gvsig.package.info.name>iCarto Commons</gvsig.package.info.name>
 		<gvsig.package.info.dependencies>required: org.gvsig.app.mainplugin -ge 2</gvsig.package.info.dependencies>
 		<gvsig.package.info.categories>Vector</gvsig.package.info.categories>
 		<gvsig.package.info.official>false</gvsig.package.info.official>
