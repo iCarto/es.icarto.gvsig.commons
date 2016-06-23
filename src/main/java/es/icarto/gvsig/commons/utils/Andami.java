@@ -3,8 +3,6 @@ package es.icarto.gvsig.commons.utils;
 import java.awt.GridBagConstraints;
 import java.beans.PropertyVetoException;
 
-import javax.swing.text.View;
-
 import org.cresques.cts.IProjection;
 import org.gvsig.andami.PluginServices;
 import org.gvsig.andami.ui.mdiManager.IWindow;
@@ -31,7 +29,7 @@ public class Andami {
      */
     public static IView createViewIfNeeded(String viewName, String crs) {
 	IWindow iWindow = PluginServices.getMDIManager().getActiveWindow();
-	if (iWindow instanceof View) {
+	if (iWindow instanceof IView) {
 	    return (IView) iWindow;
 	}
 	return createView(viewName, crs);
