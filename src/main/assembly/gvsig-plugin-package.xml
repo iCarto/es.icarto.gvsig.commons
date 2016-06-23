@@ -54,6 +54,8 @@
       <outputDirectory>lib</outputDirectory>
       <includes>
         <include>com.jeta:formsrt</include>
+        <include>com.miglayout:miglayout-core</include>
+        <include>com.miglayout:miglayout-swing</include>
       </includes>
     </dependencySet>
   </dependencySets>
