@@ -12,7 +12,6 @@ import org.gvsig.fmap.mapcontrol.MapControl;
  * The api of this class will change in the future. If you are going to use it
  * explain your use case first
  */
-@Deprecated
 public class TOCLayerManager {
 
     private MapControl mapControl = null;

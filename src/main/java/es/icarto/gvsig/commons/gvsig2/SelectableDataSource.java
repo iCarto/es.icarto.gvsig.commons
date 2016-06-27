@@ -58,6 +58,7 @@ public class SelectableDataSource implements FBitSet, IEditableSource {
 	return attDesc.length;
     }
 
+    @Override
     public int getFieldIndexByName(String name) {
 
 	for (FeatureAttributeDescriptor fad : attDesc) {
@@ -138,6 +139,7 @@ public class SelectableDataSource implements FBitSet, IEditableSource {
 	return fs.getName();
     }
 
+    @Override
     public long getRowCount() throws DataException {
 	return fs.getFeatureCount();
     }
@@ -249,6 +251,7 @@ public class SelectableDataSource implements FBitSet, IEditableSource {
 	return -1;
     }
 
+    @Override
     public void reload() throws DataException {
 	fs.refresh();
     }
@@ -300,7 +303,7 @@ public class SelectableDataSource implements FBitSet, IEditableSource {
     }
 
     @Override
-    public DefaultFeature getRow(int pos) {
+    public DefaultFeature getRow(long pos) {
 	if (currentPos != pos) {
 	    setCurrentFeature(pos);
 	}
@@ -336,5 +339,10 @@ public class SelectableDataSource implements FBitSet, IEditableSource {
 	    setCurrentFeature(pos);
 	}
 	return currentFeat;
+    }
+
+    @Override
+    public boolean isEditing() {
+    	return fs.isEditing();
     }
 }

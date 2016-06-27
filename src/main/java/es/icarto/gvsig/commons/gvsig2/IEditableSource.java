@@ -19,8 +19,16 @@ public interface IEditableSource {
     public void modifyRow(int rowPosition, DefaultFeature newRow)
 	    throws DataException;
 
-    public DefaultFeature getRow(int pos);
+    public DefaultFeature getRow(long pos);
 
     public void removeRow(long position) throws DataException;
+    
+    public boolean isEditing();
+    
+    public int getFieldIndexByName(String name);
+
+	public long getRowCount() throws DataException;
+
+	public void reload() throws DataException;
 
 }

@@ -9,4 +9,6 @@ public interface IRow {
 
     public Geometry getGeometry();
 
+	public Value getAttribute(int fieldIndex);
+
 }

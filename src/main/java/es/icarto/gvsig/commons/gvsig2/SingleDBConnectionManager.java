@@ -1,5 +1,8 @@
 package es.icarto.gvsig.commons.gvsig2;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +50,7 @@ public class SingleDBConnectionManager {
 			} catch (DataException e) {
 				logger.error(e.getMessage(), e);
 			}
-			cwp.close();
+			cwp.closeResource();
 			
 			DataManager dataManager = DALLocator.getDataManager();
 			DataServerExplorerPool pool = dataManager.getDataServerExplorerPool();
@@ -69,11 +72,35 @@ public class SingleDBConnectionManager {
 			return cwp;
 		}
 		JDBCServerExplorerParameters serverExplorerParams = createServerExplorerParams(conName, serverExplorerName, server, port, database, username, password, schema);
-		JDBCResource resource = createResource(serverExplorerParams, resourceName);
+		// JDBCResource resource = createResource(serverExplorerParams, resourceName);
+		Connection con = createConnection(serverExplorerParams);
 				
-		return new ConnectionWithParams(serverExplorerParams, resource, storeProviderName, conName);
+//		return new ConnectionWithParams(serverExplorerParams, resource, storeProviderName, conName);
+		return new ConnectionWithParams(serverExplorerParams, con, storeProviderName, conName);
 	}
 	
+	private Connection createConnection(
+			JDBCServerExplorerParameters serverExplorerParams) {
+		try {
+			Class klass = Class.forName("org.postgresql.Driver");
+		} catch (ClassNotFoundException e1) {
+			logger.error(e1.getMessage(), e1);
+		}
+		String host = serverExplorerParams.getHost();
+		Integer port = serverExplorerParams.getPort();
+		String db = serverExplorerParams.getDBName();
+		String url = "jdbc:postgresql://" + host + ":" + port + "/" + db;
+		Connection con = null;
+		try {
+			con = DriverManager.getConnection(url, serverExplorerParams.getUser(), serverExplorerParams.getPassword());
+			con.setAutoCommit(true);
+		} catch (SQLException e) {
+			logger.error(e.getMessage(), e);
+		}
+		return con;
+	}
+
+
 	private JDBCServerExplorerParameters createServerExplorerParams(String conName, String serverExplorerName, String server,
 			int port, String database, String username, String password,
 			String schema) throws DataException {

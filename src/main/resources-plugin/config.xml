@@ -3,6 +3,7 @@
 	<depends plugin-name="org.gvsig.app.mainplugin"/>
 	<depends plugin-name="org.gvsig.app.document.table.app.mainplugin" />
 	<depends plugin-name="org.gvsig.editing.app.mainplugin"/>
+		<depends plugin-name="org.gvsig.postgresql.app.mainplugin"/>
 	<libraries library-dir="lib"/>
 	<resourceBundle name="text"/>
 	<extensions>

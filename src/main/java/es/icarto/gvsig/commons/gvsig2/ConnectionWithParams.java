@@ -31,25 +31,40 @@ public class ConnectionWithParams implements ResourceConsumer {
 	private final JDBCResource resource;
 	private final String name;
 
+	private final Connection con;
+
 	public ConnectionWithParams(DataServerExplorerParameters params, JDBCResource resource, String storeProviderName, String conName) {
 		this.explorerParams = params;
 		this.storeProviderName = storeProviderName;
 		this.resource = resource;
 		this.resource.addConsumer(this);
 		this.name = conName;
+		this.con = null;
 	}
 	
+	public ConnectionWithParams(
+			JDBCServerExplorerParameters serverExplorerParams, Connection con,
+			String storeProviderName, String conName) {
+		this.explorerParams = serverExplorerParams;
+		this.storeProviderName = storeProviderName;
+		this.con = con;
+//		this.resource.addConsumer(this);
+		this.name = conName;
+		this.resource = null;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public Connection getConnection() {
-		try {
-			return resource.getJDBCConnection();
-		} catch (AccessResourceException e) {
-			logger.error(e.getMessage(), e);
-		}
-		return null;
+		return con;
+//		try {
+//			return resource.getJDBCConnection();
+//		} catch (AccessResourceException e) {
+//			logger.error(e.getMessage(), e);
+//		}
+//		return null;
 	}
 
 	public DataServerExplorerParameters getExplorerParams() {
@@ -77,7 +92,7 @@ public class ConnectionWithParams implements ResourceConsumer {
 	
 	
 	
-	public void close() {
+	public void closeResource() {
 		try {
 			resource.execute(new ResourceAction() {
 				public Object run() throws Exception {
@@ -94,6 +109,10 @@ public class ConnectionWithParams implements ResourceConsumer {
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
 		}
+	}
+	
+	public void close(Connection con) {
+//		resource.closeConnection(con);
 	}
 
 	@Override

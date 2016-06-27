@@ -65,4 +65,9 @@ public class DefaultFeature implements IRowEdited {
 	return geometry;
     }
 
+	@Override
+	public Value getAttribute(int i) {
+		return values[i];
+	}
+
 }
