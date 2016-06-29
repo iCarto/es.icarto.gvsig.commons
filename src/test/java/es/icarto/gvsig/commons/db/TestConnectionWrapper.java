@@ -1,5 +1,7 @@
 package es.icarto.gvsig.commons.db;
 
+
+
 import static org.junit.Assert.assertEquals;
 
 import java.sql.Connection;
@@ -11,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 
 public class TestConnectionWrapper {
 
