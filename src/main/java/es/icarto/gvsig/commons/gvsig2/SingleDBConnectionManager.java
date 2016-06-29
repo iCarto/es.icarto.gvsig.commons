@@ -108,7 +108,11 @@ public class SingleDBConnectionManager {
 		
 				
 		DataServerExplorerPool pool = dataManager.getDataServerExplorerPool();
-		DataServerExplorerPoolEntry entry = pool.get(conName);
+		// TODO. El pool persiste el nombre de conexión empleado. Por tanto sin con dbconnection
+		// nos estamos conectando a una base de datos distinta, al pasar por aquí recuperará datos
+		// erróneos
+		// DataServerExplorerPoolEntry entry = pool.get(conName);
+		DataServerExplorerPoolEntry entry = null;
 		
 		DataServerExplorerParameters params = null;
 		if (entry != null) {
