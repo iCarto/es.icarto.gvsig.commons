@@ -7,18 +7,14 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-// http://www.mkyong.com/java/how-to-decompress-files-from-a-zip-file/
-// Adapted by fpuga
-public class Unzip {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    /**
-     * Unzip it
-     *
-     * @param zipFile
-     *            input zip file
-     * @param output
-     *            zip file output folder
-     */
+// Based on http://www.mkyong.com/java/how-to-decompress-files-from-a-zip-file/
+public class Unzip {
+	
+	private static final Logger logger = LoggerFactory.getLogger(Unzip.class);
+
     public static void unzip(File zipFile, File outputFolder) {
 
 	byte[] buffer = new byte[1024];
@@ -60,8 +56,8 @@ public class Unzip {
 	    zis.closeEntry();
 	    zis.close();
 
-	} catch (IOException ex) {
-	    ex.printStackTrace();
+	} catch (IOException e) {
+	    logger.error(e.getMessage(), e);
 	}
     }
 }

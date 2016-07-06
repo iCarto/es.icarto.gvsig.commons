@@ -1,5 +1,7 @@
 package es.icarto.gvsig.commons.gui;
 
+import static es.icarto.gvsig.commons.i18n.I18n._;
+
 import java.awt.Component;
 import java.util.List;
 
@@ -74,7 +76,7 @@ public class ChooseLayerPanel<T extends FLayer> extends JPanel {
 		if ((text == null) || text.isEmpty()) {
 			orientation = Orientation.NONE;
 		} else {
-			label = new JLabel(PluginServices.getText(this, text));
+			label = new JLabel(_(text));
 		}
 
 		layerCombo = new JComboBox();

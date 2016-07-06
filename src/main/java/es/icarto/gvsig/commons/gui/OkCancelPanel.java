@@ -1,5 +1,7 @@
 package es.icarto.gvsig.commons.gui;
 
+import static es.icarto.gvsig.commons.i18n.I18n._;
+
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -36,7 +38,7 @@ public class OkCancelPanel extends JPanel {
 
     private void addOkButton(ActionListener okAction) {
 	btnOk = new JButton();
-	btnOk.setText(PluginServices.getText(this, "ok"));
+	btnOk.setText(_("ok"));
 	btnOk.setActionCommand(OK_ACTION_COMMAND);
 	if (okAction != null) {
 	    btnOk.addActionListener(okAction);
@@ -46,7 +48,7 @@ public class OkCancelPanel extends JPanel {
 
     private void addCancelButton(ActionListener cancelAction) {
 	btnCancel = new JButton();
-	btnCancel.setText(PluginServices.getText(this, "cancel"));
+	btnCancel.setText(_("cancel"));
 	btnCancel.setActionCommand(CANCEL_ACTION_COMMAND);
 	if (cancelAction != null) {
 	    btnCancel.addActionListener(cancelAction);

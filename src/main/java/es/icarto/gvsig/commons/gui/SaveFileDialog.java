@@ -1,13 +1,13 @@
 package es.icarto.gvsig.commons.gui;
 
+import static es.icarto.gvsig.commons.i18n.I18n._;
+
 import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import org.gvsig.andami.PluginServices;
 
 /**
  * <code>SaveFileDialog</code> provides a simple mechanism for the user to
@@ -26,9 +26,9 @@ import org.gvsig.andami.PluginServices;
  * SaveFileDialog sfd = new SaveFileDialog(&quot;HTML files&quot;, &quot;html&quot;, &quot;htm&quot;);
  * File f = sfd.showDialog();
  * if (f != null) {
- *     if (!sfd.writeFileToDisk(contents, f)) {
- * 	NotificationManager.showMessageError(&quot;error_saving_file&quot;, null);
- *     }
+ * 	if (!sfd.writeFileToDisk(contents, f)) {
+ * 		NotificationManager.showMessageError(&quot;error_saving_file&quot;, null);
+ * 	}
  * }
  * </pre>
  *
@@ -39,81 +39,79 @@ import org.gvsig.andami.PluginServices;
 @Deprecated
 public class SaveFileDialog extends JFileChooser {
 
-    private FileFilter filter = null;
-    private String defaultExtension = null;
-    private boolean askForOverwrite;
+	private FileFilter filter = null;
+	private String defaultExtension = null;
+	private boolean askForOverwrite = true;
 
-    /**
-     * if extensions are provided extensions[0] will be the appended to the
-     * fileName if it doesn't have jet
-     *
-     * @param description
-     *            A string to be shown in the filter files combobox
-     * @param extensions
-     *            The extensions wanted to be filtered. Must be lowercase,
-     *            uppercase validity is handled automaticaly. extensions[0] will
-     *            be the default extension.
-     */
-    public SaveFileDialog(String description, String... extensions) {
-	super();
-	this.filter = new FileNameExtensionFilter(description, extensions);
-	this.defaultExtension = extensions[0];
-    }
-
-    public SaveFileDialog setAskForOverwrite(boolean askForOverwrite) {
-	this.askForOverwrite = askForOverwrite;
-	return this;
-    }
-
-    public SaveFileDialog() {
-	super();
-    }
-
-    /**
-     * @return null if user cancel save operation, the File to save in other
-     *         case.
-     */
-    public File showDialog() {
-	File file = null;
-	if (filter != null) {
-	    setFileFilter(filter);
+	/**
+	 * if extensions are provided extensions[0] will be the appended to the
+	 * fileName if it doesn't have jet
+	 *
+	 * @param description
+	 *            A string to be shown in the filter files combobox
+	 * @param extensions
+	 *            The extensions wanted to be filtered. Must be lowercase,
+	 *            uppercase validity is handled automaticaly. extensions[0] will
+	 *            be the default extension.
+	 */
+	public SaveFileDialog(String description, String... extensions) {
+		super();
+		this.filter = new FileNameExtensionFilter(description, extensions);
+		this.defaultExtension = extensions[0];
 	}
 
-	do {
-	    int returnVal = showSaveDialog(null);
-	    if (returnVal == JFileChooser.CANCEL_OPTION) {
-		break;
-	    }
+	public SaveFileDialog setAskForOverwrite(boolean askForOverwrite) {
+		this.askForOverwrite = askForOverwrite;
+		return this;
+	}
 
-	    File tmpFile = getSelectedFile();
+	public SaveFileDialog() {
+		super();
+	}
 
-	    // Add the default extension
-	    if (defaultExtension != null) {
-		if (!tmpFile.getName().toLowerCase()
-			.endsWith("." + defaultExtension)) {
-		    tmpFile = new File(tmpFile.getAbsolutePath() + "."
-			    + defaultExtension);
+	/**
+	 * @return null if user cancel save operation, the File to save in other
+	 *         case.
+	 */
+	public File showDialog() {
+		File file = null;
+		if (filter != null) {
+			setFileFilter(filter);
 		}
-	    }
 
-	    if (askForOverwrite) {
-		if (tmpFile.exists()) {
-		    int overwriteFile = JOptionPane
-			    .showConfirmDialog(null, PluginServices.getText(
-				    this, "file_already_exists"),
-				    PluginServices.getText(this, "warning"),
-				    JOptionPane.YES_NO_OPTION);
-		    if (overwriteFile == JOptionPane.NO_OPTION) {
-			continue;
-		    }
-		}
-	    }
+		do {
+			int returnVal = showSaveDialog(null);
+			if (returnVal == JFileChooser.CANCEL_OPTION) {
+				break;
+			}
 
-	    file = tmpFile;
+			File tmpFile = getSelectedFile();
 
-	} while (file == null);
+			// Add the default extension
+			if (defaultExtension != null) {
+				if (!tmpFile.getName().toLowerCase()
+						.endsWith("." + defaultExtension)) {
+					tmpFile = new File(tmpFile.getAbsolutePath() + "."
+							+ defaultExtension);
+				}
+			}
 
-	return file;
-    }
+			if (askForOverwrite) {
+				if (tmpFile.exists()) {
+					int overwriteFile = JOptionPane.showConfirmDialog(null,
+							_("file_already_exists"), _("warning"),
+							JOptionPane.YES_NO_OPTION);
+					if (overwriteFile == JOptionPane.NO_OPTION) {
+						continue;
+					}
+				}
+			}
+
+			file = tmpFile;
+
+		} while (file == null);
+
+		return file;
+	}
 
 }
