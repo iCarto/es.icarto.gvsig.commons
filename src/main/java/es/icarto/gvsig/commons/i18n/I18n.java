@@ -18,7 +18,7 @@ public class I18n {
 		return Messages.getText(text, LOG_FAILED_TRANSLATIONS);
 	}
 
-	public static String _(String text, Object[] args) {
+	public static String _(String text, Object... args) {
 		String pattern = Messages.getText(text, LOG_FAILED_TRANSLATIONS);
 		if (args != null) {
 			formatter.applyPattern(pattern);
