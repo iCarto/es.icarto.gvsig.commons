@@ -20,6 +20,9 @@ public class I18n {
 
 	public static String _(String text, Object... args) {
 		String pattern = Messages.getText(text, LOG_FAILED_TRANSLATIONS);
+		if (pattern == null) {
+			return text;
+		}
 		if (args != null) {
 			formatter.applyPattern(pattern);
 			return formatter.format(args);
