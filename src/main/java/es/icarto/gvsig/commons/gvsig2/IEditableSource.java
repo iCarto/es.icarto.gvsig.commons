@@ -6,26 +6,26 @@ import org.gvsig.fmap.geom.Geometry;
 
 public interface IEditableSource {
 
-    public String getName();
+	public String getName();
 
-    public long posOfFeature(Feature feat);
+	public long posOfFeature(Feature feat);
 
-    public Geometry getGeometry(long pos);
+	public Geometry getGeometry(long pos);
 
-    public int getFieldType(int i);
+	public int getFieldType(int i);
 
-    public boolean isWritable();
+	public boolean isWritable();
 
-    public void modifyRow(int rowPosition, DefaultFeature newRow)
-	    throws DataException;
+	public void modifyRow(long rowPosition, DefaultFeature newRow)
+			throws DataException;
 
-    public DefaultFeature getRow(long pos);
+	public DefaultFeature getRow(long pos);
 
-    public void removeRow(long position) throws DataException;
-    
-    public boolean isEditing();
-    
-    public int getFieldIndexByName(String name);
+	public void removeRow(long position) throws DataException;
+
+	public boolean isEditing();
+
+	public int getFieldIndexByName(String name);
 
 	public long getRowCount() throws DataException;
 
