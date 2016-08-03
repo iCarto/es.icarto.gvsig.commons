@@ -1,0 +1,127 @@
+package es.icarto.gvsig.importer;
+
+import java.util.List;
+
+import javax.swing.table.DefaultTableModel;
+
+import com.iver.cit.gvsig.fmap.core.IGeometry;
+
+import es.icarto.gvsig.commons.utils.Field;
+
+@SuppressWarnings("serial")
+public class ImporterTM extends DefaultTableModel {
+    public ImporterTM() {
+	addColumn("Código");
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int column) {
+	int tablenameIdx = findColumn("tablename");
+	int codeIdx = findColumn("Código");
+	if ((column == tablenameIdx) || (column == codeIdx)) {
+	    return true;
+	}
+	return false;
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+	int geomIdx = findColumn("geom");
+	int orgGeomIdx = findColumn("orggeom");
+	if ((geomIdx == columnIndex) || (orgGeomIdx == columnIndex)) {
+	    return IGeometry.class;
+	}
+	return super.getColumnClass(columnIndex);
+    }
+
+    public void setCode(Object aValue, int row) {
+	super.setValueAt(aValue, row, 0);
+    }
+
+    public String getCode(int row) {
+	Object code = super.getValueAt(row, 0);
+	return code != null ? code.toString() : "";
+    }
+
+    public void setTarget(Object aValue, int row) {
+	int tablenameIdx = findColumn("tablename");
+	super.setValueAt(aValue, row, tablenameIdx);
+    }
+
+    public Field getTarget(int row) {
+	int tablenameIdx = findColumn("tablename");
+	return (Field) super.getValueAt(row, tablenameIdx);
+    }
+
+    public void setGeom(IGeometry aValue, int row) {
+	int geomIdx = findColumn("geom");
+	super.setValueAt(aValue, row, geomIdx);
+    }
+
+    public IGeometry getGeom(int row) {
+	int geomIdx = findColumn("geom");
+	return (IGeometry) getValueAt(row, geomIdx);
+    }
+
+    public void setError(List<ImportError> l, int row) {
+	int errorsIdx = findColumn("Errores");
+	super.setValueAt(l, row, errorsIdx);
+    }
+
+    public List<ImportError> getError(int row) {
+	int errorsIdx = findColumn("Errores");
+	return (List<ImportError>) super.getValueAt(row, errorsIdx);
+    }
+
+    @Override
+    public void setValueAt(Object aValue, int row, int column) {
+	super.setValueAt(aValue, row, column);
+	int tablenameIdx = findColumn("tablename");
+	if (column == tablenameIdx) {
+	    if (aValue == null) {
+		return;
+	    }
+	    Target target = (Target) ((Field) aValue).getValue();
+	    String code = target.calculateCode(this, row);
+	    setCode(code, row);
+	    target.checkErrors(this, row);
+	}
+
+	int codeIdx = findColumn("Código");
+	if (column == codeIdx) {
+	    Field field = getTarget(row);
+	    Target target = (Target) field.getValue();
+	    target.checkErrors(this, row);
+	}
+    }
+
+    /**
+     * Excludes the row "row"
+     */
+    public String maxCodeValue(String columname, Field field, int row) {
+	int idx = findColumn(columname);
+	int codeIdx = 0;
+	String maxValue = null;
+	for (int i = 0; i < getRowCount(); i++) {
+	    if (i == row) {
+		continue;
+	    }
+	    Object t = getValueAt(i, idx);
+	    if ((t != null) && t.equals(field)) {
+		Object value = getValueAt(i, codeIdx);
+		if (value == null) {
+		    continue;
+		}
+		if (maxValue == null) {
+		    maxValue = value.toString();
+		} else {
+		    if (value.toString().compareTo(maxValue) > 0) {
+			maxValue = value.toString();
+		    }
+		}
+	    }
+	}
+	return maxValue == null ? "" : maxValue;
+    }
+
+}
