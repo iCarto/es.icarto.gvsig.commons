@@ -29,83 +29,80 @@ import org.slf4j.LoggerFactory;
 
 public class SHPFactory {
 
-    private static final Logger logger = LoggerFactory
-	    .getLogger(SHPFactory.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(SHPFactory.class);
 
-    public static void createSHP(File file, EditableFeatureType fieldsDesc,
-	    int geomType, EditableFeature[] features, String crs)
-	    throws BaseException {
-	// new DefaultLibrariesInitializer().fullInitialize();
-	DataManager manager = DALLocator.getDataManager();
-	GeometryManager geometryManager = GeometryLocator.getGeometryManager();
+	public static void createSHP(File file, EditableFeatureType fieldsDesc,
+			int geomType, EditableFeature[] features, String crs)
+					throws BaseException {
 
-	// Create a store
-	NewFeatureStoreParameters destParams = (NewFeatureStoreParameters) manager
-		.createNewStoreParameters("FilesystemExplorer", "Shape");
+		DataManager manager = DALLocator.getDataManager();
+		GeometryManager geometryManager = GeometryLocator.getGeometryManager();
 
-	// EditableFeatureType type = destParams.getDefaultFeatureType();
-	// Geometry.TYPES.POINT
-	GeometryType geometryType = geometryManager.getGeometryType(geomType,
-		Geometry.SUBTYPES.GEOM2D);
-	fieldsDesc.add("geom", org.gvsig.fmap.geom.DataTypes.GEOMETRY)
+		NewFeatureStoreParameters destParams = (NewFeatureStoreParameters) manager
+				.createNewStoreParameters("FilesystemExplorer", "Shape");
+
+		GeometryType geometryType = geometryManager.getGeometryType(geomType,
+				Geometry.SUBTYPES.GEOM2D);
+		fieldsDesc.add("geom", org.gvsig.fmap.geom.DataTypes.GEOMETRY)
 		.setGeometryType(geometryType);
-	fieldsDesc.setDefaultGeometryAttributeName("geom");
+		fieldsDesc.setDefaultGeometryAttributeName("geom");
 
-	destParams.setDynValue("shpfile", file.getAbsoluteFile());
-	destParams.setDynValue("crs", crs);
-	destParams.setDefaultFeatureType(fieldsDesc);
+		destParams.setDynValue("shpfile", file.getAbsoluteFile());
+		destParams.setDynValue("crs", crs);
+		destParams.setDefaultFeatureType(fieldsDesc);
 
-	manager.newStore("FilesystemExplorer", "Shape", destParams, true);
-	FeatureStore store = (FeatureStore) manager.openStore("Shape",
-		destParams);
+		manager.newStore("FilesystemExplorer", "Shape", destParams, true);
+		FeatureStore store = (FeatureStore) manager.openStore("Shape",
+				destParams);
 
-	store.edit();
-	for (EditableFeature f : features) {
-	    store.insert(f);
+		store.edit();
+		for (EditableFeature f : features) {
+			store.insert(f);
+		}
+		store.finishEditing();
+
+		store.dispose();
 	}
-	store.finishEditing();
 
-	store.dispose();
-    }
-
-    public static FLyrVect getFLyrVectFromSHP(File file, String crs)
-	    throws LoadLayerException {
-	I18nManager i18nManager = ToolsLocator.getI18nManager();
-	ApplicationManager application = ApplicationLocator.getManager();
-	String name = i18nManager.getTranslation(file.getName());
-	FeatureStore fs = getFeatureStore(file, crs);
-	FLayer layer = application.getMapContextManager().createLayer(name, fs);
-	return (FLyrVect) layer;
-    }
-
-    /**
-     * Open the file as a feature store of type shape.
-     *
-     * @param shape
-     *            file to be opened
-     *
-     * @return the feature store
-     */
-    private static FeatureStore getFeatureStore(File shape, String crs) {
-	try {
-
-	    DataStoreParameters parameters;
-	    DataManager manager = DALLocator.getDataManager();
-
-	    parameters = manager.createStoreParameters("Shape");
-	    parameters.setDynValue("shpfile", shape);
-	    parameters.setDynValue("crs", crs);
-	    return (FeatureStore) manager.openStore("Shape", parameters);
-
-	} catch (InitializeException e) {
-	    logger.error(e.getMessageStack());
-	    throw new RuntimeException(e);
-	} catch (ProviderNotRegisteredException e) {
-	    logger.error(e.getMessageStack());
-	    throw new RuntimeException(e);
-	} catch (ValidateDataParametersException e) {
-	    logger.error(e.getMessageStack());
-	    throw new RuntimeException(e);
+	public static FLyrVect getFLyrVectFromSHP(File file, String crs)
+			throws LoadLayerException {
+		I18nManager i18nManager = ToolsLocator.getI18nManager();
+		ApplicationManager application = ApplicationLocator.getManager();
+		String name = i18nManager.getTranslation(file.getName());
+		FeatureStore fs = getFeatureStore(file, crs);
+		FLayer layer = application.getMapContextManager().createLayer(name, fs);
+		return (FLyrVect) layer;
 	}
-    }
+
+	/**
+	 * Open the file as a feature store of type shape.
+	 *
+	 * @param shape
+	 *            file to be opened
+	 *
+	 * @return the feature store
+	 */
+	private static FeatureStore getFeatureStore(File shape, String crs) {
+		try {
+
+			DataStoreParameters parameters;
+			DataManager manager = DALLocator.getDataManager();
+
+			parameters = manager.createStoreParameters("Shape");
+			parameters.setDynValue("shpfile", shape);
+			parameters.setDynValue("crs", crs);
+			return (FeatureStore) manager.openStore("Shape", parameters);
+
+		} catch (InitializeException e) {
+			logger.error(e.getMessageStack());
+			throw new RuntimeException(e);
+		} catch (ProviderNotRegisteredException e) {
+			logger.error(e.getMessageStack());
+			throw new RuntimeException(e);
+		} catch (ValidateDataParametersException e) {
+			logger.error(e.getMessageStack());
+			throw new RuntimeException(e);
+		}
+	}
 }
