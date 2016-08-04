@@ -12,6 +12,7 @@ import javax.swing.table.TableColumn;
 
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 
+import es.icarto.gvsig.commons.gui.tables.ValidatableNotEditableRenderer;
 import es.icarto.gvsig.commons.utils.Field;
 
 @SuppressWarnings("serial")
@@ -32,7 +33,9 @@ public class IJTable extends JTable {
     }
 
     private void initRenderers() {
-	this.setDefaultRenderer(IGeometry.class, new IGeometryRenderer());
+	this.setDefaultRenderer(IGeometry.class, new GeometryRenderer());
+	this.setDefaultRenderer(Object.class,
+		new ValidatableNotEditableRenderer());
     }
 
     private void autoFit() {
@@ -81,15 +84,6 @@ public class IJTable extends JTable {
 	JComboBox combo = new JComboBox(targets.toArray(new Field[0]));
 	setComboCellEditor("tablename", combo);
     }
-
-    // private void foo() {
-    // DomainValues unidadValues = ormLite.getAppDomain()
-    // .getDomainValuesForComponent(DBFieldNames.UNIDAD);
-    // JComboBox unidadComboBox = new JComboBox();
-    // for (KeyValue value : unidadValues.getValues()) {
-    // unidadComboBox.addItem(value.toString());
-    // }
-    // }
 
     private void setComboCellEditor(String columnName, JComboBox combo) {
 	TableColumn column = myFindColumn(columnName);
