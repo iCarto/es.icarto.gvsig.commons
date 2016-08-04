@@ -24,7 +24,7 @@ public class TableInfo extends AbstractIWindow implements ActionListener {
 
     private final OkCancelPanel btPanel;
     private final JTable table;
-    private boolean error = false;
+    private boolean okClickedWithoutError = false;
 
     public TableInfo(DefaultTableModel tableModel, Ruler ruler) {
 	super(new MigLayout("fill, insets 10"));
@@ -50,32 +50,32 @@ public class TableInfo extends AbstractIWindow implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+	okClickedWithoutError = false;
 	if (e.getActionCommand().equals(OkCancelPanel.OK_ACTION_COMMAND)) {
-	    error = thereAreErrors();
-	    if (error) {
+	    okClickedWithoutError = thereAreNotErrors();
+	    if (!okClickedWithoutError) {
 		String errorMsg = "Los datos tienen errores. Corríjalos antes de continuar";
 		JOptionPane.showMessageDialog(this, errorMsg);
 		return;
 	    }
-	} else {
-	    error = false;
 	}
 
 	closeDialog();
     }
 
     /**
-     * @return true when there is no error and the user press ok
+     * @return true when there is no okClickedWithoutError and the user press ok
      */
     public boolean isGood() {
-	return !error;
+	return okClickedWithoutError;
     }
 
-    private boolean thereAreErrors() {
+    private boolean thereAreNotErrors() {
 	ImporterTM model = (ImporterTM) table.getModel();
+	model.reCheckErrors();
 	for (int i = 0; i < table.getRowCount(); i++) {
 	    List<ImportError> error = model.getError(i);
-	    if (!error.isEmpty()) {
+	    if (error.isEmpty()) {
 		return true;
 	    }
 	}

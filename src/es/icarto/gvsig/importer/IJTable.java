@@ -106,9 +106,4 @@ public class IJTable extends JTable {
 	}
 	return null;
     }
-
-    private int myFindColumnInx(String name) {
-	return ((DefaultTableModel) this.getModel()).findColumn(name);
-    }
-
 }

@@ -73,6 +73,13 @@ public class ImporterTM extends DefaultTableModel {
 	return (List<ImportError>) super.getValueAt(row, errorsIdx);
     }
 
+    public void reCheckErrors() {
+	for (int i = 0; i < this.getRowCount(); i++) {
+	    Target target = (Target) getTarget(i).getValue();
+	    target.checkErrors(this, i);
+	}
+    }
+
     @Override
     public void setValueAt(Object aValue, int row, int column) {
 	super.setValueAt(aValue, row, column);
