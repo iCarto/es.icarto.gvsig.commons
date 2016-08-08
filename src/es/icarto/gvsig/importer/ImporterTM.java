@@ -102,17 +102,16 @@ public class ImporterTM extends DefaultTableModel {
     /**
      * Excludes the row "row"
      */
-    public String maxCodeValueForTarget(Field field, int row) {
-	int codeIdx = 0;
+    public String maxCodeValueForTarget(Field field, int row, String prefix) {
 	String maxValue = null;
 	for (int i = 0; i < getRowCount(); i++) {
 	    if (i == row) {
 		continue;
 	    }
-	    Object t = getTarget(row);
-	    if ((t != null) && t.equals(field)) {
-		Object value = getValueAt(i, codeIdx);
-		if (value == null) {
+	    Field t = getTarget(i);
+	    if (t.equals(field)) {
+		String value = getCode(i);
+		if ((value == null) || (!value.toString().startsWith(prefix))) {
 		    continue;
 		}
 		if (maxValue == null) {
