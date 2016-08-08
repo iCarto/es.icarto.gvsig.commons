@@ -3,6 +3,7 @@ package es.icarto.gvsig.importer;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -39,6 +40,10 @@ public class TableInfo extends AbstractIWindow implements ActionListener {
 	JScrollPane scrollPane = new JScrollPane(table);
 
 	this.add(scrollPane, "push, grow");
+    }
+
+    public void setContextMenu(MouseListener myMouseListener) {
+	table.addMouseListener(myMouseListener);
     }
 
     @Override
@@ -78,11 +83,11 @@ public class TableInfo extends AbstractIWindow implements ActionListener {
 	model.reCheckErrors();
 	for (int i = 0; i < table.getRowCount(); i++) {
 	    List<ImportError> error = model.getError(i);
-	    if (error.isEmpty()) {
-		return true;
+	    if (!error.isEmpty()) {
+		return false;
 	    }
 	}
-	return false;
+	return true;
     }
 
 }
