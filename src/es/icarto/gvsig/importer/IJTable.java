@@ -1,6 +1,5 @@
 package es.icarto.gvsig.importer;
 
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -25,11 +24,16 @@ public class IJTable extends JTable {
 	this.ruler = ruler;
 	// table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	this.getTableHeader().setReorderingAllowed(false);
-	autoFit();
 	this.setPreferredScrollableViewportSize(this.getPreferredSize());
 	this.setFillsViewportHeight(true);
 	initTargetColumn();
 	initRenderers();
+    }
+
+    public void setTotalWidth(int totalWidth) {
+	autoFit(totalWidth);
+	this.setPreferredScrollableViewportSize(this.getPreferredSize());
+	this.setFillsViewportHeight(true);
     }
 
     private void initRenderers() {
@@ -38,34 +42,33 @@ public class IJTable extends JTable {
 		new ValidatableNotEditableRenderer());
     }
 
-    private void autoFit() {
-	// TODO. Review:
+    private void autoFit(int avaliable) {
+	// TODO
+	// This need to be reviewed
 	// http://stackoverflow.com/a/8478299/930271
 	// https://tips4java.wordpress.com/2008/11/10/table-column-adjuster/
 	// http://www.java2s.com/Code/Java/Swing-Components/CalculatedColumnTable.htm
+	// http://stackoverflow.com/questions/18378506/set-a-column-width-of-jtable-according-to-the-text-in-a-header
 	this.repaint();
-	int avaliable = this.getColumnModel().getTotalColumnWidth();
+	if (avaliable <= 0) {
+	    avaliable = this.getColumnModel().getTotalColumnWidth();
+	}
 
 	int[] maxLengths = getMaxLengths();
 	double needed = 0.0;
-	for (int i = 0; i < this.getColumnCount(); i++) {
-	    int m = (this.getColumnName(i).length() > maxLengths[i]) ? this
-		    .getColumnName(i).length() : maxLengths[i];
-		    needed += m;
+	for (int i = 0; i < maxLengths.length; i++) {
+	    needed += maxLengths[i];
 	}
 
 	for (int i = 0; i < this.getModel().getColumnCount(); i++) {
 	    double preferredWidth = avaliable * (maxLengths[i] / needed);
-
-	    preferredWidth = 150;
 	    this.getColumnModel().getColumn(i)
-		    .setPreferredWidth((int) preferredWidth);
+	    .setPreferredWidth((int) preferredWidth);
 	}
     }
 
-    public int[] getMaxLengths() {
-	int[] maxLengths = new int[this.getColumnCount()];
-	Arrays.fill(maxLengths, 50);
+    private int[] getMaxLengths() {
+	int[] maxLengths = getMinLengths();
 
 	for (int i = 0; i < this.getRowCount(); i++) {
 	    for (int j = 0; j < this.getColumnCount(); j++) {
@@ -76,7 +79,18 @@ public class IJTable extends JTable {
 		}
 	    }
 	}
+	for (int i = 0; i < maxLengths.length; i++) {
+	    maxLengths[i] = maxLengths[i] + 2;
+	}
 	return maxLengths;
+    }
+
+    private int[] getMinLengths() {
+	int[] minLengths = new int[this.getColumnCount()];
+	for (int i = 0; i < this.getColumnCount(); i++) {
+	    minLengths[i] = this.getColumnName(i).length();
+	}
+	return minLengths;
     }
 
     private void initTargetColumn() {

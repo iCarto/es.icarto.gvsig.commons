@@ -8,11 +8,12 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.iver.andami.PluginServices;
+import com.iver.andami.ui.mdiFrame.MDIFrame;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 
 import es.icarto.gvsig.commons.gui.AbstractIWindow;
@@ -23,7 +24,7 @@ import es.icarto.gvsig.commons.gui.WidgetFactory;
 public class TableInfo extends AbstractIWindow implements ActionListener {
 
     private final OkCancelPanel btPanel;
-    private final JTable table;
+    private final IJTable table;
     private boolean okClickedWithoutError = false;
 
     public TableInfo(DefaultTableModel tableModel, Ruler ruler) {
@@ -33,6 +34,8 @@ public class TableInfo extends AbstractIWindow implements ActionListener {
 	btPanel = WidgetFactory.okCancelPanel(this, this, this);
 
 	table = new IJTable(tableModel, ruler);
+	MDIFrame mainFrame = (MDIFrame) PluginServices.getMainFrame();
+	table.setTotalWidth(mainFrame.getWidth() - 300);
 	JScrollPane scrollPane = new JScrollPane(table);
 
 	this.add(scrollPane, "push, grow");
