@@ -59,35 +59,25 @@ public abstract class JDBCTarget implements Target {
 	return false;
     }
 
-    protected RegionI getComunidad(ImporterTM table, String tablename,
-	    String fieldname, String code) {
-	int tablenameIdx = table.findColumn("tablename");
-	int idIdx = table.findColumn("id");
+    protected Entity getParent(ImporterTM table, EntityFactory factory,
+	    String code) {
+
+	// TODO. ¿Podría estar esto en EntityFactory
+	Entity parent = factory.from("", "0", "0");
 	for (int row = 0; row < table.getRowCount(); row++) {
-	    Object c = table.getValueAt(row, tablenameIdx);
-	    if ((c != null) && c.toString().equalsIgnoreCase(tablename)) {
-		final String codCom = table.getValueAt(row, idIdx).toString();
+	    Field target = table.getTarget(row);
+	    if ((target != null)
+		    && target.toString().equalsIgnoreCase(parent.tablename())) {
+		final String codCom = table.getCode(row);
 		if (code.equalsIgnoreCase(codCom)) {
-		    return Region.from(codCom, table.getGeom(row));
+		    parent.setPK(codCom);
+		    parent.setGeom(table.getGeom(row));
+		    return parent;
 		}
 	    }
 	}
 
-	ConnectionWrapper conW = new ConnectionWrapper(con);
-	final String whereClause = String.format("WHERE %s = '%s'", fieldname,
-		code);
-	String sql = String.format(
-		"SELECT %s, st_x(geom), st_y(geom) FROM comunidades %s",
-		fieldname, whereClause);
-	DefaultTableModel r = conW.execute(sql);
-	if (r.getRowCount() > 0) {
-	    final String codCom = r.getValueAt(0, 0).toString();
-	    final String xStr = r.getValueAt(0, 1).toString();
-	    final String yStr = r.getValueAt(0, 2).toString();
-	    return Region.from(codCom, xStr, yStr);
-	}
-
-	return null;
+	return factory.fromDB(code);
     }
 
     protected boolean existsInDB(String tablename, String fieldname, String code) {
