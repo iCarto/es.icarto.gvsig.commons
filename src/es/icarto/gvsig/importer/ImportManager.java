@@ -33,6 +33,7 @@ public class ImportManager {
     public void processFile() {
 	DefaultTableModel table = reader.getValues();
 	ImporterTM importerTM = new ImporterTM();
+	importerTM.addColumn("Código");
 	int initColumn = importerTM.getColumnCount();
 	for (int i = 0; i < table.getColumnCount(); i++) {
 	    importerTM.addColumn(table.getColumnName(i));
@@ -44,8 +45,9 @@ public class ImportManager {
 		importerTM.setValueAt(o, i, initColumn + j);
 	    }
 	}
-	importerTM.addColumn("tablename");
-	importerTM.addColumn("geom");
+
+	importerTM.addColumn("Capa destino");
+	importerTM.addColumn("Geometría destino");
 	importerTM.addColumn("Errores");
 	int idIdx = importerTM.findColumn("id");
 	for (int i = 0; i < importerTM.getRowCount(); i++) {

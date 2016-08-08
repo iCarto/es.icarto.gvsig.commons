@@ -40,18 +40,16 @@ public abstract class JDBCTarget implements Target {
 	l.add(msg);
     }
 
-    protected boolean existsInProcessed(DefaultTableModel table,
-	    String tablename, String code, int rowToIgnore) {
-	int tablenameIdx = table.findColumn("tablename");
-	int idIdx = table.findColumn("id");
+    protected boolean existsInProcessed(ImporterTM table, String tablename,
+	    String code, int rowToIgnore) {
+
 	for (int row = 0; row < table.getRowCount(); row++) {
 	    if (row == rowToIgnore) {
 		continue;
 	    }
-	    Object c = table.getValueAt(row, tablenameIdx);
+	    Field c = table.getTarget(row);
 	    if ((c != null) && c.toString().equalsIgnoreCase(tablename)) {
-		if (code.equalsIgnoreCase(table.getValueAt(row, idIdx)
-			.toString())) {
+		if (code.equalsIgnoreCase(table.getCode(row))) {
 		    return true;
 		}
 	    }

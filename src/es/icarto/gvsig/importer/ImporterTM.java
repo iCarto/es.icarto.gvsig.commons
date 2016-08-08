@@ -10,13 +10,10 @@ import es.icarto.gvsig.commons.utils.Field;
 
 @SuppressWarnings("serial")
 public class ImporterTM extends DefaultTableModel {
-    public ImporterTM() {
-	addColumn("Código");
-    }
 
     @Override
     public boolean isCellEditable(int row, int column) {
-	int tablenameIdx = findColumn("tablename");
+	int tablenameIdx = findColumn("Capa destino");
 	int codeIdx = findColumn("Código");
 	if ((column == tablenameIdx) || (column == codeIdx)) {
 	    return true;
@@ -26,7 +23,7 @@ public class ImporterTM extends DefaultTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-	int geomIdx = findColumn("geom");
+	int geomIdx = findColumn("Geometría destino");
 	int orgGeomIdx = findColumn("orggeom");
 	if ((geomIdx == columnIndex) || (orgGeomIdx == columnIndex)) {
 	    return IGeometry.class;
@@ -44,22 +41,22 @@ public class ImporterTM extends DefaultTableModel {
     }
 
     public void setTarget(Object aValue, int row) {
-	int tablenameIdx = findColumn("tablename");
+	int tablenameIdx = findColumn("Capa destino");
 	super.setValueAt(aValue, row, tablenameIdx);
     }
 
     public Field getTarget(int row) {
-	int tablenameIdx = findColumn("tablename");
+	int tablenameIdx = findColumn("Capa destino");
 	return (Field) super.getValueAt(row, tablenameIdx);
     }
 
     public void setGeom(IGeometry aValue, int row) {
-	int geomIdx = findColumn("geom");
+	int geomIdx = findColumn("Geometría destino");
 	super.setValueAt(aValue, row, geomIdx);
     }
 
     public IGeometry getGeom(int row) {
-	int geomIdx = findColumn("geom");
+	int geomIdx = findColumn("Geometría destino");
 	return (IGeometry) getValueAt(row, geomIdx);
     }
 
@@ -83,7 +80,7 @@ public class ImporterTM extends DefaultTableModel {
     @Override
     public void setValueAt(Object aValue, int row, int column) {
 	super.setValueAt(aValue, row, column);
-	int tablenameIdx = findColumn("tablename");
+	int tablenameIdx = findColumn("Capa destino");
 	if (column == tablenameIdx) {
 	    if (aValue == null) {
 		return;
@@ -105,15 +102,14 @@ public class ImporterTM extends DefaultTableModel {
     /**
      * Excludes the row "row"
      */
-    public String maxCodeValue(String columname, Field field, int row) {
-	int idx = findColumn(columname);
+    public String maxCodeValueForTarget(Field field, int row) {
 	int codeIdx = 0;
 	String maxValue = null;
 	for (int i = 0; i < getRowCount(); i++) {
 	    if (i == row) {
 		continue;
 	    }
-	    Object t = getValueAt(i, idx);
+	    Object t = getTarget(row);
 	    if ((t != null) && t.equals(field)) {
 		Object value = getValueAt(i, codeIdx);
 		if (value == null) {

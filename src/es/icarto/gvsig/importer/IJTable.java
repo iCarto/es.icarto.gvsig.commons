@@ -63,7 +63,7 @@ public class IJTable extends JTable {
 	for (int i = 0; i < this.getModel().getColumnCount(); i++) {
 	    double preferredWidth = avaliable * (maxLengths[i] / needed);
 	    this.getColumnModel().getColumn(i)
-	    .setPreferredWidth((int) preferredWidth);
+		    .setPreferredWidth((int) preferredWidth);
 	}
     }
 
@@ -96,7 +96,7 @@ public class IJTable extends JTable {
     private void initTargetColumn() {
 	List<Field> targets = ruler.getFields();
 	JComboBox combo = new JComboBox(targets.toArray(new Field[0]));
-	setComboCellEditor("tablename", combo);
+	setComboCellEditor("Capa destino", combo);
     }
 
     private void setComboCellEditor(String columnName, JComboBox combo) {
