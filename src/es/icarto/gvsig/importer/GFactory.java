@@ -1,9 +1,8 @@
 package es.icarto.gvsig.importer;
 
 import java.text.NumberFormat;
-import java.text.ParseException;
+import java.util.Locale;
 
-import org.apache.log4j.Logger;
 import org.cresques.cts.ICoordTrans;
 import org.cresques.cts.IProjection;
 
@@ -12,13 +11,14 @@ import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.core.ShapeFactory;
 import com.iver.cit.gvsig.fmap.crs.CRSFactory;
 
-public class Foo {
+public class GFactory {
 
-    private static final Logger logger = Logger.getLogger(Foo.class);
+    private final static NumberFormat formatter = NumberFormat
+	    .getInstance(Locale.US);
 
     private IGeometry getGeometry(String xStr, String yStr) {
-	double x = toNumeric(xStr).doubleValue();
-	double y = toNumeric(yStr).doubleValue();
+	double x = toNumeric(xStr.replace(",", ".")).doubleValue();
+	double y = toNumeric(yStr.replace(",", ".")).doubleValue();
 
 	FPoint2D fpoint2d = new FPoint2D(x, y);
 	IGeometry geom = ShapeFactory.createPoint2D(fpoint2d);
@@ -33,13 +33,11 @@ public class Foo {
     }
 
     private Number toNumeric(String v) {
-	NumberFormat formatter = NumberFormat.getNumberInstance();
 	try {
 	    return formatter.parse(v);
-	} catch (ParseException e) {
-	    logger.error(e.getStackTrace(), e);
+	} catch (Exception e) {
+	    return null;
 	}
-	return null;
     }
 
     public IGeometry getGeometry(ImporterTM table, int row) {
