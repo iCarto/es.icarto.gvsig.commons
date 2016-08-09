@@ -6,14 +6,10 @@ import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.log4j.Logger;
-
 import es.icarto.gvsig.commons.db.ConnectionWrapper;
 import es.icarto.gvsig.commons.utils.Field;
 
 public abstract class JDBCTarget implements Target {
-
-    private static final Logger logger = Logger.getLogger(JDBCTarget.class);
 
     // TODO. El campo field se está usando sólo para rellenar el combo de
     // targets en la tabla de reporte. No tengo claro que esto tenga sentido.
@@ -154,4 +150,7 @@ public abstract class JDBCTarget implements Target {
     public Field getField() {
 	return field;
     }
+
+    public abstract String getInsertSQL(String parentCode, String code,
+	    String geomAsWKT);
 }
