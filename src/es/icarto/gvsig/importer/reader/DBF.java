@@ -58,17 +58,18 @@ public class DBF implements Reader {
     private void initValues() {
 	values = new DefaultTableModel();
 
-	// TODO
-	values.addColumn("id");
-	values.addColumn("x");
-	values.addColumn("y");
-
 	try {
-	    for (int i = 0; i < driver.getRowCount(); i++) {
-		Object rowData[] = new Object[3];
-		rowData[0] = driver.getFieldValue(i, 0).toString();
-		rowData[1] = driver.getFieldValue(i, 1).toString();
-		rowData[2] = driver.getFieldValue(i, 2).toString();
+	    final int columnCount = driver.getFieldCount();
+	    final int rowCount = (int) driver.getRowCount();
+
+	    for (int column = 0; column < columnCount; column++) {
+		values.addColumn(driver.getFieldName(column));
+	    }
+	    for (int row = 0; row < rowCount; row++) {
+		Object rowData[] = new Object[columnCount];
+		for (int c = 0; c < columnCount; c++) {
+		    rowData[c] = driver.getFieldValue(row, c).toString();
+		}
 		values.addRow(rowData);
 	    }
 	} catch (ReadDriverException e) {

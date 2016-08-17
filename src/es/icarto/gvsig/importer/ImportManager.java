@@ -34,17 +34,10 @@ public class ImportManager {
 	DefaultTableModel table = reader.getValues();
 	ImporterTM importerTM = new ImporterTM();
 	importerTM.addColumn("Código");
-	int initColumn = importerTM.getColumnCount();
-	for (int i = 0; i < table.getColumnCount(); i++) {
-	    importerTM.addColumn(table.getColumnName(i));
-	}
-	for (int i = 0; i < table.getRowCount(); i++) {
-	    importerTM.addRow(new Object[importerTM.getColumnCount()]);
-	    for (int j = 0; j < table.getColumnCount(); j++) {
-		final Object o = table.getValueAt(i, j);
-		importerTM.setValueAt(o, i, initColumn + j);
-	    }
-	}
+
+	addColumn(importerTM, "id", table);
+	addColumn(importerTM, "x", table);
+	addColumn(importerTM, "y", table);
 
 	importerTM.addColumn("Capa destino");
 	importerTM.addColumn("Geometría destino");
@@ -52,11 +45,22 @@ public class ImportManager {
 	int idIdx = importerTM.findColumn("id");
 	for (int i = 0; i < importerTM.getRowCount(); i++) {
 	    String id = importerTM.getValueAt(i, idIdx).toString();
-	    HeaderField field = header.getField("id");
 	    ruler.processValue(id, importerTM, i);
 	}
 
 	output.process(importerTM, ruler);
+    }
+
+    private void addColumn(ImporterTM importer, String columnName,
+	    DefaultTableModel table) {
+	HeaderField field = header.getField(columnName);
+	final int column = field.getActualPos();
+	final int rowCount = table.getRowCount();
+	Object[] columnData = new Object[rowCount];
+	for (int row = 0; row < rowCount; row++) {
+	    columnData[row] = table.getValueAt(row, column);
+	}
+	importer.addColumn(columnName, columnData);
     }
 
 }

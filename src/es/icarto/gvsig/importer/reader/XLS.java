@@ -28,7 +28,7 @@ public class XLS implements Reader {
     private static final Logger logger = Logger.getLogger(XLS.class);
 
     private Sheet sheet;
-    private Collator collator;
+    private final Collator collator;
     private int headerLine = FIRST_NOT_EMPTY;
     private int realHeaderRowNumber;
 
@@ -91,6 +91,7 @@ public class XLS implements Reader {
 	return null;
     }
 
+    @Override
     public List<SimpleHeaderField> getSimpleHeader() {
 	Row row;
 	if (headerLine == FIRST_NOT_EMPTY) {
@@ -128,13 +129,14 @@ public class XLS implements Reader {
 
     }
 
+    @Override
     public DefaultTableModel getValues() {
 	DefaultTableModel table = new DefaultTableModel();
 
-	// TODO
-	table.addColumn("id");
-	table.addColumn("x");
-	table.addColumn("y");
+	Row headerRow = sheet.getRow(realHeaderRowNumber);
+	for (Cell cell : headerRow) {
+	    table.addColumn(cell.getStringCellValue());
+	}
 
 	for (int i = realHeaderRowNumber + 1; i <= sheet.getLastRowNum(); i++) {
 
@@ -143,13 +145,13 @@ public class XLS implements Reader {
 		continue;
 	    }
 
-	    Object rowData[] = new Object[3];
+	    List<Object> rowData = new ArrayList<Object>();
 	    for (Cell cell : row) {
 		int pos = cell.getColumnIndex();
 		String val = XLSFormatUtils.getValueAsString(cell);
-		rowData[pos] = val;
+		rowData.add(val);
 	    }
-	    table.addRow(rowData);
+	    table.addRow(rowData.toArray());
 	}
 
 	return table;
@@ -157,7 +159,7 @@ public class XLS implements Reader {
 
     @Override
     public FileFilter getFileFilter() {
-	String description = "Ficheros Excel";
+	String description = "Ficheros Excel (.xlsx)";
 	String extensions = "xlsx";
 	return new FileNameExtensionFilter(description, extensions);
     }
