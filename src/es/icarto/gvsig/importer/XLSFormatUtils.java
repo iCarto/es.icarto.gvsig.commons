@@ -1,6 +1,7 @@
 package es.icarto.gvsig.importer;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -9,8 +10,12 @@ import org.apache.poi.ss.usermodel.DateUtil;
 public class XLSFormatUtils {
 
     private static final DataFormatter dataFormatter = new DataFormatter();
-    private static final NumberFormat nFormatter = NumberFormat
-	    .getNumberInstance();
+    private static final NumberFormat nFormatter;
+
+    static {
+	nFormatter = NumberFormat.getNumberInstance(Locale.ENGLISH);
+	nFormatter.setGroupingUsed(false);
+    }
 
     public XLSFormatUtils() {
 	throw new AssertionError("Non instantiable class");

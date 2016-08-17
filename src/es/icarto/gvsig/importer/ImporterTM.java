@@ -88,14 +88,14 @@ public class ImporterTM extends DefaultTableModel {
 	    Target target = (Target) ((Field) aValue).getValue();
 	    String code = target.calculateCode(this, row);
 	    setCode(code, row);
-	    target.checkErrors(this, row);
+	    reCheckErrors();
 	}
 
 	int codeIdx = findColumn("Código");
 	if (column == codeIdx) {
 	    Field field = getTarget(row);
 	    Target target = (Target) field.getValue();
-	    target.checkErrors(this, row);
+	    reCheckErrors();
 	}
     }
 
