@@ -29,6 +29,9 @@ public class EntityFactory<T extends Entity> {
 	JDBCUtils jdbcUtils = new JDBCUtils(con);
 	DefaultTableModel result = jdbcUtils.intersects(entity.tablename(),
 		pointStr, entity.pkname(), entity.descname());
+	if ((result == null) || (result.getRowCount() < 1)) {
+	    return null;
+	}
 	String pk = result.getValueAt(0, 0).toString();
 	String desc = result.getValueAt(0, 1).toString();
 	entity.setPK(pk);

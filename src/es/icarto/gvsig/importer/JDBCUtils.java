@@ -26,12 +26,6 @@ public class JDBCUtils {
 	if (table == null) {
 	    throw new RuntimeException("Error desconocido");
 	}
-	if (table.getRowCount() < 1) {
-	    throw new RuntimeException("Sin resultados");
-	}
-	if (table.getRowCount() > 1) {
-	    throw new RuntimeException("Más de un resultado");
-	}
 	return table;
     }
 

@@ -83,12 +83,6 @@ public abstract class JDBCTarget implements Target {
 	return result.getRowCount() > 0;
     }
 
-    protected DefaultTableModel intersects(String tablename, String point,
-	    String... fields) {
-	JDBCUtils jdbcUtils = new JDBCUtils(con);
-	return jdbcUtils.intersects(tablename, point, fields);
-    }
-
     protected DefaultTableModel closest(String tablename, String point,
 	    String where, String... fields) {
 	JDBCUtils jdbcUtils = new JDBCUtils(con);
