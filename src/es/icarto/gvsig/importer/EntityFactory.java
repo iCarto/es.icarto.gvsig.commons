@@ -33,9 +33,9 @@ public class EntityFactory<T extends Entity> {
 	    return null;
 	}
 	String pk = result.getValueAt(0, 0).toString();
-	String desc = result.getValueAt(0, 1).toString();
+	Object desc = result.getValueAt(0, 1);
 	entity.setPK(pk);
-	entity.setDesc(desc);
+	entity.setDesc(desc == null ? "" : desc.toString());
 	return entity;
     }
 
@@ -95,16 +95,14 @@ public class EntityFactory<T extends Entity> {
 	String closestWhere = String.format(" WHERE substr(%s, 1, 6) = '%s'",
 		entity.pkname(), region.getPK());
 	DefaultTableModel closest = jdbcUtils.closest(entity.tablename(),
-		pointStr, closestWhere, entity.pkname(), entity.descname(),
-		"st_x(geom)", "st_y(geom)");
+		pointStr, closestWhere, entity.pkname(), "st_x(geom)",
+		"st_y(geom)");
 
 	if (closest.getRowCount() == 1) {
 	    String pk = closest.getValueAt(0, 0).toString();
-	    String desc = closest.getValueAt(0, 1).toString();
-	    String xStr = closest.getValueAt(0, 2).toString();
-	    String yStr = closest.getValueAt(0, 3).toString();
+	    String xStr = closest.getValueAt(0, 1).toString();
+	    String yStr = closest.getValueAt(0, 2).toString();
 	    entity.setPK(pk);
-	    entity.setDesc(desc);
 	    entity.setGeom(xStr, yStr);
 	    return entity;
 	}
