@@ -32,7 +32,8 @@ public class ImporterTM extends DefaultTableModel {
     }
 
     public void setCode(Object aValue, int row) {
-	super.setValueAt(aValue, row, 0);
+	String code = aValue == null ? "" : aValue.toString().toUpperCase();
+	super.setValueAt(code, row, 0);
     }
 
     public String getCode(int row) {
@@ -79,7 +80,16 @@ public class ImporterTM extends DefaultTableModel {
 
     @Override
     public void setValueAt(Object aValue, int row, int column) {
+
+	int codeIdx = findColumn("Código");
+	if (column == codeIdx) {
+	    setCode(aValue, row);
+	    reCheckErrors();
+	    return;
+	}
+
 	super.setValueAt(aValue, row, column);
+
 	int tablenameIdx = findColumn("Capa destino");
 	if (column == tablenameIdx) {
 	    if (aValue == null) {
@@ -91,12 +101,6 @@ public class ImporterTM extends DefaultTableModel {
 	    reCheckErrors();
 	}
 
-	int codeIdx = findColumn("Código");
-	if (column == codeIdx) {
-	    Field field = getTarget(row);
-	    Target target = (Target) field.getValue();
-	    reCheckErrors();
-	}
     }
 
     /**
@@ -117,7 +121,7 @@ public class ImporterTM extends DefaultTableModel {
 		if (maxValue == null) {
 		    maxValue = value.toString();
 		} else {
-		    if (value.toString().compareTo(maxValue) > 0) {
+		    if (value.toString().compareToIgnoreCase(maxValue) > 0) {
 			maxValue = value.toString();
 		    }
 		}
@@ -125,5 +129,4 @@ public class ImporterTM extends DefaultTableModel {
 	}
 	return maxValue == null ? "" : maxValue;
     }
-
 }
