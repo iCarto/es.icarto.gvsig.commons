@@ -7,6 +7,7 @@ import org.gvsig.app.ApplicationManager;
 import org.gvsig.fmap.dal.DALLocator;
 import org.gvsig.fmap.dal.DataManager;
 import org.gvsig.fmap.dal.DataStoreParameters;
+import org.gvsig.fmap.dal.OpenDataStoreParameters;
 import org.gvsig.fmap.dal.exception.InitializeException;
 import org.gvsig.fmap.dal.exception.ProviderNotRegisteredException;
 import org.gvsig.fmap.dal.exception.ValidateDataParametersException;
@@ -22,6 +23,7 @@ import org.gvsig.fmap.mapcontext.exceptions.LoadLayerException;
 import org.gvsig.fmap.mapcontext.layers.FLayer;
 import org.gvsig.fmap.mapcontext.layers.vectorial.FLyrVect;
 import org.gvsig.tools.ToolsLocator;
+import org.gvsig.tools.dispose.DisposeUtils;
 import org.gvsig.tools.exception.BaseException;
 import org.gvsig.tools.i18n.I18nManager;
 import org.slf4j.Logger;
@@ -32,37 +34,79 @@ public class SHPFactory {
 	private static final Logger logger = LoggerFactory
 			.getLogger(SHPFactory.class);
 
-	public static void createSHP(File file, EditableFeatureType fieldsDesc,
-			int geomType, EditableFeature[] features, String crs)
+	public static void createSHP(File file, EditableFeatureType featType,
+			String crs) throws BaseException {
+		NewFeatureStoreParameters newStoreParams = newStoreParams(file,
+				featType, crs);
+		DataManager manager = DALLocator.getDataManager();
+		manager.newStore("FilesystemExplorer", "Shape", newStoreParams, true);
+	}
+
+	public static void createSHP(File file, EditableFeatureType featType,
+			int geomType, String crs) throws BaseException {
+
+		NewFeatureStoreParameters newStoreParams = newStoreParams(file,
+				featType, geomType, crs);
+		DataManager manager = DALLocator.getDataManager();
+		manager.newStore("FilesystemExplorer", "Shape", newStoreParams, true);
+	}
+
+	public static void insertIntoStore(File file, String crs,
+			Object[][] features) throws BaseException {
+		DataStoreParameters openStoreParams = openStoreParams(file, crs);
+		DataManager manager = DALLocator.getDataManager();
+		FeatureStore store = null;
+		try {
+			store = (FeatureStore) manager.openStore("Shape", openStoreParams);
+			store.edit(FeatureStore.MODE_APPEND);
+			for (Object[] fValues : features) {
+				EditableFeature f = store.createNewFeature();
+				for (int i = 0; i < fValues.length; i++) {
+					f.set(i, fValues[i]);
+				}
+				store.insert(f);
+			}
+
+			store.finishEditing();
+		} finally {
+			DisposeUtils.disposeQuietly(store);
+		}
+	}
+
+	public static NewFeatureStoreParameters newStoreParams(File file,
+			EditableFeatureType featType, String crs) throws BaseException {
+		DataManager manager = DALLocator.getDataManager();
+		NewFeatureStoreParameters params = (NewFeatureStoreParameters) manager
+				.createNewStoreParameters("FilesystemExplorer", "Shape");
+		params.setDynValue("shpfile", file.getAbsoluteFile());
+		params.setDynValue("crs", crs);
+		params.setDefaultFeatureType(featType);
+		return params;
+	}
+
+	public static NewFeatureStoreParameters newStoreParams(File file,
+			EditableFeatureType featType, int geomType, String crs)
 					throws BaseException {
 
-		DataManager manager = DALLocator.getDataManager();
-		GeometryManager geometryManager = GeometryLocator.getGeometryManager();
+		GeometryManager geomManager = GeometryLocator.getGeometryManager();
 
-		NewFeatureStoreParameters destParams = (NewFeatureStoreParameters) manager
-				.createNewStoreParameters("FilesystemExplorer", "Shape");
-
-		GeometryType geometryType = geometryManager.getGeometryType(geomType,
+		GeometryType geometryType = geomManager.getGeometryType(geomType,
 				Geometry.SUBTYPES.GEOM2D);
-		fieldsDesc.add("geom", org.gvsig.fmap.geom.DataTypes.GEOMETRY)
+		featType.add("geom", org.gvsig.fmap.geom.DataTypes.GEOMETRY)
 		.setGeometryType(geometryType);
-		fieldsDesc.setDefaultGeometryAttributeName("geom");
+		featType.setDefaultGeometryAttributeName("geom");
 
-		destParams.setDynValue("shpfile", file.getAbsoluteFile());
-		destParams.setDynValue("crs", crs);
-		destParams.setDefaultFeatureType(fieldsDesc);
+		return newStoreParams(file, featType, crs);
+	}
 
-		manager.newStore("FilesystemExplorer", "Shape", destParams, true);
-		FeatureStore store = (FeatureStore) manager.openStore("Shape",
-				destParams);
-
-		store.edit();
-		for (EditableFeature f : features) {
-			store.insert(f);
-		}
-		store.finishEditing();
-
-		store.dispose();
+	public static OpenDataStoreParameters openStoreParams(File file, String crs)
+			throws BaseException {
+		DataManager manager = DALLocator.getDataManager();
+		OpenDataStoreParameters params = (OpenDataStoreParameters) manager
+				.createStoreParameters("Shape");
+		params.setDynValue("shpfile", file.getAbsoluteFile());
+		params.setDynValue("crs", crs);
+		return params;
 	}
 
 	public static FLyrVect getFLyrVectFromSHP(File file, String crs)
@@ -83,7 +127,7 @@ public class SHPFactory {
 	 *
 	 * @return the feature store
 	 */
-	private static FeatureStore getFeatureStore(File shape, String crs) {
+	public static FeatureStore getFeatureStore(File shape, String crs) {
 		try {
 
 			DataStoreParameters parameters;
@@ -105,4 +149,5 @@ public class SHPFactory {
 			throw new RuntimeException(e);
 		}
 	}
+
 }
