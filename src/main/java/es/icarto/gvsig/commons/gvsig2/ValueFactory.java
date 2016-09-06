@@ -1,6 +1,7 @@
 package es.icarto.gvsig.commons.gvsig2;
 
 import java.lang.reflect.Constructor;
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
@@ -20,667 +21,670 @@ import org.slf4j.LoggerFactory;
  */
 public class ValueFactory {
 
-    private static final Logger logger = LoggerFactory
-	    .getLogger(ValueFactory.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(ValueFactory.class);
 
-    final static int BYTE = 0;
-    final static int SHORT = 1;
-    final static int INTEGER = 2;
-    final static int LONG = 3;
-    final static int FLOAT = 5;
-    final static int DOUBLE = 6;
+	final static int BYTE = 0;
+	final static int SHORT = 1;
+	final static int INTEGER = 2;
+	final static int LONG = 3;
+	final static int FLOAT = 5;
+	final static int DOUBLE = 6;
 
-    public static Value createValue(Object o) {
-	Value value = createNullValue();
+	public static Value createValue(Object o) {
+		Value value = createNullValue();
 
-	if (o == null) {
-	    value = createNullValue();
-	} else if (o instanceof Object[]) {
-	    throw new RuntimeException("Not supportet jet");
-	} else if (o instanceof DynObject) {
-	    throw new RuntimeException("Not supportet jet");
-	} else if (o instanceof Boolean) {
-	    value = new BooleanValue(o);
-	} else if (o instanceof Byte) {
-	    value = new IntValue(o);
-	} else if (o instanceof Date) {
-	    value = new DateValue(o);
-	} else if (o instanceof Envelope) {
-	    throw new RuntimeException("Not supportet jet");
-	} else if (o instanceof Geometry) {
-	    throw new RuntimeException("Not supportet jet");
-	} else if (o instanceof Double) {
-	    value = new DoubleValue(o);
-	} else if (o instanceof Float) {
-	    value = new FloatValue(o);
-	} else if (o instanceof Integer) {
-	    value = new IntValue(o);
-	} else if (o instanceof Long) {
-	    value = new LongValue(o);
-	} else if (o instanceof String) {
-	    value = new StringValue(o);
+		if (o == null) {
+			value = createNullValue();
+		} else if (o instanceof Object[]) {
+			throw new RuntimeException("Not supportet jet");
+		} else if (o instanceof DynObject) {
+			throw new RuntimeException("Not supportet jet");
+		} else if (o instanceof Boolean) {
+			value = new BooleanValue(o);
+		} else if (o instanceof Byte) {
+			value = new IntValue(o);
+		} else if (o instanceof Date) {
+			value = new DateValue(o);
+		} else if (o instanceof Envelope) {
+			throw new RuntimeException("Not supportet jet");
+		} else if (o instanceof Geometry) {
+			throw new RuntimeException("Not supportet jet");
+		} else if (o instanceof Double) {
+			value = new DoubleValue(o);
+		} else if (o instanceof Float) {
+			value = new FloatValue(o);
+		} else if (o instanceof Integer) {
+			value = new IntValue(o);
+		} else if (o instanceof Long) {
+			value = new LongValue(o);
+		} else if (o instanceof String) {
+			value = new StringValue(o);
+		} else if (o instanceof BigDecimal) {
+			double v = ((BigDecimal) o).doubleValue();
+			value = new DoubleValue(Double.valueOf(v));
+		}
+
+		return value;
 	}
 
-	return value;
-    }
+	/**
+	 * Crea un objeto de tipo Value a partir de un int
+	 *
+	 * @param n
+	 *            valor que se quiere representar
+	 *
+	 * @return objeto Value con el valor que se pasa como par�metro
+	 */
+	public static IntValue createValue(int n) {
+		IntValue ret = new IntValue(n);
+		return ret;
+	}
 
-    /**
-     * Crea un objeto de tipo Value a partir de un int
-     *
-     * @param n
-     *            valor que se quiere representar
-     *
-     * @return objeto Value con el valor que se pasa como par�metro
-     */
-    public static IntValue createValue(int n) {
-	IntValue ret = new IntValue(n);
-	return ret;
-    }
+	/**
+	 * Crea un objeto de tipo Value a partir de un long
+	 *
+	 * @param l
+	 *            valor que se quiere representar
+	 *
+	 * @return objeto Value con el valor que se pasa como par�metro
+	 */
+	public static LongValue createValue(long l) {
+		LongValue ret = new LongValue(l);
+		return ret;
+	}
 
-    /**
-     * Crea un objeto de tipo Value a partir de un long
-     *
-     * @param l
-     *            valor que se quiere representar
-     *
-     * @return objeto Value con el valor que se pasa como par�metro
-     */
-    public static LongValue createValue(long l) {
-	LongValue ret = new LongValue(l);
-	return ret;
-    }
+	/**
+	 * Crea un objeto de tipo Value a partir de un String
+	 *
+	 * @param s
+	 *            valor que se quiere representar
+	 *
+	 * @return objeto Value con el valor que se pasa como par�metro
+	 */
+	public static StringValue createValue(String s) {
+		StringValue ret = new StringValue(s);
+		return ret;
+	}
 
-    /**
-     * Crea un objeto de tipo Value a partir de un String
-     *
-     * @param s
-     *            valor que se quiere representar
-     *
-     * @return objeto Value con el valor que se pasa como par�metro
-     */
-    public static StringValue createValue(String s) {
-	StringValue ret = new StringValue(s);
-	return ret;
-    }
+	/**
+	 * Crea un objeto de tipo Value a partir de un float
+	 *
+	 * @param f
+	 *            valor que se quiere representar
+	 *
+	 * @return objeto Value con el valor que se pasa como par�metro
+	 */
+	public static FloatValue createValue(float f) {
+		FloatValue ret = new FloatValue(f);
+		return ret;
+	}
 
-    /**
-     * Crea un objeto de tipo Value a partir de un float
-     *
-     * @param f
-     *            valor que se quiere representar
-     *
-     * @return objeto Value con el valor que se pasa como par�metro
-     */
-    public static FloatValue createValue(float f) {
-	FloatValue ret = new FloatValue(f);
-	return ret;
-    }
+	/**
+	 * Crea un objeto de tipo Value a partir de un double
+	 *
+	 * @param d
+	 *            valor que se quiere representar
+	 *
+	 * @return objeto Value con el valor que se pasa como par�metro
+	 */
+	public static DoubleValue createValue(double d) {
+		DoubleValue ret = new DoubleValue(d);
+		return ret;
+	}
 
-    /**
-     * Crea un objeto de tipo Value a partir de un double
-     *
-     * @param d
-     *            valor que se quiere representar
-     *
-     * @return objeto Value con el valor que se pasa como par�metro
-     */
-    public static DoubleValue createValue(double d) {
-	DoubleValue ret = new DoubleValue(d);
-	return ret;
-    }
+	/**
+	 * Crea un objeto de tipo Date a partir de un Date
+	 *
+	 * @param d
+	 *            valor que se quiere representar
+	 *
+	 * @return objeto Value con el valor que se pasa como par�metro
+	 */
+	public static DateValue createValue(Date d) {
+		DateValue ret = new DateValue(d);
+		return ret;
+	}
 
-    /**
-     * Crea un objeto de tipo Date a partir de un Date
-     *
-     * @param d
-     *            valor que se quiere representar
-     *
-     * @return objeto Value con el valor que se pasa como par�metro
-     */
-    public static DateValue createValue(Date d) {
-	DateValue ret = new DateValue(d);
-	return ret;
-    }
+	/**
+	 * Creates a TimeValue object
+	 *
+	 * @param t
+	 *            Time value
+	 *
+	 * @return TimeValue
+	 */
+	public static TimeValue createValue(Time t) {
+		TimeValue ret = new TimeValue(t);
+		return ret;
+	}
 
-    /**
-     * Creates a TimeValue object
-     *
-     * @param t
-     *            Time value
-     *
-     * @return TimeValue
-     */
-    public static TimeValue createValue(Time t) {
-	TimeValue ret = new TimeValue(t);
-	return ret;
-    }
+	/**
+	 * Creates a TimestampValue object
+	 *
+	 * @param t
+	 *            Timestamp value
+	 *
+	 * @return TimestampValue
+	 */
+	public static TimestampValue createValue(Timestamp t) {
+		TimestampValue ret = new TimestampValue(t);
+		return ret;
+	}
 
-    /**
-     * Creates a TimestampValue object
-     *
-     * @param t
-     *            Timestamp value
-     *
-     * @return TimestampValue
-     */
-    public static TimestampValue createValue(Timestamp t) {
-	TimestampValue ret = new TimestampValue(t);
-	return ret;
-    }
+	/**
+	 * Crea un objeto de tipo Value a partir de un booleano
+	 *
+	 * @param b
+	 *            valor que se quiere representar
+	 *
+	 * @return objeto Value con el valor que se pasa como par�metro
+	 */
+	public static BooleanValue createValue(boolean b) {
+		BooleanValue ret = new BooleanValue(b);
+		return ret;
+	}
 
-    /**
-     * Crea un objeto de tipo Value a partir de un booleano
-     *
-     * @param b
-     *            valor que se quiere representar
-     *
-     * @return objeto Value con el valor que se pasa como par�metro
-     */
-    public static BooleanValue createValue(boolean b) {
-	BooleanValue ret = new BooleanValue(b);
-	return ret;
-    }
-
-    /**
-     * Creates an ArrayValue
-     *
-     * @param values
-     *            DOCUMENT ME!
-     *
-     * @return ArrayValue
-     */
-    // public static ValueCollection createValue(Value[] values) {
-    // ValueCollection v = new ValueCollection();
-    // v.setValues(values);
-    //
-    // return v;
-    // }
-
-    /**
-     * Crea un Value a partir de un literal encontrado en una instrucci�n y su
-     * tipo
-     *
-     * @param text
-     *            Texto del valor
-     * @param type
-     *            Tipo del valor
-     *
-     * @return Objeto Value del tipo adecuado
-     *
-     * @throws SemanticException
-     *             Si el tipo del literal no est� soportado
-     */
-    public static Value createValue(String text, int type) {
-	return new Value();
-	// throws SemanticException {
-	// switch (type) {
-	// case SQLEngineConstants.STRING_LITERAL:
+	/**
+	 * Creates an ArrayValue
+	 *
+	 * @param values
+	 *            DOCUMENT ME!
+	 *
+	 * @return ArrayValue
+	 */
+	// public static ValueCollection createValue(Value[] values) {
+	// ValueCollection v = new ValueCollection();
+	// v.setValues(values);
 	//
-	// StringValue r1 = new StringValue();
-	// r1.setValue(text.substring(1, text.length() - 1));
-	//
-	// return r1;
-	//
-	// case SQLEngineConstants.INTEGER_LITERAL:
-	//
-	// try {
-	// IntValue r2 = new IntValue();
-	// r2.setValue(Integer.parseInt(text));
-	//
-	// return r2;
-	// } catch (NumberFormatException e) {
-	// LongValue r2 = new LongValue();
-	// r2.setValue(Long.parseLong(text));
-	//
-	// return r2;
+	// return v;
 	// }
-	//
-	// case SQLEngineConstants.FLOATING_POINT_LITERAL:
-	//
-	// try {
-	// DoubleValue r2 = new DoubleValue();
-	// r2.setValue(Double.parseDouble(text));
-	// return r2;
-	// } catch (NumberFormatException e) {
-	// throw new
-	// SemanticException("Text could not be parsed as decimal (double): " +
-	// text);
-	// }
-	//
-	// default:
-	// throw new SemanticException("Unexpected literal type: " + text +
-	// "->" + type);
-	// }
-    }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param text
-     *            DOCUMENT ME!
-     * @param type
-     *            DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws ParseException
-     *             DOCUMENT ME!
-     */
-    public static Value createValueByType(String text, int type)
-	    throws ParseException {
-	Value value;
-
-	switch (type) {
-	case Types.BIGINT:
-	    value = ValueFactory.createValue(Long.parseLong(text));
-
-	    break;
-
-	case Types.BIT:
-	case Types.BOOLEAN:
-	    value = ValueFactory.createValue(Boolean.valueOf(text)
-		    .booleanValue());
-
-	    break;
-
-	case Types.CHAR:
-	case Types.VARCHAR:
-	case Types.LONGVARCHAR:
-	    value = ValueFactory.createValue(text);
-
-	    break;
-
-	case Types.DATE:
-	    try {
-		value = ValueFactory.createValue(new Date(Date.parse(text)));
-	    } catch (IllegalArgumentException e) {
-		throw new ParseException(e.getMessage(), 0);
-	    }
-	    break;
-
-	case Types.DECIMAL:
-	case Types.NUMERIC:
-	case Types.FLOAT:
-	case Types.DOUBLE:
-	    value = ValueFactory.createValue(Double.parseDouble(text));
-
-	    break;
-
-	case Types.INTEGER:
-	    value = ValueFactory.createValue(Integer.parseInt(text));
-
-	    break;
-
-	case Types.REAL:
-	    value = ValueFactory.createValue(Float.parseFloat(text));
-
-	    break;
-
-	case Types.SMALLINT:
-	    value = ValueFactory.createValue(Short.parseShort(text));
-
-	    break;
-
-	case Types.TINYINT:
-	    value = ValueFactory.createValue(Byte.parseByte(text));
-
-	    break;
-
-	case Types.BINARY:
-	case Types.VARBINARY:
-	case Types.LONGVARBINARY:
-
-	    if ((text.length() / 2) != (text.length() / 2.0)) {
-		throw new ParseException(
-			"binary fields must have even number of characters.", 0);
-	    }
-
-	    byte[] array = new byte[text.length() / 2];
-
-	    for (int i = 0; i < (text.length() / 2); i++) {
-		String byte_ = text.substring(2 * i, (2 * i) + 2);
-		array[i] = (byte) Integer.parseInt(byte_, 16);
-	    }
-
-	    value = ValueFactory.createValue(array);
-
-	    break;
-
-	case Types.TIMESTAMP:
-	    value = ValueFactory.createValue(Timestamp.valueOf(text));
-
-	    break;
-
-	case Types.TIME:
-	    DateFormat tf = DateFormat.getTimeInstance();
-	    value = ValueFactory
-		    .createValue(new Time(tf.parse(text).getTime()));
-
-	    break;
-
-	default:
-	    value = ValueFactory.createValue(text);
+	/**
+	 * Crea un Value a partir de un literal encontrado en una instrucci�n y su
+	 * tipo
+	 *
+	 * @param text
+	 *            Texto del valor
+	 * @param type
+	 *            Tipo del valor
+	 *
+	 * @return Objeto Value del tipo adecuado
+	 *
+	 * @throws SemanticException
+	 *             Si el tipo del literal no est� soportado
+	 */
+	public static Value createValue(String text, int type) {
+		return new Value();
+		// throws SemanticException {
+		// switch (type) {
+		// case SQLEngineConstants.STRING_LITERAL:
+		//
+		// StringValue r1 = new StringValue();
+		// r1.setValue(text.substring(1, text.length() - 1));
+		//
+		// return r1;
+		//
+		// case SQLEngineConstants.INTEGER_LITERAL:
+		//
+		// try {
+		// IntValue r2 = new IntValue();
+		// r2.setValue(Integer.parseInt(text));
+		//
+		// return r2;
+		// } catch (NumberFormatException e) {
+		// LongValue r2 = new LongValue();
+		// r2.setValue(Long.parseLong(text));
+		//
+		// return r2;
+		// }
+		//
+		// case SQLEngineConstants.FLOATING_POINT_LITERAL:
+		//
+		// try {
+		// DoubleValue r2 = new DoubleValue();
+		// r2.setValue(Double.parseDouble(text));
+		// return r2;
+		// } catch (NumberFormatException e) {
+		// throw new
+		// SemanticException("Text could not be parsed as decimal (double): " +
+		// text);
+		// }
+		//
+		// default:
+		// throw new SemanticException("Unexpected literal type: " + text +
+		// "->" + type);
+		// }
 	}
 
-	return value;
-    }
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param text
+	 *            DOCUMENT ME!
+	 * @param type
+	 *            DOCUMENT ME!
+	 *
+	 * @return DOCUMENT ME!
+	 *
+	 * @throws ParseException
+	 *             DOCUMENT ME!
+	 */
+	public static Value createValueByType(String text, int type)
+			throws ParseException {
+		Value value;
 
-    public static Value createValueByType(String text, int type, int length,
-	    int decimalCount) throws ParseException {
-	Value value;
+		switch (type) {
+		case Types.BIGINT:
+			value = ValueFactory.createValue(Long.parseLong(text));
 
-	switch (type) {
-	case Types.CHAR:
-	case Types.VARCHAR:
-	case Types.LONGVARCHAR:
-	    if ((text != null) && (text.length() > length)) {
-		value = ValueFactory.createValue(text.substring(0, length));
-	    } else {
-		value = ValueFactory.createValue(text);
-	    }
+			break;
 
-	    break;
-	default:
-	    value = createValueByType(text, type);
-	}
+		case Types.BIT:
+		case Types.BOOLEAN:
+			value = ValueFactory.createValue(Boolean.valueOf(text)
+					.booleanValue());
 
-	return value;
-    }
+			break;
 
-    /**
-     * Creates a new null Value
-     *
-     * @return NullValue
-     */
-    public static NullValue createNullValue() {
-	return new NullValue();
-    }
+		case Types.CHAR:
+		case Types.VARCHAR:
+		case Types.LONGVARCHAR:
+			value = ValueFactory.createValue(text);
 
-    /**
-     * Dado el tipo que se pasa como par�metro, expresado con una de las
-     * constantes definidas en la clase java.sql.Types se devuelve la clase que
-     * implementa dicho tipo
-     *
-     * @param type
-     *            Tipo de la columna
-     *
-     * @return Clase que implementa el tipo
-     *
-     * @throws RuntimeException
-     *             if type is not recognized
-     */
-    public static Class getType(int type) {
-	switch (type) {
-	case Types.NUMERIC:
-	case Types.BIGINT:
-	    return LongValue.class;
+			break;
 
-	case Types.BIT:
-	    return BooleanValue.class;
+		case Types.DATE:
+			try {
+				value = ValueFactory.createValue(new Date(Date.parse(text)));
+			} catch (IllegalArgumentException e) {
+				throw new ParseException(e.getMessage(), 0);
+			}
+			break;
 
-	case Types.SMALLINT:
-	    return ShortValue.class;
+		case Types.DECIMAL:
+		case Types.NUMERIC:
+		case Types.FLOAT:
+		case Types.DOUBLE:
+			value = ValueFactory.createValue(Double.parseDouble(text));
 
-	case Types.TINYINT:
-	    return ByteValue.class;
+			break;
 
-	case Types.CHAR:
-	case Types.VARCHAR:
-	case Types.LONGVARCHAR:
-	    return StringValue.class;
+		case Types.INTEGER:
+			value = ValueFactory.createValue(Integer.parseInt(text));
 
-	case Types.DATE:
-	    return DateValue.class;
+			break;
 
-	case Types.FLOAT:
-	case Types.DOUBLE:
-	case Types.DECIMAL:
-	    return DoubleValue.class;
+		case Types.REAL:
+			value = ValueFactory.createValue(Float.parseFloat(text));
 
-	case Types.INTEGER:
-	    return IntValue.class;
+			break;
 
-	case Types.REAL:
-	    return FloatValue.class;
+		case Types.SMALLINT:
+			value = ValueFactory.createValue(Short.parseShort(text));
 
-	case Types.BINARY:
-	case Types.VARBINARY:
-	case Types.LONGVARBINARY:
-	    return BinaryValue.class;
+			break;
 
-	case Types.TIMESTAMP:
-	    return TimestampValue.class;
+		case Types.TINYINT:
+			value = ValueFactory.createValue(Byte.parseByte(text));
 
-	case Types.TIME:
-	    return TimeValue.class;
+			break;
 
-	case Types.OTHER:
-	default:
-	    throw new RuntimeException("Type not recognized: " + type);
-	}
-    }
+		case Types.BINARY:
+		case Types.VARBINARY:
+		case Types.LONGVARBINARY:
 
-    /**
-     * Gets a Value with the value v1 plus v2
-     *
-     * @param v1
-     *            first value
-     * @param v2
-     *            second value
-     *
-     * @return a numeric value with the operation
-     */
-    static NumericValue suma(NumericValue v1, NumericValue v2) {
-	int type = Math.max(v1.getType(), v2.getType());
+			if ((text.length() / 2) != (text.length() / 2.0)) {
+				throw new ParseException(
+						"binary fields must have even number of characters.", 0);
+			}
 
-	while (true) {
-	    switch (type) {
-	    /*
-	     * El operador '+' en java no est� definido para byte ni short, as�
-	     * que nosotros tampoco lo definimos. Por otro lado no conocemos
-	     * manera de detectar el overflow al operar con long's ni double's
-	     * de manera eficiente, as� que no se detecta.
-	     */
-	    case BYTE:
-	    case SHORT:
-	    case INTEGER:
+			byte[] array = new byte[text.length() / 2];
 
-		int intValue = v1.intValue() + v2.intValue();
+			for (int i = 0; i < (text.length() / 2); i++) {
+				String byte_ = text.substring(2 * i, (2 * i) + 2);
+				array[i] = (byte) Integer.parseInt(byte_, 16);
+			}
 
-		if ((intValue) != (v1.longValue() + v2.longValue())) {
-		    type = LONG;
+			value = ValueFactory.createValue(array);
 
-		    continue;
-		} else {
-		    return createValue(intValue);
+			break;
+
+		case Types.TIMESTAMP:
+			value = ValueFactory.createValue(Timestamp.valueOf(text));
+
+			break;
+
+		case Types.TIME:
+			DateFormat tf = DateFormat.getTimeInstance();
+			value = ValueFactory
+					.createValue(new Time(tf.parse(text).getTime()));
+
+			break;
+
+		default:
+			value = ValueFactory.createValue(text);
 		}
 
-	    case LONG:
-		return createValue(v1.longValue() + v2.longValue());
+		return value;
+	}
 
-	    case FLOAT:
+	public static Value createValueByType(String text, int type, int length,
+			int decimalCount) throws ParseException {
+		Value value;
 
-		float floatValue = v1.floatValue() + v2.floatValue();
+		switch (type) {
+		case Types.CHAR:
+		case Types.VARCHAR:
+		case Types.LONGVARCHAR:
+			if ((text != null) && (text.length() > length)) {
+				value = ValueFactory.createValue(text.substring(0, length));
+			} else {
+				value = ValueFactory.createValue(text);
+			}
 
-		if ((floatValue) != (v1.doubleValue() + v2.doubleValue())) {
-		    type = DOUBLE;
-
-		    continue;
-		} else {
-		    return createValue(floatValue);
+			break;
+		default:
+			value = createValueByType(text, type);
 		}
 
-	    case DOUBLE:
-		return createValue(v1.doubleValue() + v2.doubleValue());
-	    }
+		return value;
 	}
-    }
 
-    /**
-     * Gets the value of the operation v1 v2
-     *
-     * @param v1
-     *            first value
-     * @param v2
-     *            second value
-     *
-     * @return a numeric value with the operation
-     */
-    static NumericValue producto(NumericValue v1, NumericValue v2) {
-	int type = Math.max(v1.getType(), v2.getType());
+	/**
+	 * Creates a new null Value
+	 *
+	 * @return NullValue
+	 */
+	public static NullValue createNullValue() {
+		return new NullValue();
+	}
 
-	while (true) {
-	    switch (type) {
-	    /*
-	     * El operador '+' en java no est� definido para byte ni short, as�
-	     * que nosotros tampoco lo definimos. Por otro lado no conocemos
-	     * manera de detectar el overflow al operar con long's ni double's
-	     * de manera eficiente, as� que no se detecta.
-	     */
-	    case BYTE:
-	    case SHORT:
-	    case INTEGER:
+	/**
+	 * Dado el tipo que se pasa como par�metro, expresado con una de las
+	 * constantes definidas en la clase java.sql.Types se devuelve la clase que
+	 * implementa dicho tipo
+	 *
+	 * @param type
+	 *            Tipo de la columna
+	 *
+	 * @return Clase que implementa el tipo
+	 *
+	 * @throws RuntimeException
+	 *             if type is not recognized
+	 */
+	public static Class getType(int type) {
+		switch (type) {
+		case Types.NUMERIC:
+		case Types.BIGINT:
+			return LongValue.class;
 
-		int intValue = v1.intValue() * v2.intValue();
+		case Types.BIT:
+			return BooleanValue.class;
 
-		if ((intValue) != (v1.intValue() * v2.intValue())) {
-		    type = LONG;
+		case Types.SMALLINT:
+			return ShortValue.class;
 
-		    continue;
-		} else {
-		    return createValue(intValue);
+		case Types.TINYINT:
+			return ByteValue.class;
+
+		case Types.CHAR:
+		case Types.VARCHAR:
+		case Types.LONGVARCHAR:
+			return StringValue.class;
+
+		case Types.DATE:
+			return DateValue.class;
+
+		case Types.FLOAT:
+		case Types.DOUBLE:
+		case Types.DECIMAL:
+			return DoubleValue.class;
+
+		case Types.INTEGER:
+			return IntValue.class;
+
+		case Types.REAL:
+			return FloatValue.class;
+
+		case Types.BINARY:
+		case Types.VARBINARY:
+		case Types.LONGVARBINARY:
+			return BinaryValue.class;
+
+		case Types.TIMESTAMP:
+			return TimestampValue.class;
+
+		case Types.TIME:
+			return TimeValue.class;
+
+		case Types.OTHER:
+		default:
+			throw new RuntimeException("Type not recognized: " + type);
 		}
+	}
 
-	    case LONG:
-		return createValue(v1.longValue() * v2.longValue());
+	/**
+	 * Gets a Value with the value v1 plus v2
+	 *
+	 * @param v1
+	 *            first value
+	 * @param v2
+	 *            second value
+	 *
+	 * @return a numeric value with the operation
+	 */
+	static NumericValue suma(NumericValue v1, NumericValue v2) {
+		int type = Math.max(v1.getType(), v2.getType());
 
-	    case FLOAT:
+		while (true) {
+			switch (type) {
+			/*
+			 * El operador '+' en java no est� definido para byte ni short,
+			 * as� que nosotros tampoco lo definimos. Por otro lado no
+			 * conocemos manera de detectar el overflow al operar con long's ni
+			 * double's de manera eficiente, as� que no se detecta.
+			 */
+			case BYTE:
+			case SHORT:
+			case INTEGER:
 
-		float floatValue = v1.floatValue() * v2.floatValue();
+				int intValue = v1.intValue() + v2.intValue();
 
-		if ((floatValue) != (v1.doubleValue() * v2.doubleValue())) {
-		    type = DOUBLE;
+				if ((intValue) != (v1.longValue() + v2.longValue())) {
+					type = LONG;
 
-		    continue;
-		} else {
-		    return createValue(floatValue);
+					continue;
+				} else {
+					return createValue(intValue);
+				}
+
+			case LONG:
+				return createValue(v1.longValue() + v2.longValue());
+
+			case FLOAT:
+
+				float floatValue = v1.floatValue() + v2.floatValue();
+
+				if ((floatValue) != (v1.doubleValue() + v2.doubleValue())) {
+					type = DOUBLE;
+
+					continue;
+				} else {
+					return createValue(floatValue);
+				}
+
+			case DOUBLE:
+				return createValue(v1.doubleValue() + v2.doubleValue());
+			}
 		}
-
-	    case DOUBLE:
-		return createValue(v1.doubleValue() * v2.doubleValue());
-	    }
 	}
-    }
 
-    /**
-     * Calcula la inversa (1/v) del valor que se pasa como par�metro.
-     *
-     * @param v
-     *            Valor cuya inversa se quiere obtener
-     *
-     * @return DoubleValue
-     */
-    static NumericValue inversa(NumericValue v) {
-	int type = v.getType();
+	/**
+	 * Gets the value of the operation v1 v2
+	 *
+	 * @param v1
+	 *            first value
+	 * @param v2
+	 *            second value
+	 *
+	 * @return a numeric value with the operation
+	 */
+	static NumericValue producto(NumericValue v1, NumericValue v2) {
+		int type = Math.max(v1.getType(), v2.getType());
 
-	return createValue(1 / v.doubleValue());
-    }
+		while (true) {
+			switch (type) {
+			/*
+			 * El operador '+' en java no est� definido para byte ni short,
+			 * as� que nosotros tampoco lo definimos. Por otro lado no
+			 * conocemos manera de detectar el overflow al operar con long's ni
+			 * double's de manera eficiente, as� que no se detecta.
+			 */
+			case BYTE:
+			case SHORT:
+			case INTEGER:
 
-    /**
-     * Creates a byte array value
-     *
-     * @param bytes
-     *            bytes of the value
-     *
-     * @return
-     */
-    public static BinaryValue createValue(byte[] bytes) {
-	BinaryValue ret = new BinaryValue(bytes);
+				int intValue = v1.intValue() * v2.intValue();
 
-	return ret;
-    }
+				if ((intValue) != (v1.intValue() * v2.intValue())) {
+					type = LONG;
 
-    /**
-     * Creates a complex value based on a xml parseable string
-     *
-     * @param string
-     *
-     * @return new instance of ComplexValue or null???
-     */
-    public static ComplexValue createComplexValue(String string) {
-	try {
-	    return new ComplexValue(string);
+					continue;
+				} else {
+					return createValue(intValue);
+				}
 
-	} catch (Exception e) {
-	    // FIXME: OJO!!! QUE HACEMOS AQUI
-	    return null;
+			case LONG:
+				return createValue(v1.longValue() * v2.longValue());
+
+			case FLOAT:
+
+				float floatValue = v1.floatValue() * v2.floatValue();
+
+				if ((floatValue) != (v1.doubleValue() * v2.doubleValue())) {
+					type = DOUBLE;
+
+					continue;
+				} else {
+					return createValue(floatValue);
+				}
+
+			case DOUBLE:
+				return createValue(v1.doubleValue() * v2.doubleValue());
+			}
+		}
 	}
-    }
 
-    /**
-     * Create a Value instance from a String value using the class specified in
-     * valueName.
-     * <P>
-     *
-     * <code>
-     * Nota: Habria que ver que hacemos con esto... seguimos delegando
-     * o modificar el createValueByType para que delege en esta
-     * </code>
-     * <P>
-     *
-     * @param text
-     *            String representation of value
-     * @param valueName
-     *            class name of the instance of Value to return. It can be the
-     *            class name without the package.
-     * @return a Value instance
-     * @throws ParseException
-     */
-    public static Value createValueByValueName(String text, String valueName)
-	    throws ParseException {
-	String baseName;
-	if (valueName.indexOf(".") > -1) {
-	    baseName = valueName.substring(valueName.lastIndexOf(".") + 1);
-	} else {
-	    baseName = valueName;
+	/**
+	 * Calcula la inversa (1/v) del valor que se pasa como par�metro.
+	 *
+	 * @param v
+	 *            Valor cuya inversa se quiere obtener
+	 *
+	 * @return DoubleValue
+	 */
+	static NumericValue inversa(NumericValue v) {
+		int type = v.getType();
+
+		return createValue(1 / v.doubleValue());
 	}
-	if (baseName.equals("BinaryValue")) {
-	    return createValueByType(text, Types.BINARY);
-	} else if (baseName.equals("BooleanValue")) {
-	    return createValueByType(text, Types.BOOLEAN);
-	} else if (baseName.equals("ByteValue")) {
-	    return createValueByType(text, Types.TINYINT);
-	} else if (baseName.equals("ComplexValue")) {
-	    return createComplexValue(text);
-	} else if (baseName.equals("DateValue")) {
-	    return createValueByType(text, Types.DATE);
-	} else if (baseName.equals("DoubleValue")) {
-	    return createValueByType(text, Types.DOUBLE);
-	} else if (baseName.equals("FloatValue")) {
-	    return createValueByType(text, Types.REAL);
-	} else if (baseName.equals("IntValue")) {
-	    return createValueByType(text, Types.INTEGER);
-	} else if (baseName.equals("LongValue")) {
-	    return createValueByType(text, Types.BIGINT);
-	} else if (baseName.equals("NullValue")) {
-	    return new NullValue();
-	} else if (baseName.equals("ShortValue")) {
-	    return createValueByType(text, Types.SMALLINT);
-	} else if (baseName.equals("StringValue")) {
-	    return createValueByType(text, Types.VARCHAR);
-	} else if (baseName.equals("TimestampValue")) {
-	    return createValueByType(text, Types.TIMESTAMP);
-	} else if (baseName.equals("TimeValue")) {
-	    return createValueByType(text, Types.TIME);
-	} else {
-	    try {
-		Class valueClass = Class.forName(valueName);
-		Constructor constr = valueClass
-			.getConstructor(new Class[] { String.class });
-		return (Value) constr.newInstance(new Object[] { text });
-	    } catch (Exception e) {
-		throw new ParseException(e.getMessage(), 0);
-	    }
+
+	/**
+	 * Creates a byte array value
+	 *
+	 * @param bytes
+	 *            bytes of the value
+	 *
+	 * @return
+	 */
+	public static BinaryValue createValue(byte[] bytes) {
+		BinaryValue ret = new BinaryValue(bytes);
+
+		return ret;
 	}
-    }
+
+	/**
+	 * Creates a complex value based on a xml parseable string
+	 *
+	 * @param string
+	 *
+	 * @return new instance of ComplexValue or null???
+	 */
+	public static ComplexValue createComplexValue(String string) {
+		try {
+			return new ComplexValue(string);
+
+		} catch (Exception e) {
+			// FIXME: OJO!!! QUE HACEMOS AQUI
+			return null;
+		}
+	}
+
+	/**
+	 * Create a Value instance from a String value using the class specified in
+	 * valueName.
+	 * <P>
+	 *
+	 * <code>
+	 * Nota: Habria que ver que hacemos con esto... seguimos delegando
+	 * o modificar el createValueByType para que delege en esta
+	 * </code>
+	 * <P>
+	 *
+	 * @param text
+	 *            String representation of value
+	 * @param valueName
+	 *            class name of the instance of Value to return. It can be the
+	 *            class name without the package.
+	 * @return a Value instance
+	 * @throws ParseException
+	 */
+	public static Value createValueByValueName(String text, String valueName)
+			throws ParseException {
+		String baseName;
+		if (valueName.indexOf(".") > -1) {
+			baseName = valueName.substring(valueName.lastIndexOf(".") + 1);
+		} else {
+			baseName = valueName;
+		}
+		if (baseName.equals("BinaryValue")) {
+			return createValueByType(text, Types.BINARY);
+		} else if (baseName.equals("BooleanValue")) {
+			return createValueByType(text, Types.BOOLEAN);
+		} else if (baseName.equals("ByteValue")) {
+			return createValueByType(text, Types.TINYINT);
+		} else if (baseName.equals("ComplexValue")) {
+			return createComplexValue(text);
+		} else if (baseName.equals("DateValue")) {
+			return createValueByType(text, Types.DATE);
+		} else if (baseName.equals("DoubleValue")) {
+			return createValueByType(text, Types.DOUBLE);
+		} else if (baseName.equals("FloatValue")) {
+			return createValueByType(text, Types.REAL);
+		} else if (baseName.equals("IntValue")) {
+			return createValueByType(text, Types.INTEGER);
+		} else if (baseName.equals("LongValue")) {
+			return createValueByType(text, Types.BIGINT);
+		} else if (baseName.equals("NullValue")) {
+			return new NullValue();
+		} else if (baseName.equals("ShortValue")) {
+			return createValueByType(text, Types.SMALLINT);
+		} else if (baseName.equals("StringValue")) {
+			return createValueByType(text, Types.VARCHAR);
+		} else if (baseName.equals("TimestampValue")) {
+			return createValueByType(text, Types.TIMESTAMP);
+		} else if (baseName.equals("TimeValue")) {
+			return createValueByType(text, Types.TIME);
+		} else {
+			try {
+				Class valueClass = Class.forName(valueName);
+				Constructor constr = valueClass
+						.getConstructor(new Class[] { String.class });
+				return (Value) constr.newInstance(new Object[] { text });
+			} catch (Exception e) {
+				throw new ParseException(e.getMessage(), 0);
+			}
+		}
+	}
 }

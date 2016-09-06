@@ -12,52 +12,53 @@ import org.slf4j.LoggerFactory;
 
 // Based on http://www.mkyong.com/java/how-to-decompress-files-from-a-zip-file/
 public class Unzip {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(Unzip.class);
 
-    public static void unzip(File zipFile, File outputFolder) {
+	public static void unzip(File zipFile, File outputFolder) {
 
-	byte[] buffer = new byte[1024];
+		byte[] buffer = new byte[1024];
 
-	try {
+		try {
 
-	    // create output directory is not exists
-	    if (!outputFolder.exists()) {
-		outputFolder.mkdir();
-	    }
+			// create output directory is not exists
+			if (!outputFolder.exists()) {
+				outputFolder.mkdir();
+			}
 
-	    // get the zip file content
-	    ZipInputStream zis = new ZipInputStream(
-		    new FileInputStream(zipFile));
-	    // get the zipped file list entry
-	    ZipEntry ze = zis.getNextEntry();
+			// get the zip file content
+			ZipInputStream zis = new ZipInputStream(
+					new FileInputStream(zipFile));
+			// get the zipped file list entry
+			ZipEntry ze = zis.getNextEntry();
 
-	    while (ze != null) {
+			while (ze != null) {
+				String fileName = ze.getName();
+				File newFile = new File(outputFolder + File.separator
+						+ fileName);
+				if (ze.isDirectory()) {
+					if (!newFile.isDirectory()) {
+						newFile.mkdir();
+					}
+				} else {
+					FileOutputStream fos = new FileOutputStream(newFile);
 
-		String fileName = ze.getName();
-		File newFile = new File(outputFolder + File.separator
-			+ fileName);
+					int len;
+					while ((len = zis.read(buffer)) > 0) {
+						fos.write(buffer, 0, len);
+					}
 
-		// create all non exists folders
-		// else you will hit FileNotFoundException for compressed folder
-		new File(newFile.getParent()).mkdirs();
+					fos.close();
+				}
 
-		FileOutputStream fos = new FileOutputStream(newFile);
+				ze = zis.getNextEntry();
+			}
 
-		int len;
-		while ((len = zis.read(buffer)) > 0) {
-		    fos.write(buffer, 0, len);
+			zis.closeEntry();
+			zis.close();
+
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
 		}
-
-		fos.close();
-		ze = zis.getNextEntry();
-	    }
-
-	    zis.closeEntry();
-	    zis.close();
-
-	} catch (IOException e) {
-	    logger.error(e.getMessage(), e);
 	}
-    }
 }
