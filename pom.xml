@@ -12,60 +12,60 @@
 	<parent>
 		<groupId>org.gvsig</groupId>
 		<artifactId>org.gvsig.desktop.plugin</artifactId>
-		<version>2.0.100</version>
+		<version>2.0.157</version>
 	</parent>
 
 		<dependencies>
-		
+
 			<dependency>
   				<groupId>junit</groupId>
   				<artifactId>junit</artifactId>
   				<version>4.12</version>
 			</dependency>
-		
-		
-			
+
+
+
 		  <!-- http://mvnrepository.com/artifact/net.java.abeille/abeille -->
 		  <dependency>
                             <groupId>com.jeta</groupId>
                             <artifactId>formsrt</artifactId>
                             <version>2.1.0_M3-1</version>
                         </dependency>
-                        
+
             <!-- https://mvnrepository.com/artifact/com.toedter/jcalendar -->
-            
+
 <dependency>
     <groupId>com.toedter</groupId>
     <artifactId>jcalendar</artifactId>
-    
+
 </dependency>
-                  
-			
-			
+
+
+
 			<dependency>
 				<groupId>org.gvsig</groupId>
 				<artifactId>org.gvsig.andami</artifactId>
 				<scope>compile</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.gvsig</groupId>
 				<artifactId>org.gvsig.app.document.table.app.mainplugin</artifactId>
 				<scope>compile</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.gvsig</groupId>
 				<artifactId>org.gvsig.app.mainplugin</artifactId>
 				<scope>compile</scope>
 			</dependency>
-		
+
 			<dependency>
 				<groupId>org.gvsig</groupId>
 				<artifactId>org.gvsig.fmap.control</artifactId>
 				<scope>compile</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.gvsig</groupId>
 				<artifactId>org.gvsig.fmap.dal.api</artifactId>
@@ -76,7 +76,7 @@
 				<artifactId>org.gvsig.fmap.dal.impl</artifactId>
 				<scope>compile</scope>
 			</dependency>
-		
+
 			<dependency>
 				<groupId>org.gvsig</groupId>
 				<artifactId>org.gvsig.fmap.geometry.api</artifactId>
@@ -88,26 +88,26 @@
 				<artifactId>org.gvsig.fmap.mapcontext.api</artifactId>
 				<scope>compile</scope>
 			</dependency>
-		
+
 			<dependency>
 				<groupId>org.gvsig</groupId>
 				<artifactId>org.gvsig.i18n</artifactId>
 				<scope>compile</scope>
 			</dependency>
-		
+
 			<dependency>
 				<groupId>org.gvsig</groupId>
 				<artifactId>org.gvsig.metadata.lib.basic.api</artifactId>
 				<scope>compile</scope>
 			</dependency>
-		
-		
+
+
 			<dependency>
 				<groupId>org.gvsig</groupId>
 				<artifactId>org.gvsig.metadata.lib.basic.impl</artifactId>
 				<scope>runtime</scope>
 			</dependency>
-			
+
 
 			<dependency>
 				<groupId>org.gvsig</groupId>
@@ -120,7 +120,7 @@
 				<artifactId>org.gvsig.ui</artifactId>
 				<scope>compile</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.gvsig</groupId>
 				<artifactId>org.gvsig.utils</artifactId>
@@ -139,7 +139,7 @@
 				<version>5.0</version>
 			</dependency>
 		</dependencies>
-	
+
 
 
 
