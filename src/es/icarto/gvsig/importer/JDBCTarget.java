@@ -77,8 +77,11 @@ public abstract class JDBCTarget implements Target {
     protected boolean existsInDB(String tablename, String fieldname, String code) {
 
 	ConnectionWrapper conW = new ConnectionWrapper(con);
-	String query = String.format("SELECT %s FROM %s WHERE %s = '%s'",
-		fieldname, tablename, fieldname, code);
+	// Uso upper porque códigos antiguos de la base de datos están en
+	// minúsculas
+	String query = String.format(
+		"SELECT %s FROM %s WHERE upper(%s) = upper('%s')", fieldname,
+		tablename, fieldname, code);
 	DefaultTableModel result = conW.execute(query);
 	return result.getRowCount() > 0;
     }
@@ -116,11 +119,11 @@ public abstract class JDBCTarget implements Target {
     }
 
     protected DefaultTableModel maxCode(String tablename, String codeFieldName,
-	    int ncharacters, String fkValue) {
+	    String fkValue) {
 	ConnectionWrapper conW = new ConnectionWrapper(con);
 
 	String where = String.format("WHERE substr(%s, 1, %d) = '%s'",
-		codeFieldName, ncharacters, fkValue);
+		codeFieldName, fkValue.length(), fkValue);
 	String query = String.format(
 		"SELECT %s from %s %s ORDER BY %s DESC LIMIT 1;",
 		codeFieldName, tablename, where, codeFieldName);

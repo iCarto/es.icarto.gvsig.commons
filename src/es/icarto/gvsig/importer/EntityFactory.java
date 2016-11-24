@@ -92,8 +92,9 @@ public class EntityFactory<T extends Entity> {
     public T closestTo(String pointStr, Entity region) {
 	T entity = getInstance();
 	JDBCUtils jdbcUtils = new JDBCUtils(con);
-	String closestWhere = String.format(" WHERE substr(%s, 1, 6) = '%s'",
-		entity.pkname(), region.getPK());
+	final String regionPK = region.getPK();
+	String closestWhere = String.format(" WHERE substr(%s, 1, %d) = '%s'",
+		entity.pkname(), regionPK.length(), regionPK);
 	DefaultTableModel closest = jdbcUtils.closest(entity.tablename(),
 		pointStr, closestWhere, entity.pkname(), "st_x(geom)",
 		"st_y(geom)");

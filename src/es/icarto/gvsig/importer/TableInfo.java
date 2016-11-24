@@ -32,7 +32,9 @@ public class TableInfo extends AbstractIWindow implements ActionListener {
     public TableInfo(DefaultTableModel tableModel, Ruler ruler) {
 	super(new MigLayout("fill, insets 10"));
 	setWindowTitle("Información procesada");
-	setWindowInfoProperties(WindowInfo.MODALDIALOG | WindowInfo.RESIZABLE);
+	final int wProps = WindowInfo.MODELESSDIALOG | WindowInfo.RESIZABLE
+		| WindowInfo.PALETTE;
+	setWindowInfoProperties(wProps);
 	btPanel = WidgetFactory.okCancelPanel(this, this, this);
 
 	table = new IJTable(tableModel, ruler);

@@ -41,6 +41,18 @@ public class ImporterTM extends DefaultTableModel {
 	return code != null ? code.toString() : "";
     }
 
+    public void setID(Object aValue, int row) {
+	int idx = findColumn("id");
+	String id = aValue == null ? "" : aValue.toString().toUpperCase();
+	super.setValueAt(id, row, idx);
+    }
+
+    public String getID(int row) {
+	int idx = findColumn("id");
+	Object id = super.getValueAt(row, idx);
+	return id != null ? id.toString() : "";
+    }
+
     public void setTarget(Object aValue, int row) {
 	int tablenameIdx = findColumn("Capa destino");
 	super.setValueAt(aValue, row, tablenameIdx);
