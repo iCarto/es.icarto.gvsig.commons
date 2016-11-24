@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import net.miginfocom.swing.MigLayout;
@@ -88,6 +89,10 @@ public class TableInfo extends AbstractIWindow implements ActionListener {
 	    }
 	}
 	return true;
+    }
+
+    public JTable getJTable() {
+	return table;
     }
 
 }
