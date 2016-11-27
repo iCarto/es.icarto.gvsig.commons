@@ -42,6 +42,10 @@ public abstract class Entity {
 	this.geom = factory.createPoint(c);
     }
 
+    public String getDesc() {
+	return desc;
+    }
+
     public void setDesc(String desc) {
 	this.desc = desc;
     }

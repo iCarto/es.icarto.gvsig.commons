@@ -1,5 +1,6 @@
 package es.icarto.gvsig.importer;
 
+import java.sql.Connection;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
@@ -12,13 +13,17 @@ public class ImportManager {
     private final Header header;
     private final Output output;
     private final Ruler ruler;
+    private final Connection con;
 
     public ImportManager(Reader reader, Header header, Output output,
-	    Ruler ruler) {
+	    Ruler ruler, Connection con) {
 	this.reader = reader;
 	this.header = header;
 	this.output = output;
 	this.ruler = ruler;
+
+	// Esto está aquí sólo para obtener el nombre de la comunidad
+	this.con = con;
     }
 
     public void readHeader() {
@@ -32,12 +37,18 @@ public class ImportManager {
 
     public void processFile() {
 	DefaultTableModel table = reader.getValues();
-	ImporterTM importerTM = new ImporterTM();
+
+	ImporterTM importerTM = new ImporterTM(con);
 	importerTM.addColumn("Código");
 
 	addColumn(importerTM, "id", table);
 	addColumn(importerTM, "x", table);
 	addColumn(importerTM, "y", table);
+
+	// Columna que indica el nombre de la comunidad a la que se está
+	// asignando el elemento. Esto debería ser parametrizable. No todoas las
+	// apps lo necesitarán, serán otros nombres, ...
+	importerTM.addColumn("Comunidad");
 
 	importerTM.addColumn("Capa destino");
 	importerTM.addColumn("Geometría destino");

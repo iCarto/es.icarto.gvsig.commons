@@ -76,13 +76,16 @@ public class EntityFactory<T extends Entity> {
 	final String whereClause = String.format("WHERE %s = '%s'",
 		entity.pkname(), pk);
 	String sql = String.format(
-		"SELECT %s, st_x(geom), st_y(geom) FROM %s %s",
-		entity.pkname(), entity.tablename(), whereClause);
+		"SELECT %s, %s, st_x(geom), st_y(geom) FROM %s %s",
+		entity.pkname(), entity.descname(), entity.tablename(),
+		whereClause);
 	DefaultTableModel r = conW.execute(sql);
 	if (r.getRowCount() > 0) {
 	    entity.setPK(r.getValueAt(0, 0).toString());
-	    final String xStr = r.getValueAt(0, 1).toString();
-	    final String yStr = r.getValueAt(0, 2).toString();
+	    final String desc = r.getValueAt(0, 1).toString();
+	    entity.setDesc(desc);
+	    final String xStr = r.getValueAt(0, 2).toString();
+	    final String yStr = r.getValueAt(0, 3).toString();
 	    entity.setGeom(xStr, yStr);
 	    return entity;
 	}

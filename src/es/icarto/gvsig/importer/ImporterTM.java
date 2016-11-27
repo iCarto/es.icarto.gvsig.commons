@@ -1,15 +1,53 @@
 package es.icarto.gvsig.importer;
 
+import java.sql.Connection;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 
+import es.icarto.gvsig.commons.db.ConnectionWrapper;
 import es.icarto.gvsig.commons.utils.Field;
 
 @SuppressWarnings("serial")
 public class ImporterTM extends DefaultTableModel {
+
+    private final Connection con;
+
+    // Esto está aquí sólo por el setComunidadFromCode
+    public ImporterTM(Connection con) {
+	this.con = con;
+    }
+
+    // Esto está aquí sólo por el setComunidadFromCode
+    private String getComunidadCode(String codCom) {
+	ConnectionWrapper conW = new ConnectionWrapper(con);
+
+	String sql_tmp = "SELECT nombre FROM comunidades WHERE cod_com = '%s'";
+	String sql = String.format(sql_tmp, codCom);
+	DefaultTableModel r = conW.execute(sql);
+	String text = "<html>Nombre comunidad: ";
+	if ((r.getRowCount() > 0) && (r.getValueAt(0, 0) != null)) {
+	    String name = r.getValueAt(0, 0).toString();
+	    name = name.trim().isEmpty() ? codCom : name;
+	    text += name;
+	} else {
+	    text += "-";
+	}
+
+	sql_tmp = "SELECT caserio FROM caserios_comunidades WHERE cod_caseri = '%s'";
+	sql = String.format(sql_tmp, codCom);
+	r = conW.execute(sql);
+	text += "<br>Nombre caserío: ";
+	if ((r.getRowCount() > 0) && (r.getValueAt(0, 0) != null)) {
+	    text += r.getValueAt(0, 0).toString();
+	} else {
+	    text += "-";
+	}
+
+	return text + "</html>";
+    }
 
     @Override
     public boolean isCellEditable(int row, int column) {
@@ -32,13 +70,27 @@ public class ImporterTM extends DefaultTableModel {
     }
 
     public void setCode(Object aValue, int row) {
+	int idx = findColumn("Código");
 	String code = aValue == null ? "" : aValue.toString().toUpperCase();
-	super.setValueAt(code, row, 0);
+	super.setValueAt(code, row, idx);
+	setComunidadFromCode(code, row);
     }
 
     public String getCode(int row) {
-	Object code = super.getValueAt(row, 0);
+	int idx = findColumn("Código");
+	Object code = super.getValueAt(row, idx);
 	return code != null ? code.toString() : "";
+    }
+
+    // Esto debería ser parametrizable
+    private void setComunidadFromCode(String code, int row) {
+	int idx = findColumn("Comunidad");
+	String nombreComunidad = "";
+	if (code.length() >= 8) {
+	    String codComunidad = code.substring(0, 8);
+	    nombreComunidad = getComunidadCode(codComunidad);
+	}
+	super.setValueAt(nombreComunidad, row, idx);
     }
 
     public void setID(Object aValue, int row) {
@@ -70,7 +122,8 @@ public class ImporterTM extends DefaultTableModel {
 
     public IGeometry getGeom(int row) {
 	int geomIdx = findColumn("Geometría destino");
-	return (IGeometry) getValueAt(row, geomIdx);
+	final IGeometry geom = (IGeometry) getValueAt(row, geomIdx);
+	return geom.cloneGeometry();
     }
 
     public void setError(List<ImportError> l, int row) {
