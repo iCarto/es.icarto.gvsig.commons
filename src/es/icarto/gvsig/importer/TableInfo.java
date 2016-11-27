@@ -39,7 +39,7 @@ public class TableInfo extends AbstractIWindow implements ActionListener {
 
 	table = new IJTable(tableModel, ruler);
 	MDIFrame mainFrame = (MDIFrame) PluginServices.getMainFrame();
-	table.setTotalWidth(mainFrame.getWidth() - 300);
+	table.setTotalWidth(mainFrame.getWidth() - 250);
 	JScrollPane scrollPane = new JScrollPane(table);
 
 	this.add(scrollPane, "push, grow");

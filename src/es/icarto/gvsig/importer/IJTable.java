@@ -1,5 +1,6 @@
 package es.icarto.gvsig.importer;
 
+import java.awt.Dimension;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class IJTable extends JTable {
 
     public IJTable(DefaultTableModel tableModel, Ruler ruler) {
 	super(tableModel);
+	setRowHeight(getRowHeight() + 15);
 	this.ruler = ruler;
 	// table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	this.getTableHeader().setReorderingAllowed(false);
@@ -32,7 +34,9 @@ public class IJTable extends JTable {
 
     public void setTotalWidth(int totalWidth) {
 	autoFit(totalWidth);
-	this.setPreferredScrollableViewportSize(this.getPreferredSize());
+	final Dimension size = this.getPreferredSize();
+	final Dimension newSize = new Dimension(size.width, size.height + 50);
+	this.setPreferredScrollableViewportSize(newSize);
 	this.setFillsViewportHeight(true);
     }
 
@@ -73,7 +77,16 @@ public class IJTable extends JTable {
 	for (int i = 0; i < this.getRowCount(); i++) {
 	    for (int j = 0; j < this.getColumnCount(); j++) {
 		final Object o = this.getValueAt(i, j);
-		int l = (o == null) ? 0 : o.toString().length();
+		final String text = o.toString();
+
+		int l = (o == null) ? 0 : text.length();
+		if (text.startsWith("<html>")) {
+		    l = l / 2;
+		}
+		if (o instanceof IGeometry) {
+		    l -= 15;
+		}
+
 		if (l > maxLengths[j]) {
 		    maxLengths[j] = l;
 		}
