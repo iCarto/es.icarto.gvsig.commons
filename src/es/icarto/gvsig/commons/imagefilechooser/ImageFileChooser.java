@@ -4,16 +4,18 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
+@SuppressWarnings("serial")
 public class ImageFileChooser extends JFileChooser {
 
-
-    public ImageFileChooser() {
-
+    public ImageFileChooser(File initFile) {
+	super(initFile);
 	this.addChoosableFileFilter(new ImageFilter());
 	this.setAcceptAllFileFilterUsed(false);
-
 	this.setAccessory(new ImagePreview(this));
+    }
 
+    public ImageFileChooser() {
+	this(null);
     }
 
     public File showDialog() {
@@ -27,8 +29,7 @@ public class ImageFileChooser extends JFileChooser {
 
 	    file = getSelectedFile();
 
-
-	}while (file == null);
+	} while (file == null);
 
 	return file;
     }

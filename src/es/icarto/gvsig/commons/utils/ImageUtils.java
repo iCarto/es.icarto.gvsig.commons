@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -39,6 +40,15 @@ public class ImageUtils {
 	return imageBytes;
     }
 
+    public static void byteaToFile(byte[] bytes, File path) throws IOException {
+	FileOutputStream stream = new FileOutputStream(path);
+	try {
+	    stream.write(bytes);
+	} finally {
+	    stream.close();
+	}
+    }
+
     public static byte[] convertImageToBytea(File image) throws IOException {
 	BufferedImage bufferedImage = ImageIO.read(image);
 	return convertImageToBytea(bufferedImage);
@@ -64,6 +74,22 @@ public class ImageUtils {
 	g.dispose();
 
 	return resizedImage;
+    }
+
+    public static BufferedImage resizeImage(BufferedImage image, int width1,
+	    int width2, int height) {
+	BufferedImage imageResized;
+	if (image.getWidth() < width1) {
+	    return image;
+	}
+	if (image.getWidth() > image.getHeight()) {
+	    imageResized = ImageUtils
+		    .resizeImageWithHint(image, width1, height);
+	} else {
+	    imageResized = ImageUtils
+		    .resizeImageWithHint(image, width2, height);
+	}
+	return imageResized;
     }
 
     public static BufferedImage resizeImageWithHint(
@@ -166,28 +192,33 @@ public class ImageUtils {
 
 	int original_width = imgSize.width;
 	int original_height = imgSize.height;
+	double ratio = 1.0 * original_width / original_height;
 	int bound_width = boundary.width;
 	int bound_height = boundary.height;
-	int new_width = original_width;
-	int new_height = original_height;
+	double new_width = original_width;
+	double new_height = original_height;
 
-	// first check if we need to scale width
-	if (original_width > bound_width) {
-	    // scale width to fit
-	    new_width = bound_width;
-	    // scale height to maintain aspect ratio
-	    new_height = (new_width * original_height) / original_width;
+	if (imgSize.equals(boundary)) {
+	    return new Dimension(imgSize);
 	}
+
+	// scale width to fit
+	new_width = bound_width;
+	// scale height to maintain aspect ratio
+	new_height = new_width / ratio;
 
 	// then check if we need to scale even with the new height
 	if (new_height > bound_height) {
 	    // scale height to fit instead
 	    new_height = bound_height;
 	    // scale width to maintain aspect ratio
-	    new_width = (new_height * original_width) / original_height;
+	    new_width = new_height * ratio;
 	}
 
-	return new Dimension(new_width, new_height);
+	Dimension newDim = new Dimension();
+	newDim.setSize(new_width, new_height);
+	return newDim;
+
     }
 
 }
