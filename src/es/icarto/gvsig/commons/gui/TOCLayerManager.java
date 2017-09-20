@@ -22,7 +22,7 @@ public class TOCLayerManager {
 	throw new AssertionError();
     }
 
-    protected TOCLayerManager(MapControl mapControl) {
+    public TOCLayerManager(MapControl mapControl) {
 	this.mapControl = mapControl;
     }
 

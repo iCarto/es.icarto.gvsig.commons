@@ -17,6 +17,10 @@ public abstract class AbstractExtension extends Extension {
 	PluginServices.getIconTheme().registerDefault(iconName, iconUrl);
     }
 
+    protected void registerCursor() {
+	registerIcon(id + ".cursor");
+    }
+
     @Override
     public void initialize() {
 	registerIcon(id);

@@ -17,7 +17,8 @@
 	<classpathentry kind="lib" path="lib/miglayout-core-5.1-20150404.220010-96.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="/libFMap/lib/jts-1.12.jar"/>
-	<classpathentry kind="lib" path="/es.icarto.gvsig.siga/lib/poi-3.10.1-20140818.jar"/>
-	<classpathentry kind="lib" path="/es.icarto.gvsig.siga/lib/poi-ooxml-3.10.1-20140818.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.13-20150929.jar"/>
+	<classpathentry kind="lib" path="lib/poi-ooxml-3.13-20150929.jar"/>
+	<classpathentry kind="src" path="/libCorePlugin"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
