@@ -15,7 +15,11 @@ public class I18n {
 	private final static boolean LOG_FAILED_TRANSLATIONS = false;
 
 	public static String _(String text) {
-		return Messages.getText(text, LOG_FAILED_TRANSLATIONS);
+		if (Messages.getText(text, LOG_FAILED_TRANSLATIONS) == null) {
+			return text;
+		} else {
+			return Messages.getText(text, LOG_FAILED_TRANSLATIONS);
+		}
 	}
 
 	public static String _(String text, Object... args) {
