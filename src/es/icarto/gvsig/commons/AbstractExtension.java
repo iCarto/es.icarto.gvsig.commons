@@ -32,7 +32,7 @@ public abstract class AbstractExtension extends Extension {
     }
 
     /**
-     * Returns the active window if is a View. Returns null elsewhere
+     * @return the active window if is a View. Returns null elsewhere
      */
     protected View getView() {
 	IWindow iWindow = PluginServices.getMDIManager().getActiveWindow();
@@ -40,6 +40,14 @@ public abstract class AbstractExtension extends Extension {
 	    return (View) iWindow;
 	}
 	return null;
+    }
+
+    /**
+     *
+     * @return true if the active window is a View
+     */
+    protected boolean isViewActive() {
+	return getView() != null;
     }
 
 }

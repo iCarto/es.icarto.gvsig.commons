@@ -112,7 +112,7 @@ public class ImageUtils {
 	return resizedImage;
     }
 
-    public static ImageIcon getScaled(String path, Dimension boundary) {
+    public static BufferedImage pathToImage(String path) {
 	BufferedImage read;
 	try {
 	    URL sourceFile = new URL("file:" + path);
@@ -124,31 +124,15 @@ public class ImageUtils {
 	    logger.error(e.getStackTrace(), e);
 	    return null;
 	}
-
-	Dimension imgSize = new Dimension(read.getWidth(), read.getHeight());
-	Dimension scaledSize = getScaledDimension(imgSize, boundary);
-	if (scaledSize.equals(imgSize)) {
-	    return new ImageIcon(read);
-	} else {
-	    Image scaled = read.getScaledInstance((int) scaledSize.getWidth(),
-		    (int) scaledSize.getHeight(), Image.SCALE_SMOOTH);
-	    return new ImageIcon(scaled);
-	}
+	return read;
     }
 
-    public static Image getScaledAsImage(String path, Dimension boundary) {
-	BufferedImage read;
-	try {
-	    URL sourceFile = new URL("file:" + path);
-	    read = ImageIO.read(sourceFile);
-	} catch (MalformedURLException e) {
-	    logger.error(e.getStackTrace(), e);
-	    return null;
-	} catch (IOException e) {
-	    logger.error(e.getStackTrace(), e);
-	    return null;
-	}
+    public static ImageIcon getScaled(String path, Dimension boundary) {
+	BufferedImage read = pathToImage(path);
+	return new ImageIcon(getScaled(read, boundary));
+    }
 
+    public static Image getScaled(BufferedImage read, Dimension boundary) {
 	Dimension imgSize = new Dimension(read.getWidth(), read.getHeight());
 	Dimension scaledSize = getScaledDimension(imgSize, boundary);
 	if (scaledSize.equals(imgSize)) {
@@ -156,8 +140,14 @@ public class ImageUtils {
 	} else {
 	    Image scaled = read.getScaledInstance((int) scaledSize.getWidth(),
 		    (int) scaledSize.getHeight(), Image.SCALE_SMOOTH);
+
 	    return scaled;
 	}
+    }
+
+    public static Image getScaledAsImage(String path, Dimension boundary) {
+	BufferedImage read = pathToImage(path);
+	return getScaled(read, boundary);
     }
 
     public static BufferedImage getRenderedImage(Image in) {

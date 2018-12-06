@@ -12,7 +12,6 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
  * The api of this class will change in the future. If you are going to use it
  * explain your use case first
  */
-@Deprecated
 public class TOCLayerManager {
 
     private MapControl mapControl = null;
@@ -24,6 +23,21 @@ public class TOCLayerManager {
 
     public TOCLayerManager(MapControl mapControl) {
 	this.mapControl = mapControl;
+    }
+
+    public boolean hasLayer(String layerName) {
+	return getVectorialLayerByName(layerName) != null;
+    }
+
+    public FLyrVect getVectorialLayerByName(String layerName) {
+	List<FLyrVect> layers = getAllLayers(FLyrVect.class);
+	for (FLyrVect layer : layers) {
+	    if (hasName(layer, layerName)) {
+		return layer;
+	    }
+	}
+
+	return null;
     }
 
     public FLyrVect getActiveLayer() {
