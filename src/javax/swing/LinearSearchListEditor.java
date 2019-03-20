@@ -1,6 +1,8 @@
 package javax.swing;
 
 import java.text.ParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.text.AttributeSet;
@@ -17,6 +19,8 @@ import javax.swing.text.DocumentFilter;
 public class LinearSearchListEditor extends DefaultEditor {
 
     private static final long serialVersionUID = 1L;
+
+    private final Pattern pattern;
 
     /**
      * Construct a <code>JSpinner</code> editor that supports displaying and
@@ -35,14 +39,19 @@ public class LinearSearchListEditor extends DefaultEditor {
      * @see #getModel
      * @see SpinnerListModel
      */
-    public LinearSearchListEditor(JSpinner spinner) {
+    public LinearSearchListEditor(JSpinner spinner, String pattern) {
 	super(spinner);
+	this.pattern = pattern != null ? Pattern.compile("^" + pattern) : null;
 	if (!(spinner.getModel() instanceof SpinnerListModel)) {
 	    throw new IllegalArgumentException("model not a SpinnerListModel");
 	}
 	getTextField().setEditable(true);
 	getTextField().setFormatterFactory(
 		new DefaultFormatterFactory(new ListFormatter()));
+    }
+
+    public LinearSearchListEditor(JSpinner spinner) {
+	this(spinner, null);
     }
 
     /**
@@ -94,6 +103,7 @@ public class LinearSearchListEditor extends DefaultEditor {
 	}
 
 	private class Filter extends javax.swing.text.DocumentFilter {
+
 	    @Override
 	    public void replace(FilterBypass fb, int offset, int length,
 		    String string, AttributeSet attrs)
@@ -112,14 +122,26 @@ public class LinearSearchListEditor extends DefaultEditor {
 			return;
 		    }
 		}
-		super.replace(fb, offset, length, string, attrs);
+		if (pattern == null) {
+		    super.replace(fb, offset, length, string, attrs);
+		    return;
+		}
+		Matcher matcher = pattern.matcher(fb.getDocument().getText(0,
+			offset)
+			+ string);
+		if (matcher.find()) {
+		    super.replace(fb, offset, length, matcher.group(0)
+			    .substring(offset), attrs);
+		} else {
+		    super.replace(fb, offset, length, "", attrs);
+		}
 	    }
 
 	    @Override
 	    public void insertString(FilterBypass fb, int offset,
 		    String string, AttributeSet attr)
 		    throws BadLocationException {
-		replace(fb, offset, 0, string, attr);
+		replace(fb, offset, 0, string.replaceAll("\\D++", ""), attr);
 	    }
 	}
     }
