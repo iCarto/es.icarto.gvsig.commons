@@ -21,7 +21,7 @@ import com.iver.andami.ui.mdiManager.WindowInfo;
  *
  */
 public abstract class AbstractIWindow extends JPanel implements IWindow,
-	IWindowListener {
+IWindowListener {
 
     private WindowInfo windowInfo;
     private String title = "";
@@ -44,10 +44,7 @@ public abstract class AbstractIWindow extends JPanel implements IWindow,
 		getRootPane().setDefaultButton(getDefaultButton());
 	    }
 	    // getRootPane().setFocusTraversalPolicyProvider(true);
-	    setFocusCycleRoot(true);
-	    if (getDefaultFocusComponent() != null) {
-		getDefaultFocusComponent().requestFocusInWindow();
-	    }
+
 	} else {
 	    // Si la ventana es modal el código se queda bloqueado tras añadir
 	    // la ventana hasta que el usuario la cierra, y antes de que la
@@ -56,6 +53,22 @@ public abstract class AbstractIWindow extends JPanel implements IWindow,
 	    // se haga algo un poco distinto
 	    PluginServices.getMDIManager().addCentredWindow(this);
 	}
+	setFocusCycleRoot(true);
+	if (getDefaultFocusComponent() != null) {
+	    getDefaultFocusComponent().requestFocusInWindow();
+	}
+    }
+
+    public void setOnRightUpperCorner() {
+	IWindow view = PluginServices.getMDIManager().getActiveWindow();
+	WindowInfo viewWindowInfo = PluginServices.getMDIManager()
+		.getWindowInfo(view);
+	WindowInfo windowInfo = this.getWindowInfo();
+	int x = viewWindowInfo.getX() + viewWindowInfo.getWidth()
+		- windowInfo.getWidth();
+	int y = viewWindowInfo.getY();
+	windowInfo.setX(x > 0 ? x : 0);
+	windowInfo.setY(y > 0 ? y : 0);
     }
 
     protected abstract JButton getDefaultButton();
