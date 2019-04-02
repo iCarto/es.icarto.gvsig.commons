@@ -3,11 +3,10 @@ package es.icarto.gvsig.commons.map;
 import java.awt.Color;
 
 import com.iver.cit.gvsig.fmap.MapControl;
-import com.iver.cit.gvsig.fmap.core.FShape;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.core.ShapeFactory;
 import com.iver.cit.gvsig.fmap.core.SymbologyFactory;
-import com.iver.cit.gvsig.fmap.core.symbols.ISymbol;
+import com.iver.cit.gvsig.fmap.core.symbols.IMarkerSymbol;
 import com.iver.cit.gvsig.fmap.layers.GraphicLayer;
 import com.iver.cit.gvsig.fmap.rendering.FGraphic;
 
@@ -16,6 +15,7 @@ public class OverlayPoint {
     private final MapControl mapControl;
     private final GraphicLayer lyr;
     private Color color = Color.red;
+    private double size = 4;
 
     public OverlayPoint(MapControl mapControl) {
 	this.mapControl = mapControl;
@@ -35,10 +35,11 @@ public class OverlayPoint {
 
     private void drawPoint(double x, double y) {
 	lyr.clearAllGraphics();
-	ISymbol theSymbol = SymbologyFactory.createDefaultSymbolByShapeType(
-		FShape.POINT, color);
+	IMarkerSymbol symbol = SymbologyFactory.createDefaultMarkerSymbol();
+	symbol.setColor(color);
+	symbol.setSize(size);
 
-	int idSymbol = lyr.addSymbol(theSymbol);
+	int idSymbol = lyr.addSymbol(symbol);
 	IGeometry geom = ShapeFactory.createPoint2D(x, y);
 	FGraphic theGraphic = new FGraphic(geom, idSymbol);
 	lyr.addGraphic(theGraphic);
@@ -55,6 +56,10 @@ public class OverlayPoint {
 
     public void setColor(Color color) {
 	this.color = color;
+    }
+
+    public void setSize(double size) {
+	this.size = size;
     }
 
 }
