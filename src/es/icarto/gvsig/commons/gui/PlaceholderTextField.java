@@ -47,6 +47,7 @@ public class PlaceholderTextField extends JTextField implements FocusListener {
 
     public void setPlaceholder(final String s) {
 	placeholder = s;
+	repaint();
     }
 
     @Override
