@@ -129,11 +129,11 @@ IWindowListener {
 		return wInfo;
 	}
 
-	protected void setWindowTitle(String title) {
+	public void setWindowTitle(String title) {
 		this.title = _(title);
 	}
 
-	protected void setWindowInfoProperties(int properties) {
+	public void setWindowInfoProperties(int properties) {
 		this.windowInfoProperties = properties;
 	}
 
