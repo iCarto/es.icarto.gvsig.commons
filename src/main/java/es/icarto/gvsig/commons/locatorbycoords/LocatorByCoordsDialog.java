@@ -24,7 +24,7 @@ import es.icarto.gvsig.commons.utils.Style;
 
 @SuppressWarnings("serial")
 public class LocatorByCoordsDialog extends AbstractIWindow implements
-DocumentListener {
+		DocumentListener {
 
 	private final static int WIDGET_SIZE = 23;
 	private final LocatorByCoordsModel model;
@@ -56,7 +56,6 @@ DocumentListener {
 		// setupMagicField();
 		setupInput();
 		setupOuput();
-		setupZoomBt();
 	}
 
 	private void setupMagicField() {
@@ -132,10 +131,6 @@ DocumentListener {
 				valueChanged();
 			}
 		});
-	}
-
-	private void setupZoomBt() {
-		addButton(new LocatonByCoordsZoomButton(model));
 	}
 
 	public void addButton(LocatorByCoordsButton bt) {
