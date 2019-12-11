@@ -20,5 +20,7 @@
 	<classpathentry kind="lib" path="lib/poi-3.13-20150929.jar"/>
 	<classpathentry kind="lib" path="lib/poi-ooxml-3.13-20150929.jar"/>
 	<classpathentry kind="src" path="/libCorePlugin"/>
+	<classpathentry kind="src" path="/extSymbology"/>
+	<classpathentry kind="lib" path="/_fwAndami/lib/castor-0.9.5.3-xml.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
