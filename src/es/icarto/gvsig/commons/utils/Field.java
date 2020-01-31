@@ -106,7 +106,11 @@ public class Field implements Comparable<Field> {
     public int compareTo(Field o) {
 	Collator usCollator = Collator.getInstance();
 	usCollator.setStrength(Collator.IDENTICAL);
-	return usCollator.compare(longName, o.longName);
+	int comparison = usCollator.compare(longName, o.longName);
+	if (comparison == 0) {
+	    comparison = usCollator.compare(column, o.column);
+	}
+	return comparison;
     }
 
 }
