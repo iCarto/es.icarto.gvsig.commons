@@ -137,4 +137,8 @@ public class TOCLayerManager {
     public boolean isFLayers(final FLayer layer) {
 	return layer instanceof FLayers;
     }
+
+    public FLayers getFLayers() {
+	return mapControl.getMapContext().getLayers();
+    }
 }
