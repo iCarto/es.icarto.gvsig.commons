@@ -6,13 +6,11 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
-import org.gvsig.andami.PluginServices;
 import org.gvsig.andami.messages.NotificationManager;
+import org.gvsig.andami.ui.mdiManager.MDIManagerFactory;
 import org.gvsig.app.ApplicationLocator;
 import org.gvsig.app.gui.filter.ExpressionListener;
 import org.gvsig.app.gui.filter.FilterDialog;
-import org.gvsig.fmap.dal.DALLocator;
-import org.gvsig.fmap.dal.DataManager;
 import org.gvsig.fmap.dal.exception.DataException;
 import org.gvsig.fmap.dal.feature.Feature;
 import org.gvsig.fmap.dal.feature.FeatureQuery;
@@ -31,7 +29,7 @@ public class SelectByAttributes implements ExpressionListener {
 	private String filterTitle;
 
 	public void execute() {
-		FilterDialog dlg = new FilterDialog(filterTitle);
+		final FilterDialog dlg = new FilterDialog(this.filterTitle);
 		dlg.addExpressionListener(this);
 		dlg.addExceptionListener(new ExceptionListener() {
 
@@ -40,8 +38,8 @@ public class SelectByAttributes implements ExpressionListener {
 				NotificationManager.addError(t.getMessage(), t);
 			}
 		});
-		dlg.setModel(featureStore);
-		PluginServices.getMDIManager().addWindow(dlg);
+		dlg.setModel(this.featureStore);
+		MDIManagerFactory.getManager().addWindow(dlg);
 	}
 
 	// By Pablo: if no filter expression -> no element selected
@@ -56,13 +54,12 @@ public class SelectByAttributes implements ExpressionListener {
 					// throw new RuntimeException("Not a 'where' clause?");
 					return;
 				}
-				featureStore.setSelection(set);
+				this.featureStore.setSelection(set);
 
-			} catch (Exception e) {
+			} catch (final Exception e) {
 
-				JOptionPane.showMessageDialog(ApplicationLocator.getManager()
-						.getRootComponent(), _("expresion_error") + ":\n"
-						+ getLastMessage(e), _("expresion_error"),
+				JOptionPane.showMessageDialog(ApplicationLocator.getManager().getRootComponent(),
+						_("expresion_error") + ":\n" + getLastMessage(e), _("expresion_error"),
 						JOptionPane.ERROR_MESSAGE);
 			} finally {
 				if (set != null) {
@@ -71,13 +68,13 @@ public class SelectByAttributes implements ExpressionListener {
 			}
 		} else {
 			// By Pablo: if no expression -> no element selected
-			featureStore.getFeatureSelection().deselectAll();
+			this.featureStore.getFeatureSelection().deselectAll();
 		}
 	}
 
 	private FeatureSet doSet(String expression) throws DataException {
-		FeatureQuery query = featureStore.createFeatureQuery(expression, "", false);
-		return featureStore.getFeatureSet(query);
+		final FeatureQuery query = this.featureStore.createFeatureQuery(expression, "", false);
+		return this.featureStore.getFeatureSet(query);
 	}
 
 	@Override
@@ -92,7 +89,7 @@ public class SelectByAttributes implements ExpressionListener {
 					// throw new RuntimeException("Not a 'where' clause?");
 					return;
 				}
-				featureStore.getFeatureSelection().select(set);
+				this.featureStore.getFeatureSelection().select(set);
 			} finally {
 				if (set != null) {
 					set.dispose();
@@ -116,39 +113,36 @@ public class SelectByAttributes implements ExpressionListener {
 					throw new RuntimeException("Not a 'where' clause?");
 				}
 
-				FeatureSelection oldSelection = featureStore
-						.getFeatureSelection();
+				final FeatureSelection oldSelection = this.featureStore.getFeatureSelection();
 
-				FeatureSelection newSelection = featureStore
-						.createFeatureSelection();
-				Iterator iterator = set.iterator();
+				final FeatureSelection newSelection = this.featureStore.createFeatureSelection();
+				final Iterator iterator = set.iterator();
 				while (iterator.hasNext()) {
-					Feature feature = (Feature) iterator.next();
+					final Feature feature = (Feature) iterator.next();
 					if (oldSelection.isSelected(feature)) {
 						newSelection.select(feature);
 					}
 				}
-				featureStore.setSelection(newSelection);
+				this.featureStore.setSelection(newSelection);
 				set.dispose();
 
 			} else {
 				// By Pablo: if no expression -> no element selected
-				featureStore.getFeatureSelection().deselectAll();
-				;
+				this.featureStore.getFeatureSelection().deselectAll();
+
 			}
-		} catch (DataException e) {
+		} catch (final DataException e) {
 			NotificationManager.addError(e);
 		}
 
 	}
 
 	/**
-	 * Returns true if the WHERE subconsultation of the filterExpression is
-	 * empty ("")
+	 * Returns true if the WHERE subconsultation of the filterExpression is empty
+	 * ("")
 	 *
 	 * @author Pablo Piqueras Bartolom� (p_queras@hotmail.com)
-	 * @param expression
-	 *            An string
+	 * @param expression An string
 	 * @return A boolean value
 	 */
 	private boolean filterExpressionFromWhereIsEmpty(String expression) {
@@ -167,8 +161,7 @@ public class SelectByAttributes implements ExpressionListener {
 
 		// Remove last ';' if exists
 		if (subExpression.charAt(subExpression.length() - 1) == ';') {
-			subExpression = subExpression.substring(0,
-					subExpression.length() - 1).trim();
+			subExpression = subExpression.substring(0, subExpression.length() - 1).trim();
 		}
 
 		// If there is no 'where' clause
@@ -178,8 +171,7 @@ public class SelectByAttributes implements ExpressionListener {
 
 		// If there is no subexpression in the WHERE clause -> true
 		// + 5 is the length of 'where'
-		subExpression = subExpression
-				.substring(pos + 5, subExpression.length()).trim();
+		subExpression = subExpression.substring(pos + 5, subExpression.length()).trim();
 		if (subExpression.length() == 0) {
 			return true;
 		} else {
