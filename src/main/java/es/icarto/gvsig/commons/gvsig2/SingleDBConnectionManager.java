@@ -25,8 +25,7 @@ public class SingleDBConnectionManager {
 
 	private final Map<String, ConnectionWithParams> list = new HashMap<String, ConnectionWithParams>();
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(SingleDBConnectionManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(SingleDBConnectionManager.class);
 
 	private final static SingleDBConnectionManager ins = new SingleDBConnectionManager();
 
@@ -40,8 +39,7 @@ public class SingleDBConnectionManager {
 	public void closeAndRemove(ConnectionWithParams conwp) {
 		ConnectionWithParams cwp = list.get(conwp.getName());
 		if (cwp != null) {
-			ResourceManagerProviderServices manager = (ResourceManagerProviderServices) DALLocator
-					.getResourceManager();
+			ResourceManagerProviderServices manager = (ResourceManagerProviderServices) DALLocator.getResourceManager();
 			try {
 				manager.remove(cwp.getResource());
 			} catch (DataException e) {
@@ -50,41 +48,36 @@ public class SingleDBConnectionManager {
 			cwp.closeResource();
 
 			DataManager dataManager = DALLocator.getDataManager();
-			DataServerExplorerPool pool = dataManager
-					.getDataServerExplorerPool();
+			DataServerExplorerPool pool = dataManager.getDataServerExplorerPool();
 			pool.remove(conwp.getName());
 		}
 	}
 
 	/**
-	 * El identificador de conexiones es "conName" a todos los efectos Crea un
-	 * nuevo DataServerExplorerParameters al pool si es necesario (Para usar en
-	 * el panel de conexión a base de datos)
+	 * El identificador de conexiones es "conName" a todos los efectos Crea un nuevo
+	 * DataServerExplorerParameters al pool si es necesario (Para usar en el panel
+	 * de conexión a base de datos)
 	 */
-	public ConnectionWithParams getConnection(String storeProviderName,
-			String serverExplorerName, String resourceName, String username,
-			String password, String conName, String server, int port,
-			String database, String schema, boolean connect) throws Exception {
+	public ConnectionWithParams getConnection(String storeProviderName, String serverExplorerName, String resourceName,
+			String username, String password, String conName, String server, int port, String database, String schema,
+			boolean connect) throws Exception {
 
 		ConnectionWithParams cwp = list.get(conName);
 		if (cwp != null) {
 			return cwp;
 		}
-		JDBCServerExplorerParameters serverExplorerParams = createServerExplorerParams(
-				conName, serverExplorerName, server, port, database, username,
-				password, schema);
+		JDBCServerExplorerParameters serverExplorerParams = createServerExplorerParams(conName, serverExplorerName,
+				server, port, database, username, password, schema);
 		// JDBCResource resource = createResource(serverExplorerParams,
 		// resourceName);
 		Connection con = createConnection(serverExplorerParams);
 
 		// return new ConnectionWithParams(serverExplorerParams, resource,
 		// storeProviderName, conName);
-		return new ConnectionWithParams(serverExplorerParams, con,
-				storeProviderName, conName);
+		return new ConnectionWithParams(serverExplorerParams, con, storeProviderName, conName);
 	}
 
-	private Connection createConnection(
-			JDBCServerExplorerParameters serverExplorerParams) throws Exception {
+	private Connection createConnection(JDBCServerExplorerParameters serverExplorerParams) throws Exception {
 
 		Class klass = Class.forName("org.postgresql.Driver");
 
@@ -94,16 +87,14 @@ public class SingleDBConnectionManager {
 		String url = "jdbc:postgresql://" + host + ":" + port + "/" + db;
 		Connection con = null;
 
-		con = DriverManager.getConnection(url, serverExplorerParams.getUser(),
-				serverExplorerParams.getPassword());
+		con = DriverManager.getConnection(url, serverExplorerParams.getUser(), serverExplorerParams.getPassword());
 		con.setAutoCommit(true);
 
 		return con;
 	}
 
-	private JDBCServerExplorerParameters createServerExplorerParams(
-			String conName, String serverExplorerName, String server, int port,
-			String database, String username, String password, String schema)
+	private JDBCServerExplorerParameters createServerExplorerParams(String conName, String serverExplorerName,
+			String server, int port, String database, String username, String password, String schema)
 			throws DataException {
 		DataManager dataManager = DALLocator.getDataManager();
 
@@ -123,8 +114,7 @@ public class SingleDBConnectionManager {
 		if (params != null) {
 			return (JDBCServerExplorerParameters) params;
 		} else {
-			params = dataManager
-					.createServerExplorerParameters(serverExplorerName);
+			params = dataManager.createServerExplorerParameters(serverExplorerName);
 			params.setDynValue(DBParameters.HOST_PARAMTER_NAME, server);
 			params.setDynValue(DBParameters.PORT_PARAMTER_NAME, port);
 			params.setDynValue(DBParameters.DBNAME_PARAMTER_NAME, database);
@@ -138,44 +128,43 @@ public class SingleDBConnectionManager {
 		return (JDBCServerExplorerParameters) params;
 	}
 
-	private JDBCResource createResource(JDBCServerExplorerParameters params,
-			String resourceName) throws DataException {
+	private JDBCResource createResource(JDBCServerExplorerParameters params, String resourceName) throws DataException {
 
 		// Class klass = null;
 		// try {
 		// klass = Class.forName("org.postgresql.Driver");
 		// } catch (ClassNotFoundException e) {
 		// logger.error(e.getMessage(), e);
-		// System.out.println("*************************** NOT FOUND ********************");
-		// System.out.println("*************************** NOT FOUND ********************");
-		// System.out.println("*************************** NOT FOUND ********************");
-		// System.out.println("*************************** NOT FOUND ********************");
+		// System.out.println("*************************** NOT FOUND
+		// ********************");
+		// System.out.println("*************************** NOT FOUND
+		// ********************");
+		// System.out.println("*************************** NOT FOUND
+		// ********************");
+		// System.out.println("*************************** NOT FOUND
+		// ********************");
 		// }
 		// if (klass == null) {
-		// System.out.println("*************************** NOT FOUND ********************");
-		// System.out.println("*************************** NOT FOUND ********************");
-		// System.out.println("*************************** NOT FOUND ********************");
-		// System.out.println("*************************** NOT FOUND ********************");
+		// System.out.println("*************************** NOT FOUND
+		// ********************");
+		// System.out.println("*************************** NOT FOUND
+		// ********************");
+		// System.out.println("*************************** NOT FOUND
+		// ********************");
+		// System.out.println("*************************** NOT FOUND
+		// ********************");
 		// }
 
-		ResourceManagerProviderServices manager = (ResourceManagerProviderServices) DALLocator
-				.getResourceManager();
-		ResourceParameters resourceParams = (ResourceParameters) manager
-				.createParameters(resourceName);
+		ResourceManagerProviderServices manager = (ResourceManagerProviderServices) DALLocator.getResourceManager();
+		ResourceParameters resourceParams = (ResourceParameters) manager.createParameters(resourceName);
 		// resourceParams.setDynValue(JDBCResourceParameters.URL_PARAMTER_NAME,
 		// params.getUrl());
-		resourceParams.setDynValue(DBParameters.HOST_PARAMTER_NAME,
-				params.getHost());
-		resourceParams.setDynValue(DBParameters.PORT_PARAMTER_NAME,
-				params.getPort());
-		resourceParams.setDynValue(DBParameters.DBNAME_PARAMTER_NAME,
-				params.getDBName());
-		resourceParams.setDynValue(DBParameters.USER_PARAMTER_NAME,
-				params.getUser());
-		resourceParams.setDynValue(DBParameters.PASSWORD_PARAMTER_NAME,
-				params.getPassword());
-		resourceParams.setDynValue(
-				JDBCConnectionParameters.JDBC_DRIVER_CLASS_PARAMTER_NAME,
+		resourceParams.setDynValue(DBParameters.HOST_PARAMTER_NAME, params.getHost());
+		resourceParams.setDynValue(DBParameters.PORT_PARAMTER_NAME, params.getPort());
+		resourceParams.setDynValue(DBParameters.DBNAME_PARAMTER_NAME, params.getDBName());
+		resourceParams.setDynValue(DBParameters.USER_PARAMTER_NAME, params.getUser());
+		resourceParams.setDynValue(DBParameters.PASSWORD_PARAMTER_NAME, params.getPassword());
+		resourceParams.setDynValue(JDBCConnectionParameters.JDBC_DRIVER_CLASS_PARAMTER_NAME,
 				params.getJDBCDriverClassName());
 		ResourceProvider resource = manager.createAddResource(resourceParams);
 

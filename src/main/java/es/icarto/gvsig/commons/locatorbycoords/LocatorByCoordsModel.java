@@ -63,8 +63,8 @@ public class LocatorByCoordsModel {
 	}
 
 	/*
-	 * Valdrá true justo después de hacer zoom, y false cada vez que se
-	 * modifique algo en el diálogo sin hacer zoom
+	 * Valdrá true justo después de hacer zoom, y false cada vez que se modifique
+	 * algo en el diálogo sin hacer zoom
 	 */
 	public void setZoomed(boolean b) {
 		zoomed = b;
@@ -75,8 +75,7 @@ public class LocatorByCoordsModel {
 		return this.zoomed;
 	}
 
-	public void updateState(boolean validX, boolean validY,
-			CoordProvider iProv, CoordProvider oProv, GPoint point,
+	public void updateState(boolean validX, boolean validY, CoordProvider iProv, CoordProvider oProv, GPoint point,
 			boolean zoomed) {
 		this.point = point;
 		this.zoomed = zoomed;

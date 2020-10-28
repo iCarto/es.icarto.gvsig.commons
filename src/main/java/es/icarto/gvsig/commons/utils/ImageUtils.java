@@ -41,8 +41,8 @@ public class ImageUtils {
 		if (scaledSize.equals(imgSize)) {
 			return new ImageIcon(read);
 		} else {
-			Image scaled = read.getScaledInstance((int) scaledSize.getWidth(),
-					(int) scaledSize.getHeight(), Image.SCALE_SMOOTH);
+			Image scaled = read.getScaledInstance((int) scaledSize.getWidth(), (int) scaledSize.getHeight(),
+					Image.SCALE_SMOOTH);
 			return new ImageIcon(scaled);
 		}
 	}
@@ -65,8 +65,8 @@ public class ImageUtils {
 		if (scaledSize.equals(imgSize)) {
 			return read;
 		} else {
-			Image scaled = read.getScaledInstance((int) scaledSize.getWidth(),
-					(int) scaledSize.getHeight(), Image.SCALE_SMOOTH);
+			Image scaled = read.getScaledInstance((int) scaledSize.getWidth(), (int) scaledSize.getHeight(),
+					Image.SCALE_SMOOTH);
 			return scaled;
 		}
 	}
@@ -82,8 +82,7 @@ public class ImageUtils {
 		return out;
 	}
 
-	public static ByteArrayInputStream toInputStream(BufferedImage image)
-			throws IOException {
+	public static ByteArrayInputStream toInputStream(BufferedImage image) throws IOException {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		ImageIO.write(image, "png", os);
 		os.flush();
@@ -91,15 +90,14 @@ public class ImageUtils {
 	}
 
 	/**
-	 * http://stackoverflow.com/a/10245583/930271 Returns a Dimension that fits
-	 * on boundary keeping the aspect ratio of imgSize
+	 * http://stackoverflow.com/a/10245583/930271 Returns a Dimension that fits on
+	 * boundary keeping the aspect ratio of imgSize
 	 *
 	 * @param imgSize
 	 * @param boundary
 	 * @return
 	 */
-	public static Dimension getScaledDimension(Dimension imgSize,
-			Dimension boundary) {
+	public static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
 
 		int original_width = imgSize.width;
 		int original_height = imgSize.height;
@@ -127,8 +125,7 @@ public class ImageUtils {
 		return new Dimension(new_width, new_height);
 	}
 
-	public static byte[] convertImageToBytea(BufferedImage image)
-			throws IOException {
+	public static byte[] convertImageToBytea(BufferedImage image) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ImageIO.write(image, "png", baos);
 		baos.flush();
@@ -152,10 +149,8 @@ public class ImageUtils {
 		return null;
 	}
 
-	public static BufferedImage resizeImage(BufferedImage originalImage,
-			int width, int height) {
-		int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB
-				: originalImage.getType();
+	public static BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
+		int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
 		BufferedImage resizedImage = new BufferedImage(width, height, type);
 		Graphics2D g = resizedImage.createGraphics();
 		g.drawImage(originalImage, 0, 0, width, height, null);
@@ -164,22 +159,17 @@ public class ImageUtils {
 		return resizedImage;
 	}
 
-	public static BufferedImage resizeImageWithHint(
-			BufferedImage originalImage, int width, int height) {
-		int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB
-				: originalImage.getType();
+	public static BufferedImage resizeImageWithHint(BufferedImage originalImage, int width, int height) {
+		int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
 		BufferedImage resizedImage = new BufferedImage(width, height, type);
 		Graphics2D g = resizedImage.createGraphics();
 		g.drawImage(originalImage, 0, 0, width, height, null);
 		g.dispose();
 		g.setComposite(AlphaComposite.Src);
 
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		return resizedImage;
 	}

@@ -25,8 +25,7 @@ public class ApplicableProjection {
 			if (this.proj.isProjected()) {
 				// https://www.maptools.com/tutorials/utm/details
 				// https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system
-				extent = MyEnvelope.create(160000, 0, 834000, 9300000,
-						this.proj);
+				extent = MyEnvelope.create(160000, 0, 834000, 9300000, this.proj);
 			} else {
 				// FIXME, que pasa si es geográfico
 				extent = MyEnvelope.create(-360, -360, 360, 360, this.proj);
@@ -35,8 +34,7 @@ public class ApplicableProjection {
 
 		this.extent = extent;
 
-		this.interiorPoint = new Point2D.Double(extent.getCenterX(),
-				extent.getCenterY());
+		this.interiorPoint = new Point2D.Double(extent.getCenterX(), extent.getCenterY());
 	}
 
 	public void setTransformation(ITransformation transform) {
@@ -48,16 +46,15 @@ public class ApplicableProjection {
 	}
 
 	/*
-	 * Permite fijar el punto de ejemplo que usamos para representar esta zona
-	 * Por defecto es el centro de la zona de trabajo, pero nos permite setear
-	 * un punto de mayor valor simbólico.
+	 * Permite fijar el punto de ejemplo que usamos para representar esta zona Por
+	 * defecto es el centro de la zona de trabajo, pero nos permite setear un punto
+	 * de mayor valor simbólico.
 	 */
 	public void setInteriorPoint(Point2D interiorPoint) {
 		if (!this.extent.contains(interiorPoint)) {
 			throw new IllegalArgumentException("Not inside");
 		}
-		this.interiorPoint = new Point2D.Double(interiorPoint.getX(),
-				interiorPoint.getY());
+		this.interiorPoint = new Point2D.Double(interiorPoint.getX(), interiorPoint.getY());
 	}
 
 	public GPoint transform(GPoint point, IProjection oProj) {

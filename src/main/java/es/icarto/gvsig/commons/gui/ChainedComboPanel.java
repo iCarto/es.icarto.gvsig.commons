@@ -24,81 +24,77 @@ import net.miginfocom.swing.MigLayout;
  */
 @Deprecated
 @SuppressWarnings("serial")
-public class ChainedComboPanel extends JPanel implements ItemListener,
-PropertyChangeListener {
+public class ChainedComboPanel extends JPanel implements ItemListener, PropertyChangeListener {
 
-    private static final String prototypeDisplayValue = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+	private static final String prototypeDisplayValue = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 
-    private final List<JComboBox> l = new ArrayList<JComboBox>();
+	private final List<JComboBox> l = new ArrayList<JComboBox>();
 
-    private final JPanel parentComp;
+	private final JPanel parentComp;
 
-    public ChainedComboPanel(JPanel parentComp, DefaultMutableTreeNode top) {
-	super(new MigLayout());
-	this.parentComp = parentComp;
-	DefaultMutableTreeNode node = top;
-	List<String> labels = (List<String>) top.getUserObject();
+	public ChainedComboPanel(JPanel parentComp, DefaultMutableTreeNode top) {
+		super(new MigLayout());
+		this.parentComp = parentComp;
+		DefaultMutableTreeNode node = top;
+		List<String> labels = (List<String>) top.getUserObject();
 
-	int childCount = node.getChildCount();
-	while (childCount > 0) {
-	    Object[] values = Collections.list(node.children()).toArray();
-	    JComboBox c = new JComboBox(values);
-	    c.setPrototypeDisplayValue(prototypeDisplayValue);
-	    l.add(c);
-	    c.addItemListener(this);
-	    c.addPropertyChangeListener("model", this);
-	    parentComp.add(new JLabel(labels.remove(0)));
-	    parentComp.add(c, "wrap, growx");
-	    node = (DefaultMutableTreeNode) node.getFirstChild();
-	    childCount = node.getChildCount();
+		int childCount = node.getChildCount();
+		while (childCount > 0) {
+			Object[] values = Collections.list(node.children()).toArray();
+			JComboBox c = new JComboBox(values);
+			c.setPrototypeDisplayValue(prototypeDisplayValue);
+			l.add(c);
+			c.addItemListener(this);
+			c.addPropertyChangeListener("model", this);
+			parentComp.add(new JLabel(labels.remove(0)));
+			parentComp.add(c, "wrap, growx");
+			node = (DefaultMutableTreeNode) node.getFirstChild();
+			childCount = node.getChildCount();
+		}
 	}
-    }
 
-    @Override
-    public void itemStateChanged(ItemEvent event) {
-	if (event.getStateChange() == ItemEvent.SELECTED) {
-	    JComboBox combo = (JComboBox) event.getSource();
-	    updateNextCombo(combo);
+	@Override
+	public void itemStateChanged(ItemEvent event) {
+		if (event.getStateChange() == ItemEvent.SELECTED) {
+			JComboBox combo = (JComboBox) event.getSource();
+			updateNextCombo(combo);
+		}
 	}
-    }
 
-    private void updateNextCombo(JComboBox combo) {
-	int indexOf = l.indexOf(combo);
-	if (indexOf < l.size() - 1) {
-	    DefaultMutableTreeNode node = (DefaultMutableTreeNode) combo
-		    .getSelectedItem();
-	    JComboBox nextCombo = l.get(indexOf + 1);
-	    Object[] values = Collections.list(node.children()).toArray();
-	    ComboBoxModel aModel = new DefaultComboBoxModel(values);
-	    nextCombo.setModel(aModel);
+	private void updateNextCombo(JComboBox combo) {
+		int indexOf = l.indexOf(combo);
+		if (indexOf < l.size() - 1) {
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) combo.getSelectedItem();
+			JComboBox nextCombo = l.get(indexOf + 1);
+			Object[] values = Collections.list(node.children()).toArray();
+			ComboBoxModel aModel = new DefaultComboBoxModel(values);
+			nextCombo.setModel(aModel);
+		}
 	}
-    }
 
-    public Object getSelected() {
-	JComboBox jComboBox = l.get(l.size() - 1);
-	DefaultMutableTreeNode item = (DefaultMutableTreeNode) jComboBox
-		.getSelectedItem();
-	return item.getUserObject();
-    }
-
-    public List<Object> getAllSelected() {
-	List<Object> selected = new ArrayList<Object>(l.size());
-	for (JComboBox j : l) {
-	    DefaultMutableTreeNode item = (DefaultMutableTreeNode) j
-		    .getSelectedItem();
-	    selected.add(item.getUserObject());
+	public Object getSelected() {
+		JComboBox jComboBox = l.get(l.size() - 1);
+		DefaultMutableTreeNode item = (DefaultMutableTreeNode) jComboBox.getSelectedItem();
+		return item.getUserObject();
 	}
-	return selected;
-    }
 
-    public Component getDefaultFocusComponent() {
-	return l.get(0);
-    }
+	public List<Object> getAllSelected() {
+		List<Object> selected = new ArrayList<Object>(l.size());
+		for (JComboBox j : l) {
+			DefaultMutableTreeNode item = (DefaultMutableTreeNode) j.getSelectedItem();
+			selected.add(item.getUserObject());
+		}
+		return selected;
+	}
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-	JComboBox combo = (JComboBox) evt.getSource();
-	updateNextCombo(combo);
-    }
+	public Component getDefaultFocusComponent() {
+		return l.get(0);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		JComboBox combo = (JComboBox) evt.getSource();
+		updateNextCombo(combo);
+	}
 
 }

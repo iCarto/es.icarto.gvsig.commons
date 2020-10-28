@@ -14,49 +14,45 @@ import javax.swing.JTextField;
 @SuppressWarnings("serial")
 public class PlaceholderTextField extends JTextField implements FocusListener {
 
-    private String placeholder;
+	private String placeholder;
 
-    public PlaceholderTextField(final String placeholder) {
-	super();
-	this.placeholder = placeholder;
-	addFocusListener(this);
-    }
-
-    @Override
-    protected void paintComponent(final Graphics pG) {
-	super.paintComponent(pG);
-
-	if (placeholder.isEmpty()
-		|| !getText().isEmpty()
-		|| (KeyboardFocusManager.getCurrentKeyboardFocusManager()
-			.getFocusOwner() == this)) {
-	    return;
+	public PlaceholderTextField(final String placeholder) {
+		super();
+		this.placeholder = placeholder;
+		addFocusListener(this);
 	}
 
-	final Graphics2D g = (Graphics2D) pG;
-	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-		RenderingHints.VALUE_ANTIALIAS_ON);
-	g.setColor(getDisabledTextColor());
-	g.drawString(placeholder, getInsets().left, pG.getFontMetrics()
-		.getMaxAscent() + getInsets().top);
-    }
+	@Override
+	protected void paintComponent(final Graphics pG) {
+		super.paintComponent(pG);
 
-    public String getPlaceholder() {
-	return placeholder;
-    }
+		if (placeholder.isEmpty() || !getText().isEmpty()
+				|| (KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner() == this)) {
+			return;
+		}
 
-    public void setPlaceholder(final String s) {
-	placeholder = s;
-    }
+		final Graphics2D g = (Graphics2D) pG;
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setColor(getDisabledTextColor());
+		g.drawString(placeholder, getInsets().left, pG.getFontMetrics().getMaxAscent() + getInsets().top);
+	}
 
-    @Override
-    public void focusGained(FocusEvent e) {
-	repaint();
-    }
+	public String getPlaceholder() {
+		return placeholder;
+	}
 
-    @Override
-    public void focusLost(FocusEvent e) {
-	repaint();
-    }
+	public void setPlaceholder(final String s) {
+		placeholder = s;
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		repaint();
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		repaint();
+	}
 
 }

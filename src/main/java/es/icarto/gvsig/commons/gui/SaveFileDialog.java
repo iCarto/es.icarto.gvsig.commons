@@ -44,15 +44,13 @@ public class SaveFileDialog extends JFileChooser {
 	private boolean askForOverwrite = true;
 
 	/**
-	 * if extensions are provided extensions[0] will be the appended to the
-	 * fileName if it doesn't have jet
+	 * if extensions are provided extensions[0] will be the appended to the fileName
+	 * if it doesn't have jet
 	 *
-	 * @param description
-	 *            A string to be shown in the filter files combobox
-	 * @param extensions
-	 *            The extensions wanted to be filtered. Must be lowercase,
-	 *            uppercase validity is handled automaticaly. extensions[0] will
-	 *            be the default extension.
+	 * @param description A string to be shown in the filter files combobox
+	 * @param extensions  The extensions wanted to be filtered. Must be lowercase,
+	 *                    uppercase validity is handled automaticaly. extensions[0]
+	 *                    will be the default extension.
 	 */
 	public SaveFileDialog(String description, String... extensions) {
 		super();
@@ -70,8 +68,7 @@ public class SaveFileDialog extends JFileChooser {
 	}
 
 	/**
-	 * @return null if user cancel save operation, the File to save in other
-	 *         case.
+	 * @return null if user cancel save operation, the File to save in other case.
 	 */
 	public File showDialog() {
 		File file = null;
@@ -89,17 +86,14 @@ public class SaveFileDialog extends JFileChooser {
 
 			// Add the default extension
 			if (defaultExtension != null) {
-				if (!tmpFile.getName().toLowerCase()
-						.endsWith("." + defaultExtension)) {
-					tmpFile = new File(tmpFile.getAbsolutePath() + "."
-							+ defaultExtension);
+				if (!tmpFile.getName().toLowerCase().endsWith("." + defaultExtension)) {
+					tmpFile = new File(tmpFile.getAbsolutePath() + "." + defaultExtension);
 				}
 			}
 
 			if (askForOverwrite) {
 				if (tmpFile.exists()) {
-					int overwriteFile = JOptionPane.showConfirmDialog(null,
-							_("file_already_exists"), _("warning"),
+					int overwriteFile = JOptionPane.showConfirmDialog(null, _("file_already_exists"), _("warning"),
 							JOptionPane.YES_NO_OPTION);
 					if (overwriteFile == JOptionPane.NO_OPTION) {
 						continue;

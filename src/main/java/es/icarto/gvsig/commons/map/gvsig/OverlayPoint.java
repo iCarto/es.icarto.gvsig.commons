@@ -41,10 +41,8 @@ public class OverlayPoint {
 
 	private void drawPoint(double x, double y) {
 		lyr.clearAllGraphics();
-		SymbologyManager symbologyManager = SymbologyLocator
-				.getSymbologyManager();
-		ISimpleMarkerSymbol symbol = symbologyManager
-				.createSimpleMarkerSymbol();
+		SymbologyManager symbologyManager = SymbologyLocator.getSymbologyManager();
+		ISimpleMarkerSymbol symbol = symbologyManager.createSimpleMarkerSymbol();
 		symbol.setColor(color);
 		symbol.setSize(size);
 

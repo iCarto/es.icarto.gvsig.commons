@@ -27,15 +27,13 @@ public class Unzip {
 			}
 
 			// get the zip file content
-			ZipInputStream zis = new ZipInputStream(
-					new FileInputStream(zipFile));
+			ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
 			// get the zipped file list entry
 			ZipEntry ze = zis.getNextEntry();
 
 			while (ze != null) {
 				String fileName = ze.getName();
-				File newFile = new File(outputFolder + File.separator
-						+ fileName);
+				File newFile = new File(outputFolder + File.separator + fileName);
 				if (ze.isDirectory()) {
 					if (!newFile.isDirectory()) {
 						newFile.mkdir();

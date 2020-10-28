@@ -4,6 +4,6 @@ import org.gvsig.fmap.mapcontext.layers.FLayer;
 
 public interface LayerFilter {
 
-    public boolean accept(FLayer layer);
+	public boolean accept(FLayer layer);
 
 }

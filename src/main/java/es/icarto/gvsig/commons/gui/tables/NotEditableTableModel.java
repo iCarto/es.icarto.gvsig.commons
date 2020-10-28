@@ -4,8 +4,8 @@ import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
 public class NotEditableTableModel extends DefaultTableModel {
-    @Override
-    public boolean isCellEditable(int row, int column) {
-	return false;
-    }
+	@Override
+	public boolean isCellEditable(int row, int column) {
+		return false;
+	}
 }

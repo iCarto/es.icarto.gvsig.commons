@@ -25,8 +25,7 @@ public class Zip {
 
 	/**
 	 *
-	 * @param file
-	 *            Could be a single file or a folder that will be zipped
+	 * @param file Could be a single file or a folder that will be zipped
 	 */
 	public Zip(File file) {
 		this();
@@ -44,8 +43,7 @@ public class Zip {
 	/**
 	 * Zip it
 	 *
-	 * @param zipFile
-	 *            output ZIP file location
+	 * @param zipFile output ZIP file location
 	 * @throws IOException
 	 */
 	public void zipIt(String zipFile) throws IOException {

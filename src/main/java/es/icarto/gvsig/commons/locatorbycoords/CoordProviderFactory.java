@@ -14,10 +14,8 @@ import es.icarto.gvsig.commons.referencing.ApplicableProjection;
 import es.icarto.gvsig.commons.referencing.ApplicableProjectionFactory;
 
 public class CoordProviderFactory {
-	public static CoordProvider fromLayer(FLyrVect layer, String id)
-			throws ReadException {
-		ApplicableProjection appProj = ApplicableProjectionFactory
-				.fromLayer(layer);
+	public static CoordProvider fromLayer(FLyrVect layer, String id) throws ReadException {
+		ApplicableProjection appProj = ApplicableProjectionFactory.fromLayer(layer);
 		CoordProvider cProv = new CoordProvider(id, appProj);
 		Point2D intPoint = appProj.getInteriorPoint();
 		String x_long = cProv.getOutputformat().format(intPoint.getX());
@@ -28,8 +26,7 @@ public class CoordProviderFactory {
 		return cProv;
 	}
 
-	public static CoordProvider fromReprojectedLayer(FLyrVect layer,
-			String newEpsg, String id) throws ReadException {
+	public static CoordProvider fromReprojectedLayer(FLyrVect layer, String newEpsg, String id) throws ReadException {
 		IProjection newProj = CRSFactory.getCRS(newEpsg);
 		ICoordTrans ct = layer.getProjection().getCT(newProj);
 		Envelope envelope = layer.getFullEnvelope().convert(ct);
@@ -57,15 +54,13 @@ public class CoordProviderFactory {
 
 	}
 
-	public static CoordProvider reproject(CoordProvider orgCProv,
-			String reprojectTo, String id) {
+	public static CoordProvider reproject(CoordProvider orgCProv, String reprojectTo, String id) {
 		CoordProvider cProv;
 		IProjection newCRS = CRSFactory.getCRS(reprojectTo);
 		MyEnvelope orgExtent = orgCProv.getProj().getExtent();
 		MyEnvelope newExtent = orgExtent.convert(newCRS);
 
-		ApplicableProjection newAppProj = new ApplicableProjection(reprojectTo,
-				newExtent);
+		ApplicableProjection newAppProj = new ApplicableProjection(reprojectTo, newExtent);
 		Point2D intPoint = newAppProj.getInteriorPoint();
 
 		if (orgCProv.getProj().getProj().isProjected()) {

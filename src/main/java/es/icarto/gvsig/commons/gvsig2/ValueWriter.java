@@ -15,8 +15,7 @@ public interface ValueWriter {
 	/**
 	 * Gets the string of the i param as it would appear in a SQL statement
 	 *
-	 * @param i
-	 *            long to format
+	 * @param i long to format
 	 *
 	 * @return String
 	 */
@@ -25,11 +24,9 @@ public interface ValueWriter {
 	/**
 	 * Gets the string of the i param as it would appear in a SQL statement
 	 *
-	 * @param i
-	 *            integer to format
-	 * @param sqlType
-	 *            SQL type of the parameter. Any of the following java.sql.Types
-	 *            constants: INTEGER, SMALLINT, TINYINT
+	 * @param i       integer to format
+	 * @param sqlType SQL type of the parameter. Any of the following java.sql.Types
+	 *                constants: INTEGER, SMALLINT, TINYINT
 	 *
 	 * @return String
 	 */
@@ -38,11 +35,9 @@ public interface ValueWriter {
 	/**
 	 * Gets the string of the d param as it would appear in a SQL statement
 	 *
-	 * @param d
-	 *            double to format
-	 * @param sqlType
-	 *            SQL type of the parameter. Any of the following java.sql.Types
-	 *            constants: DOUBLE, FLOAT, REAL, NUMERIC, DECIMAL
+	 * @param d       double to format
+	 * @param sqlType SQL type of the parameter. Any of the following java.sql.Types
+	 *                constants: DOUBLE, FLOAT, REAL, NUMERIC, DECIMAL
 	 *
 	 * @return String
 	 */
@@ -51,11 +46,9 @@ public interface ValueWriter {
 	/**
 	 * Gets the string of the str param as it would appear in a SQL statement
 	 *
-	 * @param str
-	 *            string to format
-	 * @param sqlType
-	 *            SQL type of the parameter. Any of the following java.sql.Types
-	 *            constants: CHAR, VARCHAR, LONGVARCHAR
+	 * @param str     string to format
+	 * @param sqlType SQL type of the parameter. Any of the following java.sql.Types
+	 *                constants: CHAR, VARCHAR, LONGVARCHAR
 	 *
 	 * @return String
 	 */
@@ -64,8 +57,7 @@ public interface ValueWriter {
 	/**
 	 * Gets the string of the param as it would appear in a SQL statement
 	 *
-	 * @param d
-	 *            Date to format
+	 * @param d Date to format
 	 *
 	 * @return String
 	 */
@@ -74,8 +66,7 @@ public interface ValueWriter {
 	/**
 	 * Gets the string of the param as it would appear in a SQL statement
 	 *
-	 * @param t
-	 *            Time to format
+	 * @param t Time to format
 	 *
 	 * @return String
 	 */
@@ -84,8 +75,7 @@ public interface ValueWriter {
 	/**
 	 * Gets the string of the param as it would appear in a SQL statement
 	 *
-	 * @param ts
-	 *            timestamp to format
+	 * @param ts timestamp to format
 	 *
 	 * @return String
 	 */
@@ -94,8 +84,7 @@ public interface ValueWriter {
 	/**
 	 * Gets the string of the binary param as it would appear in a SQL statement
 	 *
-	 * @param binary
-	 *            byte array to format
+	 * @param binary byte array to format
 	 *
 	 * @return String
 	 */
@@ -104,8 +93,7 @@ public interface ValueWriter {
 	/**
 	 * Gets the string of the binary param as it would appear in a SQL statement
 	 *
-	 * @param b
-	 *            byte array to format
+	 * @param b byte array to format
 	 *
 	 * @return String
 	 */

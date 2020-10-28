@@ -31,28 +31,23 @@ import org.slf4j.LoggerFactory;
 
 public class SHPFactory {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(SHPFactory.class);
+	private static final Logger logger = LoggerFactory.getLogger(SHPFactory.class);
 
-	public static void createSHP(File file, EditableFeatureType featType,
-			String crs) throws BaseException {
-		NewFeatureStoreParameters newStoreParams = newStoreParams(file,
-				featType, crs);
+	public static void createSHP(File file, EditableFeatureType featType, String crs) throws BaseException {
+		NewFeatureStoreParameters newStoreParams = newStoreParams(file, featType, crs);
 		DataManager manager = DALLocator.getDataManager();
 		manager.newStore("FilesystemExplorer", "Shape", newStoreParams, true);
 	}
 
-	public static void createSHP(File file, EditableFeatureType featType,
-			int geomType, String crs) throws BaseException {
+	public static void createSHP(File file, EditableFeatureType featType, int geomType, String crs)
+			throws BaseException {
 
-		NewFeatureStoreParameters newStoreParams = newStoreParams(file,
-				featType, geomType, crs);
+		NewFeatureStoreParameters newStoreParams = newStoreParams(file, featType, geomType, crs);
 		DataManager manager = DALLocator.getDataManager();
 		manager.newStore("FilesystemExplorer", "Shape", newStoreParams, true);
 	}
 
-	public static void insertIntoStore(File file, String crs,
-			Object[][] features) throws BaseException {
+	public static void insertIntoStore(File file, String crs, Object[][] features) throws BaseException {
 		DataStoreParameters openStoreParams = openStoreParams(file, crs);
 		DataManager manager = DALLocator.getDataManager();
 		FeatureStore store = null;
@@ -73,8 +68,8 @@ public class SHPFactory {
 		}
 	}
 
-	public static NewFeatureStoreParameters newStoreParams(File file,
-			EditableFeatureType featType, String crs) throws BaseException {
+	public static NewFeatureStoreParameters newStoreParams(File file, EditableFeatureType featType, String crs)
+			throws BaseException {
 		DataManager manager = DALLocator.getDataManager();
 		NewFeatureStoreParameters params = (NewFeatureStoreParameters) manager
 				.createNewStoreParameters("FilesystemExplorer", "Shape");
@@ -84,33 +79,27 @@ public class SHPFactory {
 		return params;
 	}
 
-	public static NewFeatureStoreParameters newStoreParams(File file,
-			EditableFeatureType featType, int geomType, String crs)
-					throws BaseException {
+	public static NewFeatureStoreParameters newStoreParams(File file, EditableFeatureType featType, int geomType,
+			String crs) throws BaseException {
 
 		GeometryManager geomManager = GeometryLocator.getGeometryManager();
 
-		GeometryType geometryType = geomManager.getGeometryType(geomType,
-				Geometry.SUBTYPES.GEOM2D);
-		featType.add("geom", org.gvsig.fmap.geom.DataTypes.GEOMETRY)
-		.setGeometryType(geometryType);
+		GeometryType geometryType = geomManager.getGeometryType(geomType, Geometry.SUBTYPES.GEOM2D);
+		featType.add("geom", org.gvsig.fmap.geom.DataTypes.GEOMETRY).setGeometryType(geometryType);
 		featType.setDefaultGeometryAttributeName("geom");
 
 		return newStoreParams(file, featType, crs);
 	}
 
-	public static OpenDataStoreParameters openStoreParams(File file, String crs)
-			throws BaseException {
+	public static OpenDataStoreParameters openStoreParams(File file, String crs) throws BaseException {
 		DataManager manager = DALLocator.getDataManager();
-		OpenDataStoreParameters params = (OpenDataStoreParameters) manager
-				.createStoreParameters("Shape");
+		OpenDataStoreParameters params = (OpenDataStoreParameters) manager.createStoreParameters("Shape");
 		params.setDynValue("shpfile", file.getAbsoluteFile());
 		params.setDynValue("crs", crs);
 		return params;
 	}
 
-	public static FLyrVect getFLyrVectFromSHP(File file, String crs)
-			throws LoadLayerException {
+	public static FLyrVect getFLyrVectFromSHP(File file, String crs) throws LoadLayerException {
 		I18nManager i18nManager = ToolsLocator.getI18nManager();
 		ApplicationManager application = ApplicationLocator.getManager();
 		String name = i18nManager.getTranslation(file.getName());
@@ -122,8 +111,7 @@ public class SHPFactory {
 	/**
 	 * Open the file as a feature store of type shape.
 	 *
-	 * @param shape
-	 *            file to be opened
+	 * @param shape file to be opened
 	 *
 	 * @return the feature store
 	 */

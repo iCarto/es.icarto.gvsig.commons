@@ -9,8 +9,6 @@ import java.awt.LayoutManager;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.gvsig.andami.PluginServices;
 import org.gvsig.andami.ui.mdiFrame.MDIFrame;
 import org.gvsig.andami.ui.mdiManager.IWindow;
@@ -18,13 +16,14 @@ import org.gvsig.andami.ui.mdiManager.IWindowListener;
 import org.gvsig.andami.ui.mdiManager.MDIManagerFactory;
 import org.gvsig.andami.ui.mdiManager.WindowInfo;
 
+import net.miginfocom.swing.MigLayout;
+
 @SuppressWarnings("serial")
 /**
  * A gvSIG IWindow that autocalculates its size
  *
  */
-public abstract class AbstractIWindow extends JPanel implements IWindow,
-IWindowListener {
+public abstract class AbstractIWindow extends JPanel implements IWindow, IWindowListener {
 
 	private WindowInfo windowInfo;
 	private String title = "";

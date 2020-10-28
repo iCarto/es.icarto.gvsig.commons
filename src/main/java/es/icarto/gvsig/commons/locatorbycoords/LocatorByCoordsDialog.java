@@ -23,8 +23,7 @@ import es.icarto.gvsig.commons.referencing.gvsig.GPoint;
 import es.icarto.gvsig.commons.utils.Style;
 
 @SuppressWarnings("serial")
-public class LocatorByCoordsDialog extends AbstractIWindow implements
-		DocumentListener {
+public class LocatorByCoordsDialog extends AbstractIWindow implements DocumentListener {
 
 	private final static int WIDGET_SIZE = 23;
 	private final LocatorByCoordsModel model;
@@ -59,8 +58,7 @@ public class LocatorByCoordsDialog extends AbstractIWindow implements
 	}
 
 	private void setupMagicField() {
-		JTextField input = new PlaceholderTextField(
-				"Pegue o escriba la localización");
+		JTextField input = new PlaceholderTextField("Pegue o escriba la localización");
 		this.add(input, "wrap, span, growx, pushx");
 	}
 
@@ -79,10 +77,8 @@ public class LocatorByCoordsDialog extends AbstractIWindow implements
 		inputProj = new JComboBox<CoordProvider>();
 		this.add(inputProj, "wrap, growx, sizegroup bttn");
 
-		CoordProvider[] array = model.getProjCodes().toArray(
-				new CoordProvider[0]);
-		ComboBoxModel<CoordProvider> aModel = new DefaultComboBoxModel<CoordProvider>(
-				array);
+		CoordProvider[] array = model.getProjCodes().toArray(new CoordProvider[0]);
+		ComboBoxModel<CoordProvider> aModel = new DefaultComboBoxModel<CoordProvider>(array);
 		inputProj.setModel(aModel);
 		// inputProj.setPrototypeDisplayValue("EPSG:XXXXXXXXX");
 		inputProj.setSelectedItem(model.getDefaultInputProj());
@@ -121,8 +117,8 @@ public class LocatorByCoordsDialog extends AbstractIWindow implements
 		outputProj = new JComboBox<CoordProvider>();
 		this.add(outputProj, "wrap, growx, sizegroup bttn");
 
-		outputProj.setModel(new DefaultComboBoxModel<CoordProvider>(model
-				.getProjCodes().toArray(new CoordProvider[0])));
+		outputProj
+				.setModel(new DefaultComboBoxModel<CoordProvider>(model.getProjCodes().toArray(new CoordProvider[0])));
 		// outputProj.setPrototypeDisplayValue("EPSG:XXXXXXX");
 		outputProj.setSelectedItem(model.getDefaultOuputProj());
 		outputProj.addActionListener(new ActionListener() {

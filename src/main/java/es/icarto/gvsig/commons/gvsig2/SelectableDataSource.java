@@ -16,8 +16,7 @@ import org.slf4j.LoggerFactory;
 
 public class SelectableDataSource implements FBitSet, IEditableSource {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(SelectableDataSource.class);
+	private static final Logger logger = LoggerFactory.getLogger(SelectableDataSource.class);
 	private final FeatureStore fs;
 	private FeatureAttributeDescriptor[] attDesc;
 	private int geomIdx = -1;
@@ -30,12 +29,10 @@ public class SelectableDataSource implements FBitSet, IEditableSource {
 
 	public SelectableDataSource(FeatureStore fs) throws DataException {
 		this.fs = fs;
-		FeatureType defaultFeatureType = fs.getFeatureSet()
-				.getDefaultFeatureType();
+		FeatureType defaultFeatureType = fs.getFeatureSet().getDefaultFeatureType();
 		geomIdx = defaultFeatureType.getDefaultGeometryAttributeIndex();
 		if (geomIdx != -1) {
-			FeatureAttributeDescriptor[] foo = defaultFeatureType
-					.getAttributeDescriptors();
+			FeatureAttributeDescriptor[] foo = defaultFeatureType.getAttributeDescriptors();
 			attDesc = new FeatureAttributeDescriptor[foo.length - 1];
 			for (int i = 0; i < foo.length; i++) {
 				if (i == geomIdx) {
@@ -72,8 +69,7 @@ public class SelectableDataSource implements FBitSet, IEditableSource {
 			setCurrentFeature(position);
 		}
 		if (i == geomIdx) {
-			throw new RuntimeException(
-					"Geometry field can not ge got with this method");
+			throw new RuntimeException("Geometry field can not ge got with this method");
 		}
 		Object o = currentFeat.get(i);
 		return ValueFactory.createValue(o);

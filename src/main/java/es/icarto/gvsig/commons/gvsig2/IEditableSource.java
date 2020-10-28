@@ -16,8 +16,7 @@ public interface IEditableSource {
 
 	public boolean isWritable();
 
-	public void modifyRow(long rowPosition, DefaultFeature newRow)
-			throws DataException;
+	public void modifyRow(long rowPosition, DefaultFeature newRow) throws DataException;
 
 	public DefaultFeature getRow(long pos);
 

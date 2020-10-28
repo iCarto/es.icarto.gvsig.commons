@@ -65,8 +65,7 @@ public class ImagePreview extends JComponent implements PropertyChangeListener {
 		ImageIcon tmpIcon = new ImageIcon(file.getPath());
 		if (tmpIcon != null) {
 			if (tmpIcon.getIconWidth() > 190) {
-				thumbnail = new ImageIcon(tmpIcon.getImage().getScaledInstance(
-						190, -1, Image.SCALE_DEFAULT));
+				thumbnail = new ImageIcon(tmpIcon.getImage().getScaledInstance(190, -1, Image.SCALE_DEFAULT));
 			} else { // no need to miniaturize
 				thumbnail = tmpIcon;
 			}

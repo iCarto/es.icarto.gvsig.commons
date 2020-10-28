@@ -10,8 +10,7 @@ import org.gvsig.i18n.Messages;
 
 public class I18n {
 
-	private final static MessageFormat formatter = new MessageFormat("",
-			Messages.getCurrentLocale());
+	private final static MessageFormat formatter = new MessageFormat("", Messages.getCurrentLocale());
 	private final static boolean LOG_FAILED_TRANSLATIONS = false;
 
 	public static String _(String text) {
@@ -37,11 +36,9 @@ public class I18n {
 	private static void foo() {
 
 		Locale currentLocale = Locale.getDefault(); // cogerlo de gvSIG
-		ResourceBundle messages = ResourceBundle.getBundle("MessageBundle",
-				currentLocale);
+		ResourceBundle messages = ResourceBundle.getBundle("MessageBundle", currentLocale);
 
-		Object[] messageArguments = { messages.getString("planet"),
-				new Integer(7), new Date() };
+		Object[] messageArguments = { messages.getString("planet"), new Integer(7), new Date() };
 		MessageFormat formatter = new MessageFormat("");
 		formatter.setLocale(currentLocale);
 

@@ -15,25 +15,21 @@ import es.icarto.gvsig.commons.utils.ImageUtils;
 
 public class ImagesDAO {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(ImagesDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(ImagesDAO.class);
 
 	private static final String IMAGE_FIELDNAME = "image";
 
-	public void insertImageIntoDb(Connection connection, String schema,
-			String tablename, String pkField, String pkValue,
-			BufferedImage image, boolean update) throws SQLException,
-			IOException {
-		if (schema == null || tablename == null || pkField == null
-				|| pkValue == null || pkValue.isEmpty() || image == null) {
+	public void insertImageIntoDb(Connection connection, String schema, String tablename, String pkField,
+			String pkValue, BufferedImage image, boolean update) throws SQLException, IOException {
+		if (schema == null || tablename == null || pkField == null || pkValue == null || pkValue.isEmpty()
+				|| image == null) {
 			return;
 		}
 		byte[] imageBytes = ImageUtils.convertImageToBytea(image);
 		PreparedStatement statement;
 		if (update) {
-			statement = connection.prepareStatement("UPDATE " + schema + "."
-					+ tablename + " SET " + IMAGE_FIELDNAME + " = "
-					+ "? WHERE " + pkField + " = ?");
+			statement = connection.prepareStatement("UPDATE " + schema + "." + tablename + " SET " + IMAGE_FIELDNAME
+					+ " = " + "? WHERE " + pkField + " = ?");
 			statement.setBytes(1, imageBytes);
 			if (getPKFieldType(connection, schema, tablename, pkField) == 4) {
 				statement.setInt(2, Integer.parseInt(pkValue));
@@ -41,8 +37,7 @@ public class ImagesDAO {
 				statement.setString(2, pkValue);
 			}
 		} else {
-			statement = connection.prepareStatement("INSERT INTO " + schema
-					+ "." + tablename + " VALUES (?, ?)");
+			statement = connection.prepareStatement("INSERT INTO " + schema + "." + tablename + " VALUES (?, ?)");
 			if (getPKFieldType(connection, schema, tablename, pkField) == 4) {
 				statement.setInt(1, Integer.parseInt(pkValue));
 			} else {
@@ -57,18 +52,15 @@ public class ImagesDAO {
 		statement.close();
 	}
 
-	public byte[] readImageFromDb(Connection connection, String schema,
-			String tablename, String pkField, String pkValue)
-					throws SQLException {
+	public byte[] readImageFromDb(Connection connection, String schema, String tablename, String pkField,
+			String pkValue) throws SQLException {
 		PreparedStatement statement = null;
-		if (schema == null || tablename == null || pkField == null
-				|| pkValue == null || pkValue.isEmpty()) {
+		if (schema == null || tablename == null || pkField == null || pkValue == null || pkValue.isEmpty()) {
 			return null;
 		}
 		try {
-			statement = connection.prepareStatement("SELECT " + IMAGE_FIELDNAME
-					+ " FROM " + schema + "." + tablename + " WHERE " + pkField
-					+ " = ?");
+			statement = connection.prepareStatement(
+					"SELECT " + IMAGE_FIELDNAME + " FROM " + schema + "." + tablename + " WHERE " + pkField + " = ?");
 			if (getPKFieldType(connection, schema, tablename, pkField) == 4) {
 				statement.setInt(1, Integer.parseInt(pkValue));
 			} else {
@@ -87,17 +79,15 @@ public class ImagesDAO {
 		}
 	}
 
-	public void deleteImageFromDb(Connection connection, String schema,
-			String tablename, String pkField, String pkValue)
-					throws SQLException {
+	public void deleteImageFromDb(Connection connection, String schema, String tablename, String pkField,
+			String pkValue) throws SQLException {
 		PreparedStatement statement = null;
-		if (schema == null || tablename == null || pkField == null
-				|| pkValue == null || pkValue.isEmpty()) {
+		if (schema == null || tablename == null || pkField == null || pkValue == null || pkValue.isEmpty()) {
 			return;
 		}
 		try {
-			statement = connection.prepareStatement("DELETE FROM " + schema
-					+ "." + tablename + " WHERE " + pkField + " = ?");
+			statement = connection
+					.prepareStatement("DELETE FROM " + schema + "." + tablename + " WHERE " + pkField + " = ?");
 			if (getPKFieldType(connection, schema, tablename, pkField) == 4) {
 				statement.setInt(1, Integer.parseInt(pkValue));
 			} else {
@@ -111,12 +101,10 @@ public class ImagesDAO {
 		}
 	}
 
-	private int getPKFieldType(Connection connection, String schema,
-			String tablename, String pkField) {
+	private int getPKFieldType(Connection connection, String schema, String tablename, String pkField) {
 		PreparedStatement statement;
 		try {
-			statement = connection.prepareStatement("SELECT " + pkField
-					+ " FROM " + schema + "." + tablename);
+			statement = connection.prepareStatement("SELECT " + pkField + " FROM " + schema + "." + tablename);
 			ResultSet rs = statement.executeQuery();
 			ResultSetMetaData metadata = rs.getMetaData();
 			return metadata.getColumnType(1);

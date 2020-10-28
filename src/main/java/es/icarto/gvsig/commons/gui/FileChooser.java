@@ -83,15 +83,12 @@ public class FileChooser extends JPanel {
 
 	/**
 	 *
-	 * @param description
-	 *            : Appears in the select file type combo
-	 * @param extensions
-	 *            without the '.'
+	 * @param description : Appears in the select file type combo
+	 * @param extensions  without the '.'
 	 */
 	public void setFilter(String description, String... extensions) {
 		fileChooser.setFileSelectionMode(FILES_ONLY);
-		fileChooser.setFileFilter(new FileNameExtensionFilter(_(description),
-				extensions));
+		fileChooser.setFileFilter(new FileNameExtensionFilter(_(description), extensions));
 		// setAcceptAllFileFilterUsed(false);
 	}
 

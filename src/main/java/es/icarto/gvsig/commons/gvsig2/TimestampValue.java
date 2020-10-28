@@ -4,13 +4,13 @@ import java.sql.Timestamp;
 
 public class TimestampValue extends Value {
 
-    public TimestampValue(Object t) {
-	super(t);
-    }
+	public TimestampValue(Object t) {
+		super(t);
+	}
 
-    @Override
-    public String getStringValue(ValueWriter valueWriter) {
-	return valueWriter.getStatementString((Timestamp) value);
-    }
+	@Override
+	public String getStringValue(ValueWriter valueWriter) {
+		return valueWriter.getStatementString((Timestamp) value);
+	}
 
 }

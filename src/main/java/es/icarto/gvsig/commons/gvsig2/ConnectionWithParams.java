@@ -22,10 +22,8 @@ import org.slf4j.LoggerFactory;
 
 public class ConnectionWithParams implements ResourceConsumer {
 
-	
-	private static final Logger logger = LoggerFactory
-			.getLogger(ConnectionWithParams.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(ConnectionWithParams.class);
+
 	private final DataServerExplorerParameters explorerParams;
 	private final String storeProviderName;
 	private final JDBCResource resource;
@@ -33,7 +31,8 @@ public class ConnectionWithParams implements ResourceConsumer {
 
 	private final Connection con;
 
-	public ConnectionWithParams(DataServerExplorerParameters params, JDBCResource resource, String storeProviderName, String conName) {
+	public ConnectionWithParams(DataServerExplorerParameters params, JDBCResource resource, String storeProviderName,
+			String conName) {
 		this.explorerParams = params;
 		this.storeProviderName = storeProviderName;
 		this.resource = resource;
@@ -41,9 +40,8 @@ public class ConnectionWithParams implements ResourceConsumer {
 		this.name = conName;
 		this.con = null;
 	}
-	
-	public ConnectionWithParams(
-			JDBCServerExplorerParameters serverExplorerParams, Connection con,
+
+	public ConnectionWithParams(JDBCServerExplorerParameters serverExplorerParams, Connection con,
 			String storeProviderName, String conName) {
 		this.explorerParams = serverExplorerParams;
 		this.storeProviderName = storeProviderName;
@@ -70,12 +68,12 @@ public class ConnectionWithParams implements ResourceConsumer {
 	public DataServerExplorerParameters getExplorerParams() {
 		return explorerParams;
 	}
-	
-	// Taken from JDBCServerExplorer.createStoreParams that can not be used as is a protected method
-	public JDBCStoreParameters getStoreParams()
-			throws InitializeException, ProviderNotRegisteredException {
+
+	// Taken from JDBCServerExplorer.createStoreParams that can not be used as is a
+	// protected method
+	public JDBCStoreParameters getStoreParams() throws InitializeException, ProviderNotRegisteredException {
 		DataManagerProviderServices manager = (DataManagerProviderServices) DALLocator.getDataManager();
-		
+
 		JDBCServerExplorerParameters parameters = (JDBCServerExplorerParameters) explorerParams;
 		JDBCStoreParameters orgParams = (JDBCStoreParameters) manager.createStoreParameters(storeProviderName);
 		orgParams.setHost(parameters.getHost());
@@ -83,15 +81,13 @@ public class ConnectionWithParams implements ResourceConsumer {
 		orgParams.setDBName(parameters.getDBName());
 		orgParams.setUser(parameters.getUser());
 		orgParams.setPassword(parameters.getPassword());
-        orgParams.setCatalog(parameters.getCatalog());
-        orgParams.setJDBCDriverClassName(parameters.getJDBCDriverClassName());
-        orgParams.setSchema(parameters.getSchema());
-        orgParams.setUrl(parameters.getUrl());
+		orgParams.setCatalog(parameters.getCatalog());
+		orgParams.setJDBCDriverClassName(parameters.getJDBCDriverClassName());
+		orgParams.setSchema(parameters.getSchema());
+		orgParams.setUrl(parameters.getUrl());
 		return orgParams;
 	}
-	
-	
-	
+
 	public void closeResource() {
 		try {
 			resource.execute(new ResourceAction() {
@@ -110,7 +106,7 @@ public class ConnectionWithParams implements ResourceConsumer {
 			logger.error(e.getMessage(), e);
 		}
 	}
-	
+
 	public void close(Connection con) {
 //		resource.closeConnection(con);
 	}
@@ -127,8 +123,5 @@ public class ConnectionWithParams implements ResourceConsumer {
 	public Resource getResource() {
 		return resource;
 	}
-	
-	
-	
 
 }

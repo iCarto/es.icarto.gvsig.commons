@@ -21,8 +21,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ValueFactory {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(ValueFactory.class);
+	private static final Logger logger = LoggerFactory.getLogger(ValueFactory.class);
 
 	final static int BYTE = 0;
 	final static int SHORT = 1;
@@ -71,8 +70,7 @@ public class ValueFactory {
 	/**
 	 * Crea un objeto de tipo Value a partir de un int
 	 *
-	 * @param n
-	 *            valor que se quiere representar
+	 * @param n valor que se quiere representar
 	 *
 	 * @return objeto Value con el valor que se pasa como par�metro
 	 */
@@ -84,8 +82,7 @@ public class ValueFactory {
 	/**
 	 * Crea un objeto de tipo Value a partir de un long
 	 *
-	 * @param l
-	 *            valor que se quiere representar
+	 * @param l valor que se quiere representar
 	 *
 	 * @return objeto Value con el valor que se pasa como par�metro
 	 */
@@ -97,8 +94,7 @@ public class ValueFactory {
 	/**
 	 * Crea un objeto de tipo Value a partir de un String
 	 *
-	 * @param s
-	 *            valor que se quiere representar
+	 * @param s valor que se quiere representar
 	 *
 	 * @return objeto Value con el valor que se pasa como par�metro
 	 */
@@ -110,8 +106,7 @@ public class ValueFactory {
 	/**
 	 * Crea un objeto de tipo Value a partir de un float
 	 *
-	 * @param f
-	 *            valor que se quiere representar
+	 * @param f valor que se quiere representar
 	 *
 	 * @return objeto Value con el valor que se pasa como par�metro
 	 */
@@ -123,8 +118,7 @@ public class ValueFactory {
 	/**
 	 * Crea un objeto de tipo Value a partir de un double
 	 *
-	 * @param d
-	 *            valor que se quiere representar
+	 * @param d valor que se quiere representar
 	 *
 	 * @return objeto Value con el valor que se pasa como par�metro
 	 */
@@ -136,8 +130,7 @@ public class ValueFactory {
 	/**
 	 * Crea un objeto de tipo Date a partir de un Date
 	 *
-	 * @param d
-	 *            valor que se quiere representar
+	 * @param d valor que se quiere representar
 	 *
 	 * @return objeto Value con el valor que se pasa como par�metro
 	 */
@@ -149,8 +142,7 @@ public class ValueFactory {
 	/**
 	 * Creates a TimeValue object
 	 *
-	 * @param t
-	 *            Time value
+	 * @param t Time value
 	 *
 	 * @return TimeValue
 	 */
@@ -162,8 +154,7 @@ public class ValueFactory {
 	/**
 	 * Creates a TimestampValue object
 	 *
-	 * @param t
-	 *            Timestamp value
+	 * @param t Timestamp value
 	 *
 	 * @return TimestampValue
 	 */
@@ -175,8 +166,7 @@ public class ValueFactory {
 	/**
 	 * Crea un objeto de tipo Value a partir de un booleano
 	 *
-	 * @param b
-	 *            valor que se quiere representar
+	 * @param b valor que se quiere representar
 	 *
 	 * @return objeto Value con el valor que se pasa como par�metro
 	 */
@@ -188,8 +178,7 @@ public class ValueFactory {
 	/**
 	 * Creates an ArrayValue
 	 *
-	 * @param values
-	 *            DOCUMENT ME!
+	 * @param values DOCUMENT ME!
 	 *
 	 * @return ArrayValue
 	 */
@@ -204,15 +193,12 @@ public class ValueFactory {
 	 * Crea un Value a partir de un literal encontrado en una instrucci�n y su
 	 * tipo
 	 *
-	 * @param text
-	 *            Texto del valor
-	 * @param type
-	 *            Tipo del valor
+	 * @param text Texto del valor
+	 * @param type Tipo del valor
 	 *
 	 * @return Objeto Value del tipo adecuado
 	 *
-	 * @throws SemanticException
-	 *             Si el tipo del literal no est� soportado
+	 * @throws SemanticException Si el tipo del literal no est� soportado
 	 */
 	public static Value createValue(String text, int type) {
 		return new Value();
@@ -260,18 +246,14 @@ public class ValueFactory {
 	/**
 	 * DOCUMENT ME!
 	 *
-	 * @param text
-	 *            DOCUMENT ME!
-	 * @param type
-	 *            DOCUMENT ME!
+	 * @param text DOCUMENT ME!
+	 * @param type DOCUMENT ME!
 	 *
 	 * @return DOCUMENT ME!
 	 *
-	 * @throws ParseException
-	 *             DOCUMENT ME!
+	 * @throws ParseException DOCUMENT ME!
 	 */
-	public static Value createValueByType(String text, int type)
-			throws ParseException {
+	public static Value createValueByType(String text, int type) throws ParseException {
 		Value value;
 
 		switch (type) {
@@ -282,8 +264,7 @@ public class ValueFactory {
 
 		case Types.BIT:
 		case Types.BOOLEAN:
-			value = ValueFactory.createValue(Boolean.valueOf(text)
-					.booleanValue());
+			value = ValueFactory.createValue(Boolean.valueOf(text).booleanValue());
 
 			break;
 
@@ -335,8 +316,7 @@ public class ValueFactory {
 		case Types.LONGVARBINARY:
 
 			if ((text.length() / 2) != (text.length() / 2.0)) {
-				throw new ParseException(
-						"binary fields must have even number of characters.", 0);
+				throw new ParseException("binary fields must have even number of characters.", 0);
 			}
 
 			byte[] array = new byte[text.length() / 2];
@@ -357,8 +337,7 @@ public class ValueFactory {
 
 		case Types.TIME:
 			DateFormat tf = DateFormat.getTimeInstance();
-			value = ValueFactory
-					.createValue(new Time(tf.parse(text).getTime()));
+			value = ValueFactory.createValue(new Time(tf.parse(text).getTime()));
 
 			break;
 
@@ -369,8 +348,7 @@ public class ValueFactory {
 		return value;
 	}
 
-	public static Value createValueByType(String text, int type, int length,
-			int decimalCount) throws ParseException {
+	public static Value createValueByType(String text, int type, int length, int decimalCount) throws ParseException {
 		Value value;
 
 		switch (type) {
@@ -405,13 +383,11 @@ public class ValueFactory {
 	 * constantes definidas en la clase java.sql.Types se devuelve la clase que
 	 * implementa dicho tipo
 	 *
-	 * @param type
-	 *            Tipo de la columna
+	 * @param type Tipo de la columna
 	 *
 	 * @return Clase que implementa el tipo
 	 *
-	 * @throws RuntimeException
-	 *             if type is not recognized
+	 * @throws RuntimeException if type is not recognized
 	 */
 	public static Class getType(int type) {
 		switch (type) {
@@ -467,10 +443,8 @@ public class ValueFactory {
 	/**
 	 * Gets a Value with the value v1 plus v2
 	 *
-	 * @param v1
-	 *            first value
-	 * @param v2
-	 *            second value
+	 * @param v1 first value
+	 * @param v2 second value
 	 *
 	 * @return a numeric value with the operation
 	 */
@@ -480,10 +454,10 @@ public class ValueFactory {
 		while (true) {
 			switch (type) {
 			/*
-			 * El operador '+' en java no est� definido para byte ni short,
-			 * as� que nosotros tampoco lo definimos. Por otro lado no
-			 * conocemos manera de detectar el overflow al operar con long's ni
-			 * double's de manera eficiente, as� que no se detecta.
+			 * El operador '+' en java no est� definido para byte ni short, as� que
+			 * nosotros tampoco lo definimos. Por otro lado no conocemos manera de detectar
+			 * el overflow al operar con long's ni double's de manera eficiente, as� que
+			 * no se detecta.
 			 */
 			case BYTE:
 			case SHORT:
@@ -523,10 +497,8 @@ public class ValueFactory {
 	/**
 	 * Gets the value of the operation v1 v2
 	 *
-	 * @param v1
-	 *            first value
-	 * @param v2
-	 *            second value
+	 * @param v1 first value
+	 * @param v2 second value
 	 *
 	 * @return a numeric value with the operation
 	 */
@@ -536,10 +508,10 @@ public class ValueFactory {
 		while (true) {
 			switch (type) {
 			/*
-			 * El operador '+' en java no est� definido para byte ni short,
-			 * as� que nosotros tampoco lo definimos. Por otro lado no
-			 * conocemos manera de detectar el overflow al operar con long's ni
-			 * double's de manera eficiente, as� que no se detecta.
+			 * El operador '+' en java no est� definido para byte ni short, as� que
+			 * nosotros tampoco lo definimos. Por otro lado no conocemos manera de detectar
+			 * el overflow al operar con long's ni double's de manera eficiente, as� que
+			 * no se detecta.
 			 */
 			case BYTE:
 			case SHORT:
@@ -579,8 +551,7 @@ public class ValueFactory {
 	/**
 	 * Calcula la inversa (1/v) del valor que se pasa como par�metro.
 	 *
-	 * @param v
-	 *            Valor cuya inversa se quiere obtener
+	 * @param v Valor cuya inversa se quiere obtener
 	 *
 	 * @return DoubleValue
 	 */
@@ -593,8 +564,7 @@ public class ValueFactory {
 	/**
 	 * Creates a byte array value
 	 *
-	 * @param bytes
-	 *            bytes of the value
+	 * @param bytes bytes of the value
 	 *
 	 * @return
 	 */
@@ -632,16 +602,13 @@ public class ValueFactory {
 	 * </code>
 	 * <P>
 	 *
-	 * @param text
-	 *            String representation of value
-	 * @param valueName
-	 *            class name of the instance of Value to return. It can be the
-	 *            class name without the package.
+	 * @param text      String representation of value
+	 * @param valueName class name of the instance of Value to return. It can be the
+	 *                  class name without the package.
 	 * @return a Value instance
 	 * @throws ParseException
 	 */
-	public static Value createValueByValueName(String text, String valueName)
-			throws ParseException {
+	public static Value createValueByValueName(String text, String valueName) throws ParseException {
 		String baseName;
 		if (valueName.indexOf(".") > -1) {
 			baseName = valueName.substring(valueName.lastIndexOf(".") + 1);
@@ -679,8 +646,7 @@ public class ValueFactory {
 		} else {
 			try {
 				Class valueClass = Class.forName(valueName);
-				Constructor constr = valueClass
-						.getConstructor(new Class[] { String.class });
+				Constructor constr = valueClass.getConstructor(new Class[] { String.class });
 				return (Value) constr.newInstance(new Object[] { text });
 			} catch (Exception e) {
 				throw new ParseException(e.getMessage(), 0);

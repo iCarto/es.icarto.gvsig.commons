@@ -23,17 +23,14 @@ public class MyEnvelope {
 
 	private IProjection proj;
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(MyEnvelope.class);
+	private static final Logger logger = LoggerFactory.getLogger(MyEnvelope.class);
 
-	public static MyEnvelope create(double minX, double minY, double maxX,
-			double maxY, IProjection proj) {
+	public static MyEnvelope create(double minX, double minY, double maxX, double maxY, IProjection proj) {
 
 		GeometryManager geomManager = GeometryLocator.getGeometryManager();
 		Envelope e;
 		try {
-			e = geomManager.createEnvelope(minX, minY, maxX, maxY,
-					SUBTYPES.GEOM2D);
+			e = geomManager.createEnvelope(minX, minY, maxX, maxY, SUBTYPES.GEOM2D);
 		} catch (CreateEnvelopeException e1) {
 			logger.error(e1.getMessage(), e1);
 			throw new RuntimeException(e1);
@@ -41,10 +38,8 @@ public class MyEnvelope {
 		return new MyEnvelope(e, proj);
 	}
 
-	public static MyEnvelope create(double minX, double minY, double maxX,
-			double maxY, String epsgCode) {
-		return MyEnvelope.create(minX, minY, maxX, maxY,
-				CRSFactory.getCRS(epsgCode));
+	public static MyEnvelope create(double minX, double minY, double maxX, double maxY, String epsgCode) {
+		return MyEnvelope.create(minX, minY, maxX, maxY, CRSFactory.getCRS(epsgCode));
 	}
 
 	public MyEnvelope(Envelope e, IProjection proj) {
@@ -96,9 +91,9 @@ public class MyEnvelope {
 
 	public MyEnvelope toZoomable() {
 		/*
-		 * Este método ajusta el envelope a unos mínimos en función de la
-		 * proyección. Se usa sobre todo cuando está basado en un punto y lo que
-		 * se quiere es hacer zoom a ese punto pero cubriendo un área mayor.
+		 * Este método ajusta el envelope a unos mínimos en función de la proyección. Se
+		 * usa sobre todo cuando está basado en un punto y lo que se quiere es hacer
+		 * zoom a ese punto pero cubriendo un área mayor.
 		 *
 		 * Ahora está hardcodeado y no funcionará con geográficas
 		 */
@@ -108,11 +103,9 @@ public class MyEnvelope {
 			try {
 				GeometryManager manager = GeometryLocator.getGeometryManager();
 				Point lowerTmp = this.e.getLowerCorner();
-				Point lower = manager.createPoint(lowerTmp.getX(),
-						lowerTmp.getY(), lowerTmp.getType());
+				Point lower = manager.createPoint(lowerTmp.getX(), lowerTmp.getY(), lowerTmp.getType());
 				Point upperTmp = this.e.getUpperCorner();
-				Point upper = manager.createPoint(upperTmp.getX(),
-						upperTmp.getY(), upperTmp.getType());
+				Point upper = manager.createPoint(upperTmp.getX(), upperTmp.getY(), upperTmp.getType());
 				lower.move(-25, -25);
 				upper.move(+25, +25);
 				Envelope env = manager.createEnvelope(lowerTmp.getType());

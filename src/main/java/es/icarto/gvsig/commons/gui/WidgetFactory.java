@@ -25,12 +25,9 @@ public class WidgetFactory {
 	private static final Color ENABLED_BACKGROUND_COLOR = Color.WHITE;
 	private static final Color ENABLED_FOREGROUND_COLOR = Color.BLACK;
 
-	private static final Color DISABLED_DISABLED_TEXT_COLOR = new Color(189,
-			190, 176);
-	private static final Color DISABLED_BACKGROUND_COLOR = new Color(240, 240,
-			240);
-	private static final Color DISABLED_FOREGROUND_COLOR = new Color(102, 102,
-			102);
+	private static final Color DISABLED_DISABLED_TEXT_COLOR = new Color(189, 190, 176);
+	private static final Color DISABLED_BACKGROUND_COLOR = new Color(240, 240, 240);
+	private static final Color DISABLED_FOREGROUND_COLOR = new Color(102, 102, 102);
 
 	// private static final Font DISABLED_FONT = new Font("Arial", Font.PLAIN,
 	// 11);
@@ -75,8 +72,7 @@ public class WidgetFactory {
 	 * Adds an OkCancelPanel 'docked south' of the panel param, and returns the
 	 * OkCancelPanel added
 	 */
-	public static OkCancelPanel okCancelPanel(JPanel panel, ActionListener ok,
-			ActionListener cancel) {
+	public static OkCancelPanel okCancelPanel(JPanel panel, ActionListener ok, ActionListener cancel) {
 		OkCancelPanel okCancelPanel = new OkCancelPanel(ok, cancel);
 		// TODO Al usar dock el componente se sale del flujo normal, e ignora
 		// los insets especificados. En lugar de poner 10 directamente,

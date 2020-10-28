@@ -11,8 +11,7 @@ import es.icarto.gvsig.commons.utils.FileExtensionFilter;
 @SuppressWarnings("serial")
 public class ImageFileChooser extends JFileChooser {
 
-	public final static String[] exts = { "jpeg", "jpg", "gif", "tiff", "tif",
-			"png" };
+	public final static String[] exts = { "jpeg", "jpg", "gif", "tiff", "tif", "png" };
 
 	public ImageFileChooser() {
 		FileExtensionFilter filter = new FileExtensionFilter(_("images"), exts);

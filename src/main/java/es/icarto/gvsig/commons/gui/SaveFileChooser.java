@@ -30,8 +30,7 @@ public class SaveFileChooser extends JPanel {
 
 	private final JFileChooser fileChooser;
 
-	public SaveFileChooser(JPanel parentComp, String labelText,
-			String initFile, final boolean saveDialog) {
+	public SaveFileChooser(JPanel parentComp, String labelText, String initFile, final boolean saveDialog) {
 		super(new MigLayout());
 		this.parent = parentComp;
 
@@ -60,16 +59,13 @@ public class SaveFileChooser extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				fileChooser.setCurrentDirectory(new File(field.getText()));
 				if (saveDialog) {
-					File selectedFile = ((SaveFileDialog) fileChooser)
-							.showDialog();
+					File selectedFile = ((SaveFileDialog) fileChooser).showDialog();
 					if (selectedFile != null) {
 						String absolutePath = selectedFile.getAbsolutePath();
 						if (fileChooser.getFileFilter() instanceof FileNameExtensionFilter) {
-							FileNameExtensionFilter filter = (FileNameExtensionFilter) fileChooser
-									.getFileFilter();
+							FileNameExtensionFilter filter = (FileNameExtensionFilter) fileChooser.getFileFilter();
 							if (filter.getExtensions().length == 1) {
-								String ext = filter.getExtensions()[0]
-										.toLowerCase();
+								String ext = filter.getExtensions()[0].toLowerCase();
 								if (!absolutePath.toLowerCase().endsWith(ext)) {
 									absolutePath += "." + ext;
 								}
@@ -104,15 +100,12 @@ public class SaveFileChooser extends JPanel {
 
 	/**
 	 *
-	 * @param description
-	 *            : Appears in the select file type combo
-	 * @param extensions
-	 *            without the '.'
+	 * @param description : Appears in the select file type combo
+	 * @param extensions  without the '.'
 	 */
 	public void setFilter(String description, String... extensions) {
 		fileChooser.setFileSelectionMode(FILES_ONLY);
-		fileChooser.setFileFilter(new FileNameExtensionFilter(description,
-				extensions));
+		fileChooser.setFileFilter(new FileNameExtensionFilter(description, extensions));
 		// setAcceptAllFileFilterUsed(false);
 	}
 

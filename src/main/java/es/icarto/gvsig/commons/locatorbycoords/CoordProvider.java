@@ -23,8 +23,7 @@ public class CoordProvider {
 
 	public CoordProvider(String name, ApplicableProjection proj) {
 		this.name = name;
-		this.format = (DecimalFormat) NumberFormat.getNumberInstance(Locale
-				.getDefault());
+		this.format = (DecimalFormat) NumberFormat.getNumberInstance(Locale.getDefault());
 		this.format.applyPattern("0.##########");
 		this.outputformat = CoordFormat.utmFormatter();
 		this.proj = proj;
@@ -74,19 +73,17 @@ public class CoordProvider {
 		ApplicableProjection oProj = oProv.getProj();
 		GPoint oPoint = this.proj.transform(point, oProj);
 
-		return new String[] { oFormat.format(oPoint.getX()),
-				oFormat.format(oPoint.getY()) };
+		return new String[] { oFormat.format(oPoint.getX()), oFormat.format(oPoint.getY()) };
 	}
 
 	/*
-	 * Returns the x and y positions of the point transformed to this proj if
-	 * needed and with the decimal output format defined for this coordprovider
+	 * Returns the x and y positions of the point transformed to this proj if needed
+	 * and with the decimal output format defined for this coordprovider
 	 */
 	public String[] textCoordinates(GPoint point) {
 		GPoint thisPoint = new GPoint(point);
 		thisPoint.reProject(this.proj.getProj());
-		return new String[] { outputformat.format(thisPoint.getX()),
-				outputformat.format(thisPoint.getY()) };
+		return new String[] { outputformat.format(thisPoint.getX()), outputformat.format(thisPoint.getY()) };
 	}
 
 	public GPoint toGPoint(String inputX, String inputY) {

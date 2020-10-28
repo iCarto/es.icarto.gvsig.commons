@@ -22,12 +22,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GPXFactory {
-	
-	private static final Logger logger = LoggerFactory
-			.getLogger(GPXFactory.class);
 
-	public static FLyrVect getWaypointLyrFromGPX(File file, String crs)
-			throws LoadLayerException {
+	private static final Logger logger = LoggerFactory.getLogger(GPXFactory.class);
+
+	public static FLyrVect getWaypointLyrFromGPX(File file, String crs) throws LoadLayerException {
 		I18nManager i18nManager = ToolsLocator.getI18nManager();
 		ApplicationManager application = ApplicationLocator.getManager();
 		String name = i18nManager.getTranslation(file.getName());
@@ -35,13 +33,13 @@ public class GPXFactory {
 		FLayer layer = application.getMapContextManager().createLayer(name, fs);
 		return (FLyrVect) layer;
 	}
-	
+
 	private static FeatureStore getFeatureStore(File file, String crsStr) {
 		try {
 			DataManager manager = DALLocator.getDataManager();
 			DataStoreParameters parameters = manager.createStoreParameters("OGRDataStoreProvider");
 			parameters.setDynValue("file", file);
-			IProjection crs = CRSFactory.getCRS(crsStr); 
+			IProjection crs = CRSFactory.getCRS(crsStr);
 			parameters.setDynValue("crs", crs);
 			parameters.setDynValue("layerName", "waypoints");
 			return (FeatureStore) manager.openStore(parameters.getDataStoreName(), parameters);

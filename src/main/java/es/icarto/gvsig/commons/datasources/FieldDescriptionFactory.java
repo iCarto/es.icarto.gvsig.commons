@@ -9,7 +9,6 @@ import org.gvsig.fmap.dal.feature.EditableFeatureAttributeDescriptor;
 import org.gvsig.fmap.dal.feature.EditableFeatureType;
 import org.gvsig.fmap.dal.feature.FeatureAttributeDescriptor;
 import org.gvsig.fmap.dal.feature.impl.DefaultEditableFeatureAttributeDescriptor;
-import org.gvsig.fmap.dal.feature.impl.DefaultEditableFeatureType;
 import org.gvsig.tools.dataTypes.DataTypes;
 
 /**
@@ -18,8 +17,7 @@ import org.gvsig.tools.dataTypes.DataTypes;
  *
  * <pre>
  * EditableFeatureType featType = new DefaultEditableFeatureType();
- * EditableFeatureAttributeDescriptor attDesc = featType.add(fieldName,
- * 		DataTypes.INT, numericLength);
+ * EditableFeatureAttributeDescriptor attDesc = featType.add(fieldName, DataTypes.INT, numericLength);
  * </pre>
  *
  */
@@ -32,7 +30,7 @@ public class FieldDescriptionFactory {
 	private int decimalCount = 6;
 
 	private final List<EditableFeatureAttributeDescriptor> fields = new ArrayList<EditableFeatureAttributeDescriptor>();
-	
+
 	public FieldDescriptionFactory() {
 		dataManager = DALLocator.getDataManager();
 	}
