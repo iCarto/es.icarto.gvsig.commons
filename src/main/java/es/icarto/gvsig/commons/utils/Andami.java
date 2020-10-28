@@ -6,6 +6,7 @@ import java.beans.PropertyVetoException;
 import org.cresques.cts.IProjection;
 import org.gvsig.andami.PluginServices;
 import org.gvsig.andami.ui.mdiManager.IWindow;
+import org.gvsig.andami.ui.mdiManager.MDIManagerFactory;
 import org.gvsig.app.ApplicationLocator;
 import org.gvsig.app.ApplicationManager;
 import org.gvsig.app.project.ProjectManager;
@@ -28,7 +29,7 @@ public class Andami {
      * @param crs If null the default projection will be used
      */
     public static IView createViewIfNeeded(String viewName, String crs) {
-	IWindow iWindow = PluginServices.getMDIManager().getActiveWindow();
+	IWindow iWindow = MDIManagerFactory.getManager().getActiveWindow();
 	if (iWindow instanceof IView) {
 	    return (IView) iWindow;
 	}

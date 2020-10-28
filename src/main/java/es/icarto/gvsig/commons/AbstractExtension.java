@@ -1,9 +1,9 @@
 package es.icarto.gvsig.commons;
 
 import org.gvsig.andami.IconThemeHelper;
-import org.gvsig.andami.PluginServices;
 import org.gvsig.andami.plugins.Extension;
 import org.gvsig.andami.ui.mdiManager.IWindow;
+import org.gvsig.andami.ui.mdiManager.MDIManagerFactory;
 import org.gvsig.app.project.documents.view.gui.IView;
 
 public abstract class AbstractExtension extends Extension {
@@ -28,7 +28,7 @@ public abstract class AbstractExtension extends Extension {
 	 * Returns the active window if is a View. Returns null elsewhere
 	 */
 	protected IView getView() {
-		IWindow iWindow = PluginServices.getMDIManager().getActiveWindow();
+		IWindow iWindow = MDIManagerFactory.getManager().getActiveWindow();
 		if (iWindow instanceof IView) {
 			return (IView) iWindow;
 		}

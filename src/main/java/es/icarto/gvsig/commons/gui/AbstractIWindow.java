@@ -15,6 +15,7 @@ import org.gvsig.andami.PluginServices;
 import org.gvsig.andami.ui.mdiFrame.MDIFrame;
 import org.gvsig.andami.ui.mdiManager.IWindow;
 import org.gvsig.andami.ui.mdiManager.IWindowListener;
+import org.gvsig.andami.ui.mdiManager.MDIManagerFactory;
 import org.gvsig.andami.ui.mdiManager.WindowInfo;
 
 @SuppressWarnings("serial")
@@ -41,7 +42,7 @@ IWindowListener {
 
 	public void openDialog() {
 		if (getWindowInfo().isModeless()) {
-			PluginServices.getMDIManager().addCentredWindow(this);
+			MDIManagerFactory.getManager().addCentredWindow(this);
 			if (getDefaultButton() != null) {
 				getRootPane().setDefaultButton(getDefaultButton());
 			}
@@ -57,7 +58,7 @@ IWindowListener {
 			// ventana sea a�adida el JRootPane no es creado, por lo que con
 			// ventanas modales no se puede user un default button. A no ser que
 			// se haga algo un poco distinto
-			PluginServices.getMDIManager().addCentredWindow(this);
+			MDIManagerFactory.getManager().addCentredWindow(this);
 		}
 	}
 
@@ -66,7 +67,7 @@ IWindowListener {
 	protected abstract Component getDefaultFocusComponent();
 
 	public void closeDialog() {
-		PluginServices.getMDIManager().closeWindow(this);
+		MDIManagerFactory.getManager().closeWindow(this);
 	}
 
 	@Override
