@@ -3,6 +3,8 @@ package es.icarto.gvsig.commons.datasources;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gvsig.fmap.dal.DALLocator;
+import org.gvsig.fmap.dal.DataManager;
 import org.gvsig.fmap.dal.feature.EditableFeatureAttributeDescriptor;
 import org.gvsig.fmap.dal.feature.EditableFeatureType;
 import org.gvsig.fmap.dal.feature.FeatureAttributeDescriptor;
@@ -23,11 +25,17 @@ import org.gvsig.tools.dataTypes.DataTypes;
  */
 public class FieldDescriptionFactory {
 
+	private final DataManager dataManager;
+
 	private int stringLength = 100;
 	private int numericLength = 20;
 	private int decimalCount = 6;
 
 	private final List<EditableFeatureAttributeDescriptor> fields = new ArrayList<EditableFeatureAttributeDescriptor>();
+	
+	public FieldDescriptionFactory() {
+		dataManager = DALLocator.getDataManager();
+	}
 
 	public void setDefaultStringLength(int defaultStringLength) {
 		this.stringLength = defaultStringLength;
@@ -48,7 +56,7 @@ public class FieldDescriptionFactory {
 	}
 
 	public EditableFeatureAttributeDescriptor getInteger(String name) {
-		EditableFeatureAttributeDescriptor fd = new DefaultEditableFeatureAttributeDescriptor();
+		EditableFeatureAttributeDescriptor fd = dataManager.createFeatureAttributeDescriptor();
 		fd.setName(name);
 		fd.setSize(numericLength);
 		fd.setPrecision(0);
@@ -63,7 +71,7 @@ public class FieldDescriptionFactory {
 	}
 
 	public EditableFeatureAttributeDescriptor getDouble(String name) {
-		EditableFeatureAttributeDescriptor fd = new DefaultEditableFeatureAttributeDescriptor();
+		EditableFeatureAttributeDescriptor fd = dataManager.createFeatureAttributeDescriptor();
 		fd.setName(name);
 		fd.setSize(numericLength);
 		fd.setPrecision(decimalCount);
@@ -78,7 +86,7 @@ public class FieldDescriptionFactory {
 	}
 
 	public EditableFeatureAttributeDescriptor getString(String name) {
-		EditableFeatureAttributeDescriptor fd = new DefaultEditableFeatureAttributeDescriptor();
+		EditableFeatureAttributeDescriptor fd = dataManager.createFeatureAttributeDescriptor();
 		fd.setName(name);
 		fd.setSize(stringLength);
 		fd.setPrecision(0);
@@ -93,7 +101,7 @@ public class FieldDescriptionFactory {
 	}
 
 	public EditableFeatureAttributeDescriptor getDate(String name) {
-		EditableFeatureAttributeDescriptor fd = new DefaultEditableFeatureAttributeDescriptor();
+		EditableFeatureAttributeDescriptor fd = dataManager.createFeatureAttributeDescriptor();
 		fd.setName(name);
 		fd.setDataType(DataTypes.DATE);
 		return fd;
@@ -106,7 +114,7 @@ public class FieldDescriptionFactory {
 	}
 
 	public EditableFeatureAttributeDescriptor getBoolean(String name) {
-		DefaultEditableFeatureAttributeDescriptor fd = new DefaultEditableFeatureAttributeDescriptor();
+		EditableFeatureAttributeDescriptor fd = dataManager.createFeatureAttributeDescriptor();
 		fd.setName(name);
 		fd.setDataType(DataTypes.BOOLEAN);
 		return fd;
@@ -117,7 +125,7 @@ public class FieldDescriptionFactory {
 	}
 
 	public EditableFeatureType getFeatureType() {
-		DefaultEditableFeatureType fType = new DefaultEditableFeatureType();
+		EditableFeatureType fType = dataManager.createFeatureType();
 		for (FeatureAttributeDescriptor at : fields) {
 			fType.addLike(at);
 		}

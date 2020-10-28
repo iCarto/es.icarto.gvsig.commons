@@ -76,9 +76,7 @@ public class SelectByAttributes implements ExpressionListener {
 	}
 
 	private FeatureSet doSet(String expression) throws DataException {
-		FeatureQuery query = featureStore.createFeatureQuery();
-		DataManager manager = DALLocator.getDataManager();
-		query.setFilter(manager.createExpresion(expression));
+		FeatureQuery query = featureStore.createFeatureQuery(expression, "", false);
 		return featureStore.getFeatureSet(query);
 	}
 
