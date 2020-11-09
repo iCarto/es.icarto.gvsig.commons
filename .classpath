@@ -22,5 +22,6 @@
 	<classpathentry kind="src" path="/libCorePlugin"/>
 	<classpathentry kind="src" path="/extSymbology"/>
 	<classpathentry kind="lib" path="/_fwAndami/lib/castor-0.9.5.3-xml.jar"/>
+	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

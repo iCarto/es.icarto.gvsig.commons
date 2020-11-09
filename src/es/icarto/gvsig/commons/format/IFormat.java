@@ -1,5 +1,7 @@
 package es.icarto.gvsig.commons.format;
 
+import java.text.SimpleDateFormat;
+
 public interface IFormat {
 
     String toString(Object o);
@@ -20,5 +22,7 @@ public interface IFormat {
      * length or only have whitespace characters
      */
     boolean isEmpty(Object value);
+
+    SimpleDateFormat getDateFormat();
 
 }

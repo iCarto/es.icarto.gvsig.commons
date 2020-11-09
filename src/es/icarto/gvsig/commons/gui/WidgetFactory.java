@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -16,6 +17,10 @@ import javax.swing.text.JTextComponent;
 
 import com.jeta.forms.gui.beans.factories.ComboBoxBeanFactory;
 import com.jeta.forms.gui.common.FormException;
+import com.toedter.calendar.IDateEditor;
+import com.toedter.calendar.JDateChooser;
+
+import es.icarto.gvsig.commons.format.FormatPool;
 
 public class WidgetFactory {
 
@@ -96,7 +101,7 @@ public class WidgetFactory {
 	c.setEnabled(false);
 	if (c instanceof JTextComponent) {
 	    JTextComponent tc = (JTextComponent) c;
-	    tc.setEditable(false);
+	    // tc.setEditable(false);
 	    tc.setBackground(DISABLED_BACKGROUND_COLOR);
 	    tc.setDisabledTextColor(ENABLED_DISABLED_TEXT_COLOR);
 	    tc.setForeground(DISABLED_FOREGROUND_COLOR);
@@ -107,10 +112,21 @@ public class WidgetFactory {
 	c.setEnabled(true);
 	if (c instanceof JTextComponent) {
 	    JTextComponent tc = (JTextComponent) c;
-	    tc.setEditable(true);
+	    // tc.setEditable(true);
 	    tc.setBackground(ENABLED_BACKGROUND_COLOR);
 	    tc.setDisabledTextColor(ENABLED_DISABLED_TEXT_COLOR);
 	    tc.setForeground(ENABLED_FOREGROUND_COLOR);
+	}
+	if (c instanceof JDateChooser) {
+	    JDateChooser dateChooser = (JDateChooser) c;
+	    IDateEditor dateEditor = dateChooser.getDateEditor();
+	    SimpleDateFormat dateFormat = FormatPool.instance().getDateFormat();
+	    dateChooser.setDateFormatString(dateFormat.toPattern());
+	    dateEditor.setEnabled(false);
+	    dateEditor.getUiComponent().setBackground(new Color(255, 255, 255));
+	    Font fontEnabled = new Font("Arial", Font.PLAIN, 11);
+	    dateEditor.getUiComponent().setFont(fontEnabled);
+	    dateEditor.getUiComponent().setToolTipText(null);
 	}
     }
 }

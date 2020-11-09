@@ -1,16 +1,20 @@
 package es.icarto.gvsig.commons.format;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class Format implements IFormat {
 
     protected NumberFormat nformat;
+    protected SimpleDateFormat dateFormat;
 
     public Format() {
 	this.nformat = getDisplayingFormat();
+	this.dateFormat = getDateFormat();
     }
 
     private final NumberFormat getDisplayingFormat() {
@@ -67,6 +71,20 @@ public class Format implements IFormat {
     @Override
     public boolean isNumber(Object o) {
 	return toNumber(o) != null;
+    }
+
+    @Override
+    public SimpleDateFormat getDateFormat() {
+	if (dateFormat == null) {
+	    dateFormat = (SimpleDateFormat) DateFormat
+		    .getDateInstance(DateFormat.SHORT);
+	    String p = dateFormat.toLocalizedPattern();
+	    if (!p.contains("yyyy")) {
+		p = p.replaceAll("yy", "yyyy");
+		dateFormat = new SimpleDateFormat(p);
+	    }
+	}
+	return dateFormat;
     }
 
 }
