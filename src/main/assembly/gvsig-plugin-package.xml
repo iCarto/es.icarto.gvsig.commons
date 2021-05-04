@@ -58,9 +58,12 @@
         <include>com.miglayout:miglayout-swing</include>
         <include>com.miglayout:miglayout-core</include>
         <include>com.toedter:jcalendar</include>
+        
+        <include>org.apache.poi</include>
       </includes>
     </dependencySet>
   </dependencySets>
+  
   
 </assembly>
 
